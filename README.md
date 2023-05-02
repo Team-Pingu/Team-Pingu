@@ -2,7 +2,7 @@
 
 ## Development
 
-#### Unity Project Structure 
+#### __Unity Project Structure__ 
 Hier die Beschreibung der Ordner:
 * Art (Kunst, die für Spiel Assets benutzt wird)
 * Audio (Musik und Sounds für das Spiel)
