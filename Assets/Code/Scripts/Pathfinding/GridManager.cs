@@ -104,8 +104,6 @@ namespace Code.Scripts.Pathfinding
                     {
                         _grid.Add(coordinates, new Node(coordinates, false));
                     }
-
-                    // TODO: check if tile at this coordinates is walkable or not
                 }
             }   
         }
