@@ -1,17 +1,20 @@
 using System;
 using Code.Scripts.Pathfinding;
+using Code.Scripts.Player;
 using UnityEngine;
 
 namespace Code.Scripts
 {
     public class Tile : MonoBehaviour
     {
-        [SerializeField] public GameObject buildingPrefab;
         [SerializeField] public bool isPlaceable;
         [SerializeField] public bool isWalkable;
 
         private GridManager _gridManager;
         private Vector2Int _coordinates = new Vector2Int();
+        
+        private DefenderPlayerController _defenderPlayerController;
+        private AttackerPlayerController _attackerPlayerController;
 
         private void Awake()
         {
@@ -33,11 +36,30 @@ namespace Code.Scripts
 
         private void OnMouseDown()
         {
-            if (isPlaceable)
+            if (_defenderPlayerController == null)
             {
-                Instantiate(buildingPrefab, transform.position, Quaternion.identity);
+                _defenderPlayerController = FindObjectOfType<DefenderPlayerController>();
+            }
+            
+            if (_attackerPlayerController == null)
+            {
+                _attackerPlayerController = FindObjectOfType<AttackerPlayerController>();
+            }
+            
+            if (isPlaceable && _defenderPlayerController != null)
+            {
+                // Instantiate(buildingPrefab, transform.position, Quaternion.identity);
+                // isPlaceable = false;
+                // _gridManager.BlockNode(_coordinates);
+                
                 isPlaceable = false;
                 _gridManager.BlockNode(_coordinates);
+                _defenderPlayerController.PlaceTroops(transform.position);
+            }
+
+            if (isWalkable && _attackerPlayerController != null)
+            {
+                _attackerPlayerController.PlaceTroops(transform.position);
             }
         }
     }
