@@ -38,6 +38,9 @@ namespace Code.Scripts
         
         private void AimWeapon()
         {
+            // if there is no target return out of the method
+            if (!target) { return; }
+            
             float targetDistance = Vector3.Distance(transform.position, target.position);
             
             weapon.LookAt(target);

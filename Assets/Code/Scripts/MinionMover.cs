@@ -13,7 +13,7 @@ namespace Code.Scripts
     {
         [SerializeField][Range(0f, 5f)] private float speed = 1f;
 
-        private List<Node> path = new List<Node>();
+        private List<Node> _path = new List<Node>();
         private GridManager _gridManager;
         private Pathfinder _pathfinder;
 
@@ -32,9 +32,9 @@ namespace Code.Scripts
 
         private void FindPath()
         {
-            path.Clear();
+            _path.Clear();
 
-            path = _pathfinder.GetNewPath();
+            _path = _pathfinder.GetNewPath();
         }
 
         private void ReturnToStart()
@@ -50,10 +50,10 @@ namespace Code.Scripts
 
         IEnumerator FollowPath()
         {
-            for(int i = 0; i < path.Count; i++)
+            for(int i = 0; i < _path.Count; i++)
             {
                 Vector3 startPosition = transform.position;
-                Vector3 endPosition = _gridManager.GetPositionFromCoordinates(path[i].coordinates);
+                Vector3 endPosition = _gridManager.GetPositionFromCoordinates(_path[i].coordinates);
                 float travelPercent = 0f;
                 
                 transform.LookAt(endPosition);
