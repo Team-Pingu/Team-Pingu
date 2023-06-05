@@ -1,4 +1,5 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:Template name="UnitCard" src="project://database/Assets/Level/UI/Additional%20UI%20Elements/Scripts/UnitCards/UnitCard.uxml?fileID=9197481963319205126&amp;guid=9658284c0e92a4449917189a9386a8f5&amp;type=3#UnitCard" />
     <Style src="project://database/Assets/Level/UI/IngameGUI.uss?fileID=7433441132597879392&amp;guid=9873672f868fedf459dd52f613355363&amp;type=3#IngameGUI" />
     <ui:VisualElement name="static" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; display: flex;">
         <ui:VisualElement name="top_right" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0;">
@@ -6,8 +7,12 @@
         </ui:VisualElement>
         <ui:VisualElement name="top" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; align-items: center;">
             <ui:VisualElement name="timer" style="width: 116px; height: 51px; position: absolute; left: auto; top: 0; max-width: none; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; flex-grow: 0; background-image: url(&apos;project://database/Assets/Level/UI/Art/UI%20Parts/timer.png?fileID=2800000&amp;guid=8b392ef33e7b6214789dcb6189d181fa&amp;type=3#timer&apos;); -unity-slice-left: 0; -unity-slice-top: 0; -unity-slice-right: 0; -unity-slice-bottom: 0; -unity-background-scale-mode: stretch-to-fill; right: auto; align-items: auto;">
-                <ui:VisualElement style="left: -23px; top: 18px; position: relative; flex-direction: column; align-items: center; justify-content: center; width: 67px; height: 22px; -unity-text-align: upper-center; flex-wrap: nowrap; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0;">
-                    <ui:Label text="14:43" display-tooltip-when-elided="true" style="position: relative; left: auto; align-items: auto; -unity-text-align: upper-center; color: rgb(82, 82, 82); -unity-font-style: bold; font-size: 16px; top: auto; -unity-text-outline-width: 1px; -unity-text-outline-color: rgba(255, 255, 255, 0.5); text-shadow: 0 0 0 rgb(111, 111, 111); border-left-color: rgb(190, 80, 80); border-right-color: rgb(190, 80, 80); border-top-color: rgb(190, 80, 80); border-bottom-color: rgb(190, 80, 80); border-left-width: 0; border-right-width: 0; border-top-width: 0; border-bottom-width: 0; background-color: rgba(0, 0, 0, 0); padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; justify-content: flex-start; flex-direction: column; flex-wrap: nowrap; width: auto; height: auto; white-space: nowrap;" />
+                <ui:VisualElement style="left: 26px; top: 17px; position: absolute; flex-direction: row; align-items: center; justify-content: center; width: 67px; height: 22px; -unity-text-align: upper-center; flex-wrap: nowrap; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0;">
+                    <ui:Label text="14:43" display-tooltip-when-elided="true" style="position: relative; left: auto; align-items: auto; -unity-text-align: upper-center; color: rgb(82, 82, 82); -unity-font-style: bold; font-size: 16px; top: auto; background-color: rgba(0, 0, 0, 0); padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; justify-content: flex-start; flex-direction: column; flex-wrap: nowrap; width: auto; height: auto; white-space: nowrap;" />
+                </ui:VisualElement>
+                <ui:VisualElement style="left: 120px; top: 17px; position: absolute; flex-direction: row; align-items: center; justify-content: center; width: auto; height: auto; -unity-text-align: upper-center; flex-wrap: nowrap; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 4px; padding-right: 4px; padding-top: 2px; padding-bottom: 2px; background-color: rgb(203, 204, 203); border-top-left-radius: 1px; border-bottom-left-radius: 1px; border-top-right-radius: 1px; border-bottom-right-radius: 1px; border-left-width: 1px; border-right-width: 1px; border-top-width: 1px; border-bottom-width: 1px; border-left-color: rgb(218, 212, 214); border-right-color: rgb(218, 212, 214); border-top-color: rgb(218, 212, 214); border-bottom-color: rgb(218, 212, 214);">
+                    <ui:VisualElement style="background-image: url(&apos;project://database/Assets/Level/UI/Art/Icons/arrow.png?fileID=2800000&amp;guid=cfbea341f6080f547a6a4495f856fc81&amp;type=3#arrow&apos;); width: 14px; height: 14px; background-color: rgba(0, 0, 0, 0); color: rgb(48, 48, 48); margin-right: 5px;" />
+                    <ui:Label text="0:17" display-tooltip-when-elided="true" style="position: relative; left: auto; align-items: auto; -unity-text-align: upper-center; color: rgb(43, 43, 43); -unity-font-style: bold; font-size: 12px; top: auto; background-color: rgba(0, 0, 0, 0); padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; justify-content: flex-start; flex-direction: column; flex-wrap: nowrap; width: auto; height: auto; white-space: nowrap;" />
                 </ui:VisualElement>
             </ui:VisualElement>
         </ui:VisualElement>
@@ -46,7 +51,7 @@
                     <ui:Button text="OK" display-tooltip-when-elided="true" class="custom-button" />
                 </ui:VisualElement>
             </ui:VisualElement>
-            <ui:VisualElement name="game-start-popup-attacker" class="game-start-popup game-start-popup-attacker" style="border-left-color: rgb(255, 184, 66); border-right-color: rgb(255, 184, 66); border-top-color: rgb(255, 184, 66); border-bottom-color: rgb(255, 184, 66);">
+            <ui:VisualElement name="game-start-popup-attacker" class="game-start-popup game-start-popup-attacker" style="border-left-color: rgb(255, 184, 66); border-right-color: rgb(255, 184, 66); border-top-color: rgb(255, 184, 66); border-bottom-color: rgb(255, 184, 66); display: none;">
                 <ui:VisualElement style="flex-direction: row; align-items: center; justify-content: center; margin-bottom: 10px;">
                     <ui:VisualElement style="background-image: url(&apos;project://database/Assets/Level/UI/Art/Icons/battle.png?fileID=2800000&amp;guid=046e05c8c0fd6744ca9d5b38fe55ebec&amp;type=3#battle&apos;); width: 40px; height: 40px; margin-left: 0; margin-right: 10px;" />
                     <ui:Label text="Attack!" display-tooltip-when-elided="true" name="game-start-popup-attacker__title" style="margin-bottom: 0; font-size: 24px; color: rgb(255, 184, 66); -unity-font-style: bold; flex-direction: column; padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; margin-left: 0; margin-right: 0; margin-top: 0;" />
@@ -56,6 +61,12 @@
                     <ui:Button text="OK" display-tooltip-when-elided="true" class="custom-button" />
                 </ui:VisualElement>
             </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="unit-card-menu-container" style="position: absolute; left: 0; bottom: 0; right: 0; flex-direction: row; align-items: flex-end;">
+            <ui:Instance template="UnitCard" name="UnitCard" style="height: 400px; width: 300px; flex-shrink: 1;" />
+            <ui:Instance template="UnitCard" name="UnitCard" style="height: 400px; width: 300px; flex-shrink: 1;" />
+            <ui:Instance template="UnitCard" name="UnitCard" style="height: 400px; width: 300px; flex-shrink: 1;" />
+            <ui:Instance template="UnitCard" name="UnitCard" style="height: 400px; width: 300px; flex-shrink: 1;" />
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>
