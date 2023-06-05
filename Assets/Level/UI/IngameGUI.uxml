@@ -1,5 +1,5 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <ui:Template name="UnitCard" src="project://database/Assets/Level/UI/Additional%20UI%20Elements/Scripts/UnitCards/UnitCard.uxml?fileID=9197481963319205126&amp;guid=9658284c0e92a4449917189a9386a8f5&amp;type=3#UnitCard" />
+    <ui:Template name="UnitCardPanel" src="project://database/Assets/Level/UI/Additional%20UI%20Elements/Scripts/UnitCardPanel/UnitCardPanel.uxml?fileID=9197481963319205126&amp;guid=3a5f3dcbb15eb0347af4b2c5a2952c16&amp;type=3#UnitCardPanel" />
     <Style src="project://database/Assets/Level/UI/IngameGUI.uss?fileID=7433441132597879392&amp;guid=9873672f868fedf459dd52f613355363&amp;type=3#IngameGUI" />
     <ui:VisualElement name="static" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; display: flex;">
         <ui:VisualElement name="top_right" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0;">
@@ -62,11 +62,6 @@
                 </ui:VisualElement>
             </ui:VisualElement>
         </ui:VisualElement>
-        <ui:VisualElement name="unit-card-menu-container" style="position: absolute; left: 0; bottom: 0; right: 0; flex-direction: row; align-items: flex-end;">
-            <ui:Instance template="UnitCard" name="UnitCard" style="height: 400px; width: 300px; flex-shrink: 1;" />
-            <ui:Instance template="UnitCard" name="UnitCard" style="height: 400px; width: 300px; flex-shrink: 1;" />
-            <ui:Instance template="UnitCard" name="UnitCard" style="height: 400px; width: 300px; flex-shrink: 1;" />
-            <ui:Instance template="UnitCard" name="UnitCard" style="height: 400px; width: 300px; flex-shrink: 1;" />
-        </ui:VisualElement>
+        <ui:Instance template="UnitCardPanel" name="UnitCardPanel" />
     </ui:VisualElement>
 </ui:UXML>

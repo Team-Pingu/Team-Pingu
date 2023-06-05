@@ -2,6 +2,7 @@ using Game.UI;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -49,6 +50,9 @@ public class UnitCard : VisualElement
     private VisualElement _backgroundSelected;
     private VisualElement _selectCounter;
     private Label _selectCounterText;
+    private VisualElement _mainContainer;
+
+    public override VisualElement contentContainer => _mainContainer;
 
     public UnitCard(string name, string description, int cost)
     {
@@ -69,11 +73,28 @@ public class UnitCard : VisualElement
         _backgroundDefault = this.Q<VisualElement>("unit-card-bg--selected");
         _selectCounter = this.Q<Label>("unit-card__select-counter");
         _selectCounterText = this.Q<Label>("unit-card__select-counter__text");
+        _mainContainer = this.Q<VisualElement>("unit-card-container");
 
         _nameLabel.text = name;
         _descriptionLabel.text = description;
         _costLabel.text = $"{cost}";
+
+        _mainContainer.RegisterCallback<ClickEvent>(OnClick);
     }
+
+    #region Events
+    private void OnClick(ClickEvent e)
+    {
+        if (e.button == 0)
+        {
+            this.SelectUnit();
+        }
+        else
+        {
+            this.DeselectUnit();
+        }
+    }
+    #endregion
 
     private bool IsUnitCardAffordable(int globalCurrencyAmount)
     {
@@ -122,5 +143,13 @@ public class UnitCard : VisualElement
 
         SelectedUnitsAmount--;
         _selectCounterText.text = $"{SelectedUnitsAmount}";
+    }
+
+    public void ResetSelection()
+    {
+        SelectedUnitsAmount = 0;
+        _backgroundDefault.SetEnabled(true);
+        _backgroundSelected.SetEnabled(false);
+        _selectCounter.SetEnabled(false);
     }
 }
