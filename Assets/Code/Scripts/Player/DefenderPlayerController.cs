@@ -10,6 +10,7 @@ namespace Code.Scripts.Player
     public class DefenderPlayerController : PlayerController
     {
         private GameObject _buildingPrefab;
+        private int _cost = 75;
 
         private void Awake()
         {
@@ -30,10 +31,17 @@ namespace Code.Scripts.Player
             }
         }
 
-        public override void PlaceTroops(Vector3 position)
+        public override bool PlaceTroops(Vector3 position)
         {
             // Platzierung der Verteidigertruppen
-            Instantiate(_buildingPrefab, position, Quaternion.identity);
+            if (GetBank().CurrentBalance >= _cost)
+            {
+                GetBank().Withdraw(_cost);
+                Instantiate(_buildingPrefab, position, Quaternion.identity);
+                return true;
+            }
+
+            return false;
         }
     }
 }

@@ -52,14 +52,19 @@ namespace Code.Scripts
                 // isPlaceable = false;
                 // _gridManager.BlockNode(_coordinates);
                 
+                bool isPlaced = _defenderPlayerController.PlaceTroops(transform.position);
+
+                if (!isPlaced) return;
+                
                 isPlaceable = false;
                 _gridManager.BlockNode(_coordinates);
-                _defenderPlayerController.PlaceTroops(transform.position);
+                
             }
 
             if (isWalkable && _attackerPlayerController != null)
             {
-                _attackerPlayerController.PlaceTroops(transform.position);
+                bool isPlaced = _attackerPlayerController.PlaceTroops(transform.position);
+                // nothing for now
             }
         }
     }

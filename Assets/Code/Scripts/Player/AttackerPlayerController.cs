@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Unity.VisualScripting;
+using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
@@ -7,7 +8,8 @@ namespace Code.Scripts.Player
     public class AttackerPlayerController : PlayerController
     {
         private GameObject _minionPrefab;
-
+        private int _cost = 75;
+        
         private void Awake()
         {
             LoadPrefab();
@@ -27,10 +29,18 @@ namespace Code.Scripts.Player
             }
         }
 
-        public override void PlaceTroops(Vector3 position)
+        public override bool PlaceTroops(Vector3 position)
         {
             // Platzierung der Verteidigertruppen
-            Instantiate(_minionPrefab, position, Quaternion.identity);
+
+            if (GetBank().CurrentBalance >= _cost)
+            {
+                GetBank().Withdraw(_cost);
+                Instantiate(_minionPrefab, position, Quaternion.identity);
+                return true;
+            }
+
+            return false;
         }
     }
 }

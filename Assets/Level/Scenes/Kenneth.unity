@@ -2201,10 +2201,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   chooseRoleUI: {fileID: 8626924159964230457, guid: 406d2b98953c9584f80d63d6223e0808,
     type: 3}
-  _attackerButton: {fileID: 0}
-  _defenderButton: {fileID: 0}
-  _chooseRoleUIInstance: {fileID: 0}
-  _playerController: {fileID: 0}
 --- !u!4 &783135094
 Transform:
   m_ObjectHideFlags: 0

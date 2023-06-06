@@ -20,11 +20,14 @@ namespace Code.Scripts.Player
         public GameObject playerUI;
 
         public GameObject playerUIInstance;
+        
+        private Bank _bank;
 
         private void Start()
         {
             LoadPrefabs();
             OnRoleChanged(role);
+            _bank = gameObject.AddComponent<Bank>();
         }
         
         private void LoadPrefabs()
@@ -67,9 +70,14 @@ namespace Code.Scripts.Player
                 Destroy(this);
             });
         }
+
+        public Bank GetBank()
+        {
+            return _bank;
+        }
         
         // Methode zum Platzieren der Truppen
-        public abstract void PlaceTroops(Vector3 position);
+        public abstract bool PlaceTroops(Vector3 position);
     }
 }
 

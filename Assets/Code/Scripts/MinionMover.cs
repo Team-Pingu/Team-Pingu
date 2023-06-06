@@ -16,6 +16,7 @@ namespace Code.Scripts
         private List<Node> _path = new List<Node>();
         private GridManager _gridManager;
         private Pathfinder _pathfinder;
+        private Minion _minion;
 
         private void Awake()
         {
@@ -28,6 +29,11 @@ namespace Code.Scripts
             FindPath();
             ReturnToStart();
             StartCoroutine(FollowPath());
+        }
+
+        private void Start()
+        {
+            _minion = GetComponent<Minion>();
         }
 
         private void FindPath()
@@ -46,6 +52,8 @@ namespace Code.Scripts
         {
             // for now disabling game object
             // gameObject.SetActive(false);
+            
+            _minion.RewardGold();
             Destroy(gameObject);
         }
 
