@@ -35,10 +35,11 @@ namespace Game.CustomUI
 
         public List<UnitCard> Cards { get; private set; }
 
-        public static readonly int MAX_CARD_ROTATION = 4;
-        public static readonly int CARD_GAP_COLLAPSED = 200;
+        public static readonly int CARD_ROTATION_ANGLE_END = 8;
+        public static readonly int CARD_ROTATION_ANGLE_START = -1;
+        public static readonly int CARD_GAP_COLLAPSED = 180;
         public static readonly int CARD_GAP_EXPANDED = 0;
-        public static readonly int CONTAINER_TRANSLATION = 250;
+        public static readonly int CONTAINER_TRANSLATION = 200;
         private readonly string VIEW_ASSET_PATH = "Assets\\Level\\UI\\Additional UI Elements\\Scripts\\UnitCardPanel\\UnitCardPanel.uxml";
 
         private VisualElement _mainContainer;
@@ -146,6 +147,7 @@ namespace Game.CustomUI
         {
             //uc.style.width = 300;
             //uc.style.height = 450;
+            uc.ParentUnitCardPanel = this;
 
             List<StylePropertyName> properties = new List<StylePropertyName>() { new StylePropertyName("margin") };
             uc.style.transitionProperty = new StyleList<StylePropertyName>(properties);
@@ -171,8 +173,8 @@ namespace Game.CustomUI
         private void ApplyUnitCardStyleFix()
         {
             List<UnitCard> visibleCards = Cards;
-            float cardRotationStep = (MAX_CARD_ROTATION * 2) / (float)visibleCards.Count;
-            var startAngle = -MAX_CARD_ROTATION;
+            int cardRotationAbsoluteAngle = CARD_ROTATION_ANGLE_END - CARD_ROTATION_ANGLE_START;
+            float cardRotationStep = cardRotationAbsoluteAngle / (float)visibleCards.Count;
 
             for (int i = 0; i < visibleCards.Count; i++)
             {
@@ -181,7 +183,7 @@ namespace Game.CustomUI
                 if (!isLastCard)
                     currentCard.style.marginRight = -CARD_GAP_COLLAPSED;
 
-                currentCard.style.rotate = new Rotate(Angle.Degrees(startAngle + i * cardRotationStep));
+                currentCard.style.rotate = new Rotate(Angle.Degrees(CARD_ROTATION_ANGLE_START + i * cardRotationStep));
                 currentCard.RegisterCallback<MouseOverEvent>((e) =>
                 {
                     if (isLastCard) return;
