@@ -1,5 +1,4 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <ui:Template name="UnitCardPanel" src="project://database/Assets/Level/UI/Additional%20UI%20Elements/Scripts/UnitCardPanel/UnitCardPanel.uxml?fileID=9197481963319205126&amp;guid=3a5f3dcbb15eb0347af4b2c5a2952c16&amp;type=3#UnitCardPanel" />
     <Style src="project://database/Assets/Level/UI/IngameGUI.uss?fileID=7433441132597879392&amp;guid=9873672f868fedf459dd52f613355363&amp;type=3#IngameGUI" />
     <ui:VisualElement name="static" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; display: flex;">
         <ui:VisualElement name="top_right" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0;">
@@ -62,6 +61,6 @@
                 </ui:VisualElement>
             </ui:VisualElement>
         </ui:VisualElement>
-        <ui:Instance template="UnitCardPanel" name="UnitCardPanel" />
+        <Game.CustomUI.UnitCardPanel name="UnitCardPanel" />
     </ui:VisualElement>
 </ui:UXML>

@@ -1,10 +1,9 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <ui:Template name="UnitCard" src="project://database/Assets/Level/UI/Additional%20UI%20Elements/Scripts/UnitCards/UnitCard.uxml?fileID=9197481963319205126&amp;guid=9658284c0e92a4449917189a9386a8f5&amp;type=3#UnitCard" />
-    <ui:VisualElement name="unit-card-panel" style="position: absolute; left: 0; bottom: 0; right: 0; height: auto; flex-direction: row; translate: 0 200px;">
+    <ui:VisualElement name="unit-card-panel" style="position: absolute; left: 0; bottom: 0; right: auto; height: auto; flex-direction: row; translate: 0 250px; transition-property: translate; transition-duration: 100ms;">
         <ui:VisualElement name="unit-card-panel__cards" style="flex-direction: row; align-items: flex-start;">
-            <ui:Instance template="UnitCard" name="UnitCard" style="height: 450px; width: 300px; margin-right: -200px; rotate: -4deg;" />
-            <ui:Instance template="UnitCard" name="UnitCard" style="height: 450px; width: 300px; margin-right: -200px;" />
-            <ui:Instance template="UnitCard" name="UnitCard" style="height: 450px; width: 300px; margin-right: 0; rotate: 4deg;" />
+            <Game.CustomUI.UnitCard style="width: 300px; height: 450px; margin-right: -200px; rotate: -4deg;" />
+            <Game.CustomUI.UnitCard style="width: 300px; height: 450px; margin-right: -200px;" />
+            <Game.CustomUI.UnitCard style="width: 300px; height: 450px; rotate: 4deg;" />
         </ui:VisualElement>
         <ui:VisualElement name="unit-card-panel__actions" style="padding-left: 10px;">
             <ui:Button text="abort" display-tooltip-when-elided="true" name="unit-card-panel__actions__abort" style="padding-left: 10px; padding-right: 10px; padding-top: 10px; padding-bottom: 10px; color: rgb(255, 255, 255); background-color: rgb(82, 21, 21); border-top-left-radius: 20px; border-bottom-left-radius: 20px; border-top-right-radius: 20px; border-bottom-right-radius: 20px; border-left-width: 0; border-right-width: 0; border-top-width: 0; border-bottom-width: 0;" />
