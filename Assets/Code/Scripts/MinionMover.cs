@@ -45,7 +45,8 @@ namespace Code.Scripts
         private void FinishPath()
         {
             // for now disabling game object
-            gameObject.SetActive(false);
+            // gameObject.SetActive(false);
+            Destroy(gameObject);
         }
 
         IEnumerator FollowPath()
