@@ -69,6 +69,8 @@ namespace Game.CustomUI
 
         public UnitCard(string name, string description, int cost)
         {
+            Init();
+
             Name = name;
             Description = description;
             Cost = cost;
@@ -76,8 +78,6 @@ namespace Game.CustomUI
             _nameLabel.text = name;
             _descriptionLabel.text = description;
             _costLabel.text = $"{cost}";
-
-            Init();
         }
 
         private void Init()
@@ -97,12 +97,12 @@ namespace Game.CustomUI
             _selectCounterText = this.Q<Label>("unit-card__select-counter__text");
             _mainContainer = this.Q<VisualElement>("unit-card-container");
 
-            _mainContainer.RegisterCallback<MouseDownEvent>(OnRightMouseButtonClick);
+            _mainContainer.RegisterCallback<MouseDownEvent>(OnMouseClick);
         }
 
         #region Events
 
-        private void OnRightMouseButtonClick(MouseDownEvent e)
+        private void OnMouseClick(MouseDownEvent e)
         {
             if (e.button == (int)MouseButton.LeftMouse)
             {
