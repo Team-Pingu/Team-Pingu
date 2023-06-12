@@ -1,0 +1,8 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement name="c-popup-container" style="position: absolute; left: 0; width: auto; height: auto; overflow: visible; top: 0;">
+        <ui:VisualElement name="c-popup" style="background-color: rgba(0, 0, 0, 0.72); height: 100px; padding-left: 5px; padding-right: 5px; padding-top: 5px; padding-bottom: 5px; overflow: hidden; width: 300px; border-top-left-radius: 2px; border-bottom-left-radius: 2px; border-top-right-radius: 2px; border-bottom-right-radius: 2px;">
+            <ui:Label text="Ability name" display-tooltip-when-elided="true" name="c-popup__title" style="font-size: 14px; color: rgb(255, 255, 255); padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0;" />
+            <ui:Label text="Some Descirption" display-tooltip-when-elided="true" name="c-popup__description" style="padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; font-size: 10px; color: rgb(255, 255, 255); white-space: normal;" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
