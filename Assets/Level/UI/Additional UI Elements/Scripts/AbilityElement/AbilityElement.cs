@@ -86,28 +86,12 @@ namespace Game.CustomUI
 
             _popupPanel = new PopupPanelCustom("something", "something", _mainContainer, PopupPositionAnchor.TopLeft);
 
-            //Debug.Log(_popupPanel);
-
-            _content.RegisterCallback<MouseOverEvent>(OnMouseOver, useTrickleDown: TrickleDown.TrickleDown);
+            _content.RegisterCallback<MouseOverEvent>(OnMouseOver);
             _content.RegisterCallback<MouseOutEvent>(OnMouseOut);
-            //_mainContainer.RegisterCallback<ClickEvent>(e => Debug.Log("Clic"));
             _content.RegisterCallback<ClickEvent>(MouseClick);
-
-            _mainContainer.BringToFront();
-            //RegisterCallback<AttachToPanelEvent>(OnAttachedToPanel);
-            //RegisterCallback<DetachFromPanelEvent>(OnDetachedFromPanel);
         }
 
         #region Events
-        //private void OnAttachedToPanel(AttachToPanelEvent e)
-        //{
-        //    Debug.Log("Attached UnitCardPanel to Panel");
-        //}
-        //private void OnDetachedFromPanel(DetachFromPanelEvent e)
-        //{
-        //    Debug.Log("Detached UnitCardPanel to Panel");
-        //}
-
         private void MouseClick(ClickEvent e)
         {
             Debug.Log("ClickEvent");

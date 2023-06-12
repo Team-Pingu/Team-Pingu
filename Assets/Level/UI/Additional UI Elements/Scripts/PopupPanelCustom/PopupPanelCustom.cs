@@ -79,42 +79,44 @@ namespace Game.CustomUI
             _titleLabel.text = title;
             _descriptionLabel.text = description;
 
+            this.style.position = UnityEngine.UIElements.Position.Absolute;
+
             if (popupPositionAnchor == PopupPositionAnchor.TopLeft)
             {
-                _mainContainer.style.top = new StyleLength(Position.y);
-                _mainContainer.style.left = new StyleLength(Position.x);
-                _mainContainer.style.right = new StyleLength(StyleKeyword.Auto);
-                _mainContainer.style.bottom = new StyleLength(StyleKeyword.Auto);
+                this.style.top = new StyleLength(Position.y);
+                this.style.left = new StyleLength(Position.x);
+                this.style.right = new StyleLength(StyleKeyword.Auto);
+                this.style.bottom = new StyleLength(StyleKeyword.Auto);
 
                 _mainContainer.style.paddingLeft = new StyleLength(CONTAINER_PADDING);
                 _mainContainer.style.paddingTop = new StyleLength(CONTAINER_PADDING);
             }
             else if (popupPositionAnchor == PopupPositionAnchor.TopRight)
             {
-                _mainContainer.style.top = new StyleLength(Position.y);
-                _mainContainer.style.left = new StyleLength(StyleKeyword.Auto);
-                _mainContainer.style.right = new StyleLength(Position.x);
-                _mainContainer.style.bottom = new StyleLength(StyleKeyword.Auto);
+                this.style.top = new StyleLength(Position.y);
+                this.style.left = new StyleLength(StyleKeyword.Auto);
+                this.style.right = new StyleLength(Position.x);
+                this.style.bottom = new StyleLength(StyleKeyword.Auto);
 
                 _mainContainer.style.paddingRight = new StyleLength(CONTAINER_PADDING);
                 _mainContainer.style.paddingTop = new StyleLength(CONTAINER_PADDING);
             }
             else if (popupPositionAnchor == PopupPositionAnchor.BottomLeft)
             {
-                _mainContainer.style.top = new StyleLength(StyleKeyword.Auto);
-                _mainContainer.style.left = new StyleLength(Position.x);
-                _mainContainer.style.right = new StyleLength(StyleKeyword.Auto);
-                _mainContainer.style.bottom = new StyleLength(Position.y);
+                this.style.top = new StyleLength(StyleKeyword.Auto);
+                this.style.left = new StyleLength(Position.x);
+                this.style.right = new StyleLength(StyleKeyword.Auto);
+                this.style.bottom = new StyleLength(Position.y);
 
                 _mainContainer.style.paddingLeft = new StyleLength(CONTAINER_PADDING);
                 _mainContainer.style.paddingBottom = new StyleLength(CONTAINER_PADDING);
             }
             else
             {
-                _mainContainer.style.top = new StyleLength(StyleKeyword.Auto);
-                _mainContainer.style.left = new StyleLength(StyleKeyword.Auto);
-                _mainContainer.style.right = new StyleLength(Position.x);
-                _mainContainer.style.bottom = new StyleLength(Position.y);
+                this.style.top = new StyleLength(StyleKeyword.Auto);
+                this.style.left = new StyleLength(StyleKeyword.Auto);
+                this.style.right = new StyleLength(Position.x);
+                this.style.bottom = new StyleLength(Position.y);
 
                 _mainContainer.style.paddingRight = new StyleLength(CONTAINER_PADDING);
                 _mainContainer.style.paddingBottom = new StyleLength(CONTAINER_PADDING);
@@ -125,20 +127,20 @@ namespace Game.CustomUI
         {
             return visualElement.transform.position;
             //// Get the RectTransform of the VisualElement
-            //RectTransform rectTransform = visualElement.transform as RectTransform;
+            //RectTransform rectTransform = (RectTransform)visualElement.transform;
 
             //// Get the position of the VisualElement in world space
             //Vector3 worldPosition = rectTransform.TransformPoint(new Vector3(rectTransform.rect.center.x, rectTransform.rect.center.y, 0));
 
             //// Get the screen coordinates of the VisualElement
-            //Vector3 screenPosition = mainCamera.WorldToScreenPoint(worldPosition);
+            //Vector3 screenPosition = Camera.main.WorldToScreenPoint(worldPosition);
 
             //return screenPosition;
         }
 
         private VisualElement GetRootParentElement()
         {
-            VisualElement parent = _mainContainer;
+            VisualElement parent = this;
             while (parent != null)
             {
                 parent = parent.parent;
