@@ -5070,11 +5070,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6fd0ea4acd769c45870389b22190d52, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speedMove: 1
+  _speedMove: 0.2
   _speedZoom: 15
   _smoothing: 5
-  _rangeMove: {x: 100, y: 100}
-  _rangeZoom: {x: 15, y: 25}
+  _rangeMove: {x: 15, y: 15}
+  _rangeZoom: {x: 20, y: 40}
 --- !u!4 &1752527682
 Transform:
   m_ObjectHideFlags: 0
