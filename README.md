@@ -137,6 +137,7 @@ See the [open issues](https://github.com/Fhuu/Team-Pingu/issues) for a list of p
 <!-- CONTRIBUTING -->
 ## Contributing
 * Kenneth Englisch
+* Eliot Hoff
 * put your names here
 <!-- LICENSE -->
 ## License
