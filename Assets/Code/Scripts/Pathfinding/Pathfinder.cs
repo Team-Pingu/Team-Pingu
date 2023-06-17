@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Code.Scripts.Pathfinding
@@ -33,6 +34,10 @@ namespace Code.Scripts.Pathfinding
         private Dictionary<Vector2Int, Node> _grid = new Dictionary<Vector2Int, Node>();
         
         private List<List<Node>> _possiblePaths = new List<List<Node>>();
+        
+        [SerializeField] private bool highlightPath = true;
+        private HighlightPath _highlight;
+        private bool _isPathHighlighted = false;
 
         private void Awake()
         {
@@ -44,11 +49,54 @@ namespace Code.Scripts.Pathfinding
                 _startNode = _grid[startCoordinates];
                 _destinationNode = _grid[destinationCoordinates];
             }
+
+            _highlight = FindObjectOfType<HighlightPath>();
         }
 
         private void Start()
         {
             GetNewPath();
+        }
+
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.V))
+            {
+                highlightPath = !highlightPath;
+            }
+
+            if (_highlight && highlightPath && !_isPathHighlighted)
+            {
+                Vector3[] points = GetPointsOfPath(_possiblePaths.First());
+                
+                _highlight.SetPoints(points);
+                _highlight.HighlightThePath();
+                _isPathHighlighted = true;
+            }
+
+            if (!highlightPath)
+            {
+                _highlight.ResetPoints();
+                _isPathHighlighted = false;
+            }
+        }
+
+        private Vector3[] GetPointsOfPath(List<Node> path)
+        {
+            Vector3[] points = new Vector3[path.Count];
+
+            for (var i = 0; i < path.Count; i++)
+            {
+                Vector2Int coords = path[i].coordinates;
+                Vector3 point = _gridManager.GetTile(coords).transform.position;
+                
+                // shifting the position a little it above the tile, otherwise we get parts of lines disapearing in tiles
+                point.y += 0.5f;
+                
+                points[i] = point;
+            }
+
+            return points;
         }
 
         public List<List<Node>> GetNewPath()

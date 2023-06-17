@@ -87,6 +87,11 @@ namespace Code.Scripts.Pathfinding
                 }
             }
         }
+
+        public Tile GetTile(Vector2Int tileCoordinates)
+        {
+            return _tiles[tileCoordinates];
+        }
         
         private void CreateGrid()
         {
