@@ -6,6 +6,14 @@ namespace Code.Scripts.Pathfinding
 {
     public class Pathfinder : MonoBehaviour
     {
+        private enum PathfindingAlgorithm
+        {
+            BreadthFirstSearch,
+            DepthFirstSearch
+        }
+
+        [SerializeField] private PathfindingAlgorithm pathfindingAlgorithm = PathfindingAlgorithm.DepthFirstSearch;
+        
         [SerializeField] private Vector2Int startCoordinates;
         public Vector2Int StartCoordinates { get { return startCoordinates; } }
         
@@ -16,7 +24,8 @@ namespace Code.Scripts.Pathfinding
         private Node _destinationNode;
         private Node _currentSearchNode;
 
-        private Queue<Node> _frontier = new Queue<Node>();
+        private Queue<Node> _frontierBfs = new Queue<Node>();
+        private Stack<Node> _frontierDfs = new Stack<Node>();
         private Dictionary<Vector2Int, Node> _reached = new Dictionary<Vector2Int, Node>();
 
         private Vector2Int[] _directions = { Vector2Int.right, Vector2Int.left, Vector2Int.up, Vector2Int.down };
@@ -43,7 +52,18 @@ namespace Code.Scripts.Pathfinding
         public List<Node> GetNewPath()
         {
             _gridManager.ResetNodes();
-            BreadthFirstSearch();
+
+            switch (pathfindingAlgorithm)
+            {
+                case PathfindingAlgorithm.BreadthFirstSearch:
+                    BreadthFirstSearch();
+                    break;
+                case PathfindingAlgorithm.DepthFirstSearch:
+                default:
+                    DepthFirstSearch();
+                    break;
+            }
+
             return BuildPath();
         }
 
@@ -67,7 +87,10 @@ namespace Code.Scripts.Pathfinding
                 {
                     neighbour.connectedTo = _currentSearchNode;
                     _reached.Add(neighbour.coordinates, neighbour);
-                    _frontier.Enqueue(neighbour);
+                    // Bei BFS:
+                    _frontierBfs.Enqueue(neighbour);
+                    // Bei DFS:
+                    _frontierDfs.Push(neighbour);
                 }
             }
         }
@@ -76,20 +99,47 @@ namespace Code.Scripts.Pathfinding
         {
             _startNode.isWalkable = true;
             _destinationNode.isWalkable = true;
-            
-            _frontier.Clear();
+
+            _frontierBfs.Clear();
             _reached.Clear();
-            
+
             bool isRunning = true;
-            
-            _frontier.Enqueue(_startNode);
+
+            _frontierBfs.Enqueue(_startNode);
             _reached.Add(startCoordinates, _startNode);
 
-            while (_frontier.Count > 0 && isRunning)
+            while (_frontierBfs.Count > 0 && isRunning)
             {
-                _currentSearchNode = _frontier.Dequeue();
+                _currentSearchNode = _frontierBfs.Dequeue();
                 _currentSearchNode.isExplored = true;
-                
+
+                ExploreNeighbours();
+
+                if (_currentSearchNode.coordinates == destinationCoordinates)
+                {
+                    isRunning = false;
+                }
+            }
+        }
+
+        private void DepthFirstSearch()
+        {
+            _startNode.isWalkable = true;
+            _destinationNode.isWalkable = true;
+
+            _frontierDfs.Clear();
+            _reached.Clear();
+
+            bool isRunning = true;
+
+            _frontierDfs.Push(_startNode);
+            _reached.Add(startCoordinates, _startNode);
+
+            while (_frontierDfs.Count > 0 && isRunning)
+            {
+                _currentSearchNode = _frontierDfs.Pop();
+                _currentSearchNode.isExplored = true;
+
                 ExploreNeighbours();
 
                 if (_currentSearchNode.coordinates == destinationCoordinates)
@@ -103,7 +153,7 @@ namespace Code.Scripts.Pathfinding
         {
             List<Node> path = new List<Node>();
             Node currentNode = _destinationNode;
-            
+
             path.Add(currentNode);
             currentNode.isPath = true;
 
@@ -113,9 +163,9 @@ namespace Code.Scripts.Pathfinding
                 path.Add(currentNode);
                 currentNode.isPath = true;
             }
-            
+
             path.Reverse();
-            
+
             return path;
         }
     }
