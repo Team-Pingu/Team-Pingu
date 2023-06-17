@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Code.Scripts.Pathfinding;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -40,7 +41,18 @@ namespace Code.Scripts
         {
             _path.Clear();
 
-            _path = _pathfinder.GetNewPath();
+            _path = _pathfinder.GetNewPath().First(); // TODO: hier abändern, dass User Pfad wählen kann
+        }
+
+        /**
+         * Gets the list of all paths.
+         * The paths arte sorted by its lengths and first is the shortest.
+         */
+        private void FindShortestPath()
+        {
+            _path.Clear();
+
+            _path = _pathfinder.GetNewPath().First();
         }
 
         private void ReturnToStart()

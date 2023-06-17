@@ -31,6 +31,8 @@ namespace Code.Scripts.Pathfinding
         private Vector2Int[] _directions = { Vector2Int.right, Vector2Int.left, Vector2Int.up, Vector2Int.down };
         private GridManager _gridManager;
         private Dictionary<Vector2Int, Node> _grid = new Dictionary<Vector2Int, Node>();
+        
+        private List<List<Node>> _possiblePaths = new List<List<Node>>();
 
         private void Awake()
         {
@@ -49,9 +51,11 @@ namespace Code.Scripts.Pathfinding
             GetNewPath();
         }
 
-        public List<Node> GetNewPath()
+        public List<List<Node>> GetNewPath()
         {
             _gridManager.ResetNodes();
+            
+            _possiblePaths.Clear();
 
             switch (pathfindingAlgorithm)
             {
@@ -64,7 +68,31 @@ namespace Code.Scripts.Pathfinding
                     break;
             }
 
-            return BuildPath();
+            _possiblePaths.Sort((path1, path2) => path1.Count.CompareTo(path2.Count));
+
+            // PrintPaths();
+            
+            return _possiblePaths;
+        }
+
+        /*
+         * Not deleting this function for debug reasons.
+         * 
+         * @DEBUG
+         */
+        private void PrintPaths()
+        {
+            foreach (var path in _possiblePaths)
+            {
+                Debug.Log("Path:");
+                String pathString = "";
+                foreach (var node in path)
+                {
+                    pathString += node.coordinates + " ";
+                }
+                Debug.Log(pathString);
+                Debug.Log("----------------------");
+            }
         }
 
         private void ExploreNeighbours()
@@ -120,6 +148,9 @@ namespace Code.Scripts.Pathfinding
                     isRunning = false;
                 }
             }
+            
+            List<Node> path = BuildPath();
+            _possiblePaths.Add(path);
         }
 
         private void DepthFirstSearch()
@@ -130,25 +161,75 @@ namespace Code.Scripts.Pathfinding
             _frontierDfs.Clear();
             _reached.Clear();
 
-            bool isRunning = true;
+            // bool isRunning = true;
+            //
+            // _frontierDfs.Push(_startNode);
+            // _reached.Add(startCoordinates, _startNode);
+            //
+            // while (_frontierDfs.Count > 0 && isRunning)
+            // {
+            //     _currentSearchNode = _frontierDfs.Pop();
+            //     _currentSearchNode.isExplored = true;
+            //
+            //     ExploreNeighbours();
+            //
+            //     if (_currentSearchNode.coordinates == destinationCoordinates)
+            //     {
+            //         isRunning = false;
+            //     }
+            // }
+            //
+            // List<Node> path = BuildPath();
+            // _possiblePaths.Add(path);
+            
+            ExplorePath(_startNode, new List<Node>());
+        }
+        
+        private void ExplorePath(Node currentNode, List<Node> currentPath)
+        {
+            _reached.Add(currentNode.coordinates, currentNode);
+            currentPath.Add(currentNode);
+            currentNode.isExplored = true;
 
-            _frontierDfs.Push(_startNode);
-            _reached.Add(startCoordinates, _startNode);
-
-            while (_frontierDfs.Count > 0 && isRunning)
+            if (currentNode.coordinates == destinationCoordinates)
             {
-                _currentSearchNode = _frontierDfs.Pop();
-                _currentSearchNode.isExplored = true;
-
-                ExploreNeighbours();
-
-                if (_currentSearchNode.coordinates == destinationCoordinates)
+                // Hinzufügen des aktuellen Pfads zu _possiblePaths, da das Ziel erreicht wurde
+                _possiblePaths.Add(new List<Node>(currentPath));
+            }
+            else
+            {
+                foreach (Node neighbour in GetNeighbours(currentNode))
                 {
-                    isRunning = false;
+                    if (!_reached.ContainsKey(neighbour.coordinates) && neighbour.isWalkable)
+                    {
+                        neighbour.connectedTo = currentNode;
+                        ExplorePath(neighbour, currentPath);
+                    }
                 }
             }
+
+            // Entfernen des aktuellen Knotens und Zurückgehen zum vorherigen Knoten
+            currentPath.Remove(currentNode);
+            _reached.Remove(currentNode.coordinates);
         }
 
+        private List<Node> GetNeighbours(Node node)
+        {
+            List<Node> neighbours = new List<Node>();
+
+            foreach (Vector2Int direction in _directions)
+            {
+                Vector2Int neighbourCoords = node.coordinates + direction;
+
+                if (_grid.ContainsKey(neighbourCoords))
+                {
+                    neighbours.Add(_grid[neighbourCoords]);
+                }
+            }
+
+            return neighbours;
+        }
+        
         private List<Node> BuildPath()
         {
             List<Node> path = new List<Node>();
