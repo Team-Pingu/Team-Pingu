@@ -18,6 +18,16 @@ namespace Game.CustomUI.Seed
             VisualElement abilityElementContainer = rootVisualElement.Q<VisualElement>("player-controls__ability-bar");
             UnitCardPanel unitCardContainer = rootVisualElement.Q<VisualElement>("unit-card-panel") as UnitCardPanel;
 
+            if (unitCardContainer == null || abilityElementContainer == null)
+            {
+                throw new System.Exception("In order for the Seed to be initialized, the view containers cannot be null!");
+            }
+
+            // clear all children
+            abilityElementContainer.Clear();
+            unitCardContainer.Clear();
+
+            // inflate containers with content
             var unitCards = GetUnitCards();
             foreach (var card in unitCards)
             {
