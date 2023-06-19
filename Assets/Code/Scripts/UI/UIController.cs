@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using Game.CustomUI;
 using UnityEditor.VersionControl;
+using Game.CustomUI.Seed;
 
 enum ModalType
 {
@@ -37,13 +38,22 @@ public class UIController : MonoBehaviour
         _upgradeMenuCloseButton = _root.Q<Button>("game-upgrade-popup__actions__close");
         _upgradeMenu = _root.Q<VisualElement>(UPGRADE_MODAL_NAME);
 
-        //_cardPanel.AddUnitCard(new UnitCard());
-
         _upgradeMenuOpenButton.RegisterCallback<ClickEvent, VisualElement>(OnUpgradeMenuOpenClick, _upgradeMenu);
         _upgradeMenuCloseButton.RegisterCallback<ClickEvent>(OnUpgradeMenuCloseClick);
         _root.Q<Button>($"{ATTACKER_INIT_MODAL_NAME}__actions__close").RegisterCallback<ClickEvent>(OnModalClose);
         _root.Q<Button>($"{DEFENDER_INIT_MODAL_NAME}__actions__close").RegisterCallback<ClickEvent>(OnModalClose);
         _root.Q<VisualElement>("static")?.SendToBack();
+
+        // TODO: IMPLEMENT SEEDS
+        //ISeed Seed;
+        //if (true)
+        //{
+        //    Seed = new AttackerSeed();
+        //} else
+        //{
+        //    Seed = new DefenderSeed();
+        //}
+        //Seed.InflateUI(_root);
     }
 
     void Update()
