@@ -77,5 +77,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: NewTile_World
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3165948330681610971, guid: 396eacc4a7492f24896eeb3e091eebfb, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 396eacc4a7492f24896eeb3e091eebfb, type: 3}

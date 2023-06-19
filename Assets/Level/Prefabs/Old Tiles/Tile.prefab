@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2236242013237092212}
   - component: {fileID: 8830475627183209591}
   - component: {fileID: 5305592024787978097}
+  - component: {fileID: -9044574798128793344}
   m_Layer: 0
   m_Name: Tile
   m_TagString: Untagged
@@ -47,9 +48,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 774c30852c861ee47950a13823a5b6c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buildingPrefab: {fileID: 6647976220388638176, guid: c4d07cd516ccd064e867527564d86c70,
-    type: 3}
   isPlaceable: 1
+  isWalkable: 0
 --- !u!65 &5305592024787978097
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -63,6 +63,22 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 10, y: 1, z: 10}
   m_Center: {x: 0, y: -0.5, z: 0}
+--- !u!114 &-9044574798128793344
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2236242013237092203}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 951099334
+  AlwaysReplicateAsRoot: 0
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
 --- !u!1 &2236242014001759624
 GameObject:
   m_ObjectHideFlags: 0
@@ -248,6 +264,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a79867202cb52b249958ed1717316f5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  defaultColor: {r: 1, g: 1, b: 1, a: 1}
+  blockedColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  exploredColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  pathColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!1 &5035978750227589398
 GameObject:
   m_ObjectHideFlags: 0

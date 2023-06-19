@@ -1,10 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Unity.Netcode;
 using Code.Scripts.GameManager.Role;
+using Unity.Netcode;
 
-public class PlayerRoleManager : NetworkBehahviour
+public class PlayerRoleManager : NetworkBehaviour
 {
 
 
