@@ -2,6 +2,7 @@ using System;
 using Code.Scripts.Pathfinding;
 using Code.Scripts.Player;
 using UnityEngine;
+using Unity.Netcode;
 
 namespace Code.Scripts
 {
