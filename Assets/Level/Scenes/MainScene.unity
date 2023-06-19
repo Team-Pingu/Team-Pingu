@@ -9080,8 +9080,8 @@ MonoBehaviour:
   _speedMove: 0.5
   _speedZoom: 15
   _smoothing: 5
-  _rangeMove: {x: 60, y: 60}
-  _rangeZoom: {x: 40, y: 80}
+  _rangeMove: {x: 80, y: 80}
+  _rangeZoom: {x: 5, y: 80}
 --- !u!4 &316886368
 Transform:
   m_ObjectHideFlags: 0
@@ -32449,8 +32449,8 @@ Transform:
   - {fileID: 778182856}
   - {fileID: 997530837}
   - {fileID: 1108051285}
-  - {fileID: 351775830}
   - {fileID: 768711754}
+  - {fileID: 351775830}
   m_Father: {fileID: 898143531}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
