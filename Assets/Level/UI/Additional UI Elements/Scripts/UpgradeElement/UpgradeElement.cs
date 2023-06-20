@@ -106,9 +106,10 @@ namespace Game.CustomUI
         private void Init()
         {
             // load view and set values to view
-            VisualTreeAsset viewAsset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(VIEW_ASSET_PATH);
-
-            viewAsset.CloneTree(this);
+            #if UNITY_EDITOR
+                VisualTreeAsset viewAsset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(VIEW_ASSET_PATH);
+                viewAsset.CloneTree(this);
+            #endif
 
             _costLabel = this.Q<Label>("upgrade-element__cost__text");
             _image = this.Q<VisualElement>("upgrade-element__content");

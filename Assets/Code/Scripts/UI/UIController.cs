@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 using Game.CustomUI;
-using UnityEditor.VersionControl;
 using Game.CustomUI.Seed;
 
 enum ModalType
