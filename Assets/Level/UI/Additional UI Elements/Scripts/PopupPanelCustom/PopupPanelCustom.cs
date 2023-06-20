@@ -151,9 +151,10 @@ namespace Game.CustomUI
         private void Init()
         {
             // load view and set values to view
-            VisualTreeAsset viewAsset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(VIEW_ASSET_PATH);
-
-            viewAsset.CloneTree(this);
+            #if UNITY_EDITOR
+                VisualTreeAsset viewAsset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(VIEW_ASSET_PATH);
+                viewAsset.CloneTree(this);
+            #endif
 
             _titleLabel = this.Q<Label>("c-popup__title");
             _descriptionLabel = this.Q<Label>("c-popup__description");

@@ -4,7 +4,6 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
-using static UnityEditor.Rendering.FilterWindow;
 
 namespace Game.CustomUI
 {
@@ -72,9 +71,10 @@ namespace Game.CustomUI
         private void Init()
         {
             // load view and set values to view
-            VisualTreeAsset viewAsset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(VIEW_ASSET_PATH);
-
-            viewAsset.CloneTree(this);
+            #if UNITY_EDITOR
+                VisualTreeAsset viewAsset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(VIEW_ASSET_PATH);
+                viewAsset.CloneTree(this);
+            #endif
 
             Cards = new List<UnitCard>();
             _mainContainer = this.Q<VisualElement>("unit-card-panel");
