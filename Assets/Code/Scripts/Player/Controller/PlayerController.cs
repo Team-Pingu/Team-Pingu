@@ -3,17 +3,19 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.UI;
+using Unity.Netcode;
 
 namespace Code.Scripts.Player
 {
     // Hauptklasse für den PlayerController
-    public abstract class PlayerController : MonoBehaviour
+    public abstract class PlayerController : NetworkBehaviour
     {
         // Enum für die verschiedenen Rollen des Spielers
         public enum Role
         {
             Attacker,
-            Defender
+            Defender,
+            Spectator
         }
 
         public Role role;

@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7974704271562186710}
   - component: {fileID: 7974704271562186711}
+  - component: {fileID: -551426451301066151}
   m_Layer: 0
   m_Name: ServerStarter
   m_TagString: Untagged
@@ -44,3 +45,59 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c49ebc8ee4a4138439383f5c4370aa4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  RunInBackground: 1
+  LogLevel: 1
+  NetworkConfig:
+    ProtocolVersion: 0
+    NetworkTransport: {fileID: -551426451301066151}
+    PlayerPrefab: {fileID: 0}
+    Prefabs:
+      NetworkPrefabsLists:
+      - {fileID: 11400000, guid: f86ed4dbde46dfe419e628c74af5d30c, type: 2}
+      - {fileID: 11400000, guid: 27d129d8dbae9e446a382cc0f2968e7c, type: 2}
+      - {fileID: 11400000, guid: 40aedc1369a91014f9584db215899ce7, type: 2}
+      - {fileID: 11400000, guid: 616ef1b7dcfcbcf41903a533e02b0ea3, type: 2}
+      - {fileID: 11400000, guid: f230cd49c7fdf6640a08670ee9653a06, type: 2}
+    TickRate: 30
+    ClientConnectionBufferTimeout: 10
+    ConnectionApproval: 0
+    ConnectionData: 
+    EnableTimeResync: 0
+    TimeResyncInterval: 30
+    EnsureNetworkVariableLengthSafety: 0
+    EnableSceneManagement: 1
+    ForceSamePrefabs: 1
+    RecycleNetworkIds: 1
+    NetworkIdRecycleDelay: 120
+    RpcHashSize: 0
+    LoadSceneTimeOut: 120
+    SpawnTimeout: 1
+    EnableNetworkLogs: 1
+    OldPrefabList: []
+--- !u!114 &-551426451301066151
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7974704271562186708}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6960e84d07fb87f47956e7a81d71c4e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ProtocolType: 0
+  m_MaxPacketQueueSize: 128
+  m_MaxPayloadSize: 6144
+  m_HeartbeatTimeoutMS: 500
+  m_ConnectTimeoutMS: 1000
+  m_MaxConnectAttempts: 60
+  m_DisconnectTimeoutMS: 30000
+  ConnectionData:
+    Address: 127.0.0.1
+    Port: 7777
+    ServerListenAddress: 127.0.0.1
+  DebugSimulator:
+    PacketDelayMS: 0
+    PacketJitterMS: 0
+    PacketDropRate: 0

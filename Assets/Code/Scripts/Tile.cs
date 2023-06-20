@@ -40,27 +40,28 @@ namespace Code.Scripts
 
         private void OnMouseDown()
         {
-            int playerID = (int) NetworkManager.Singleton.LocalClientId;
-            if(IsServer || playerID > 2) return;
+            if(IsServer || (int) NetworkManager.Singleton.LocalClientId > 2) return;
+
             Debug.Log("Mouse Clicked");
-
-            Debug.Log(playerID);
-            SpawnEntityServerRpc(playerID);
-
+            SpawnEntityServerRpc();
         }
 
         [ServerRpc(RequireOwnership = false)]
-        private void SpawnEntityServerRpc(int playerID) {
+        private void SpawnEntityServerRpc() {
 
-            Debug.Log("player ID: " + playerID);
-            Debug.Log("Spawning Entity Server Rpc called");
+            if (_defenderPlayerController == null)
+            {
+                _defenderPlayerController = FindObjectOfType<DefenderPlayerController>();
+            }
+
+            if (_attackerPlayerController == null)
+            {
+                _attackerPlayerController = FindObjectOfType<AttackerPlayerController>();
+            }
 
             GameObject spawnedEntity = null;
 
-            if(playerID == 1 && isPlaceable && _defenderPlayerController != null) {
-                // Instantiate(buildingPrefab, transform.position, Quaternion.identity);
-                // isPlaceable = false;
-                // _gridManager.BlockNode(_coordinates);
+            if(isPlaceable && _defenderPlayerController != null) {
                 Debug.Log("Placing defender troop");
                 spawnedEntity = _defenderPlayerController.PlaceTroops(transform.position);
 
@@ -74,7 +75,7 @@ namespace Code.Scripts
                 return;
             }
                         
-            if (playerID == 2 && isWalkable && _attackerPlayerController != null)
+            if (isWalkable && _attackerPlayerController != null)
             {
                 spawnedEntity = _attackerPlayerController.PlaceTroops(transform.position);
                 // nothing for now
