@@ -74,9 +74,10 @@ namespace Game.CustomUI
         private void Init()
         {
             // load view and set values to view
-            VisualTreeAsset viewAsset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(VIEW_ASSET_PATH);
-
-            viewAsset.CloneTree(this);
+            #if UNITY_EDITOR
+                VisualTreeAsset viewAsset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(VIEW_ASSET_PATH);
+                viewAsset.CloneTree(this);
+            #endif
 
             //_nameLabel = this.Q<Label>("ability-element-popup__title");
             //_descriptionLabel = this.Q<Label>("ability-element-popup__description");

@@ -138,6 +138,7 @@ See the [open issues](https://github.com/Fhuu/Team-Pingu/issues) for a list of p
 ## Contributing
 * Kenneth Englisch
 * Eliot Hoff
+* Diro Baloska
 * put your names here
 <!-- LICENSE -->
 ## License
