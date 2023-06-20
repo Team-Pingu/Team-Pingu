@@ -66,7 +66,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 88711d4693f522245a79252d9658f7f2, type: 2}
+      objectReference: {fileID: 2100000, guid: 6cf25d60bdeebe94dbc983fb3309ba61, type: 2}
     - target: {fileID: 3123678098298918074, guid: 396eacc4a7492f24896eeb3e091eebfb,
         type: 3}
       propertyPath: isWalkable
