@@ -21,14 +21,6 @@ MonoBehaviour:
     m_Address: Assets/Level/UI/PlayerUI.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
-  - m_GUID: c4d07cd516ccd064e867527564d86c70
-    m_Address: Assets/Level/Prefabs/Building.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-  - m_GUID: 548aaf6490ed1564d912164661794066
-    m_Address: Assets/Level/Prefabs/Minion.prefab
-    m_ReadOnly: 0
-    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 305b91d93a3e83442ba751e5dc8322f3, type: 2}
   m_SchemaSet:

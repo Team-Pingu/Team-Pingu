@@ -5,11 +5,12 @@ using System.IO;
 using Code.Scripts.Pathfinding;
 using Unity.VisualScripting;
 using UnityEngine;
+using Unity.Netcode;
 
 namespace Code.Scripts
 {
     [RequireComponent(typeof(Minion))]
-    public class MinionMover : MonoBehaviour
+    public class MinionMover : NetworkBehaviour
     {
         [SerializeField][Range(0f, 5f)] private float speed = 1f;
 
@@ -24,15 +25,13 @@ namespace Code.Scripts
             _pathfinder = FindObjectOfType<Pathfinder>();
         }
 
-        private void OnEnable()
-        {
-            FindPath();
-            ReturnToStart();
-            StartCoroutine(FollowPath());
-        }
-
         private void Start()
         {
+            if(IsClient) return;
+
+            FindPath();
+            ReturnToStart();
+            StartCoroutine(FollowPath()); 
             _minion = GetComponent<Minion>();
         }
 
