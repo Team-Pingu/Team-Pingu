@@ -77,7 +77,7 @@ namespace Code.Scripts.Player
         }
         
         // Methode zum Platzieren der Truppen
-        public abstract bool PlaceTroops(Vector3 position);
+        public abstract GameObject PlaceTroops(Vector3 position);
     }
 }
 

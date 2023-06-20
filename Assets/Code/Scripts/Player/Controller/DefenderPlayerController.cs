@@ -31,17 +31,16 @@ namespace Code.Scripts.Player
             }
         }
 
-        public override bool PlaceTroops(Vector3 position)
+        public override GameObject PlaceTroops(Vector3 position)
         {
             // Platzierung der Verteidigertruppen
             if (GetBank().CurrentBalance >= _cost)
             {
                 GetBank().Withdraw(_cost);
-                Instantiate(_buildingPrefab, position, Quaternion.identity);
-                return true;
+                return Instantiate(_buildingPrefab, position, Quaternion.identity);
             }
 
-            return false;
+            return null;
         }
     }
 }

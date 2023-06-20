@@ -6,7 +6,7 @@ using Unity.Netcode;
 
 namespace Code.Scripts
 {
-    public class Tile : MonoBehaviour
+    public class Tile : NetworkBehaviour
     {
         [SerializeField] public bool isPlaceable;
         [SerializeField] public bool isWalkable;
@@ -37,6 +37,18 @@ namespace Code.Scripts
 
         private void OnMouseDown()
         {
+            if(IsServer) return;
+
+            Debug.Log("Mouse Clicked");
+            SpawnEntityServerRpc();
+
+        }
+
+        [ServerRpc]
+        private void SpawnEntityServerRpc() {
+
+            Debug.Log("Spawning Entity Server Rpc called");
+
             if (_defenderPlayerController == null)
             {
                 _defenderPlayerController = FindObjectOfType<DefenderPlayerController>();
@@ -47,15 +59,16 @@ namespace Code.Scripts
                 _attackerPlayerController = FindObjectOfType<AttackerPlayerController>();
             }
             
+            GameObject spawnedEntity = null;
             if (isPlaceable && _defenderPlayerController != null)
             {
                 // Instantiate(buildingPrefab, transform.position, Quaternion.identity);
                 // isPlaceable = false;
                 // _gridManager.BlockNode(_coordinates);
                 
-                bool isPlaced = _defenderPlayerController.PlaceTroops(transform.position);
+                spawnedEntity = _defenderPlayerController.PlaceTroops(transform.position);
 
-                if (!isPlaced) return;
+                if (spawnedEntity == null) return;
                 
                 isPlaceable = false;
                 _gridManager.BlockNode(_coordinates);
@@ -64,9 +77,11 @@ namespace Code.Scripts
 
             if (isWalkable && _attackerPlayerController != null)
             {
-                bool isPlaced = _attackerPlayerController.PlaceTroops(transform.position);
+                spawnedEntity = _attackerPlayerController.PlaceTroops(transform.position);
                 // nothing for now
             }
+
+            spawnedEntity.GetComponent<NetworkObject>().Spawn();
         }
     }
 }
