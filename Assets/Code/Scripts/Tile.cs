@@ -37,51 +37,60 @@ namespace Code.Scripts
 
         private void OnMouseDown()
         {
+            Debug.Log("Mouse Clicked");
             if(IsServer) return;
 
-            Debug.Log("Mouse Clicked");
-            SpawnEntityServerRpc();
+            Debug.Log(IsServer);
+            SpawnEntityServerRpc((int) NetworkManager.Singleton.LocalClientId);
 
         }
 
         [ServerRpc]
-        private void SpawnEntityServerRpc() {
+        private void SpawnEntityServerRpc(int playerID) {
+            if(playerID > 2) return;
 
+            Debug.Log("player ID: " + playerID);
             Debug.Log("Spawning Entity Server Rpc called");
 
-            if (_defenderPlayerController == null)
-            {
-                _defenderPlayerController = FindObjectOfType<DefenderPlayerController>();
+            GameObject spawnedEntity = null;
+
+            if(playerID == 1) {
+                if (_defenderPlayerController == null)
+                {
+                    _defenderPlayerController = FindObjectOfType<DefenderPlayerController>();
+                }
+
+                if (isPlaceable && _defenderPlayerController != null)
+                {
+                    // Instantiate(buildingPrefab, transform.position, Quaternion.identity);
+                    // isPlaceable = false;
+                    // _gridManager.BlockNode(_coordinates);
+                    
+                    spawnedEntity = _defenderPlayerController.PlaceTroops(transform.position);
+
+                    if (spawnedEntity == null) return;
+                    
+                    isPlaceable = false;
+                    _gridManager.BlockNode(_coordinates);
+                
+                }
+                spawnedEntity.GetComponent<NetworkObject>().Spawn();
+                return;
             }
+            
             
             if (_attackerPlayerController == null)
             {
                 _attackerPlayerController = FindObjectOfType<AttackerPlayerController>();
             }
             
-            GameObject spawnedEntity = null;
-            if (isPlaceable && _defenderPlayerController != null)
-            {
-                // Instantiate(buildingPrefab, transform.position, Quaternion.identity);
-                // isPlaceable = false;
-                // _gridManager.BlockNode(_coordinates);
-                
-                spawnedEntity = _defenderPlayerController.PlaceTroops(transform.position);
-
-                if (spawnedEntity == null) return;
-                
-                isPlaceable = false;
-                _gridManager.BlockNode(_coordinates);
-                
-            }
-
             if (isWalkable && _attackerPlayerController != null)
             {
                 spawnedEntity = _attackerPlayerController.PlaceTroops(transform.position);
                 // nothing for now
             }
-
             spawnedEntity.GetComponent<NetworkObject>().Spawn();
+
         }
     }
 }
