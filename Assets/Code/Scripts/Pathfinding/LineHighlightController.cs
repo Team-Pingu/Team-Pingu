@@ -37,10 +37,5 @@ namespace Code.Scripts.Pathfinding
             _lineRenderer.positionCount = 0;
             _points = Array.Empty<Vector3>();
         }
-
-        // private void Update()
-        // {
-        //     
-        // }
     }
 }
