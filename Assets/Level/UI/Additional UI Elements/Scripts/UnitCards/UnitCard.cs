@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEditor;
-using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 using MouseButton = UnityEngine.UIElements.MouseButton;
@@ -83,9 +82,10 @@ namespace Game.CustomUI
         private void Init()
         {
             // load view and set values to view
-            VisualTreeAsset viewAsset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(VIEW_ASSET_PATH);
-
-            viewAsset.CloneTree(this);
+            #if UNITY_EDITOR
+                VisualTreeAsset viewAsset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(VIEW_ASSET_PATH);
+                viewAsset.CloneTree(this);
+            #endif
 
             _nameLabel = this.Q<Label>("unit-card__header__title");
             _descriptionLabel = this.Q<Label>("unit-card__body__description__text");
