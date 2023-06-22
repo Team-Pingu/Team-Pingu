@@ -7,7 +7,7 @@ public class Builder
 {
     [MenuItem("/Build/Windows/Server")]
     static public void buildWindowsServer() {
-        string[] scenes = {"Assets/Level/Scenes/Netcode/Server.unity", "Assets/Level/Scenes/MainScene.unity"};
+        string[] scenes = {"Assets/Level/Scenes/Netcode/Server.unity", "Assets/Level/Scenes/MineTest.unity"};
         BuildPlayerOptions buildPlayerOptions = new BuildPlayerOptions{
             scenes = scenes,
             locationPathName = "Build/Windows/Server/TeamPingu.exe",
@@ -22,7 +22,7 @@ public class Builder
 
     [MenuItem("Build/Windows/Client")]
     static public void buildWindowsClient() {
-        string[] scenes = {"Assets/Level/Scenes/Netcode/Client.unity", "Assets/Level/Scenes/MainScene.unity"};
+        string[] scenes = {"Assets/Level/Scenes/Netcode/Client.unity", "Assets/Level/Scenes/MineTest.unity" };
         BuildPlayerOptions buildPlayerOptions = new BuildPlayerOptions{
             scenes = scenes,
             locationPathName = "Build/Windows/Client/TeamPingu.exe",
