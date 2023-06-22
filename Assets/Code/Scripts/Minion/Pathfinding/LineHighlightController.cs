@@ -5,16 +5,21 @@ using UnityEngine;
 
 namespace Code.Scripts.Pathfinding
 {
-    class LineHighlightController : MonoBehaviour
+    public class LineHighlightController
     {
-        [SerializeField] private Color[] pathColors;
-        
         private LineRenderer _lineRenderer;
+        private Color _pathColor;
         private Vector3[] _points;
 
-        private void Awake()
+        // private void Awake()
+        // {
+        //     //_lineRenderer = GetComponent<LineRenderer>();
+        //     _lineRenderer = Instantiate(new LineRenderer());
+        // }
+
+        public LineHighlightController(LineRenderer lineRenderer)
         {
-            _lineRenderer = GetComponent<LineRenderer>();
+            _lineRenderer = lineRenderer;
         }
 
         public void SetUpLine(Vector3[] points)
@@ -26,10 +31,6 @@ namespace Code.Scripts.Pathfinding
             {
                 _lineRenderer.SetPosition(i, _points[i]);
             }
-
-            int index = 0;
-            _lineRenderer.startColor = (index >= 0 && index < pathColors.Length) ? pathColors[index] : Color.white;
-            _lineRenderer.endColor = (index >= 0 && index < pathColors.Length) ? pathColors[index] : Color.white;
         }
 
         public void ResetLine()

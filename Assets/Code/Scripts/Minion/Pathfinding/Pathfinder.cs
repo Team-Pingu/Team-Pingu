@@ -37,7 +37,7 @@ namespace Code.Scripts.Pathfinding
         
         [SerializeField] private bool highlightPath = true;
         private HighlightPath _highlight;
-        private bool _isPathHighlighted = false;
+        private List<bool> _isPathHighlighted = new List<bool>();
 
         private void Awake()
         {
@@ -56,6 +56,15 @@ namespace Code.Scripts.Pathfinding
         private void Start()
         {
             GetNewPath();
+
+            _highlight.SetPathCount(_possiblePaths.Count);
+            
+            for (var i = 0; i < _possiblePaths.Count; i++)
+            {
+                _isPathHighlighted.Add(false);
+            }
+            
+            // Debug.Log(_isPathHighlighted.Count);
         }
 
         private void Update()
@@ -65,23 +74,35 @@ namespace Code.Scripts.Pathfinding
                 highlightPath = !highlightPath;
             }
 
-            if (_highlight && highlightPath && !_isPathHighlighted)
+            if (_highlight && highlightPath)
             {
-                Vector3[] points = GetPointsOfPath(_possiblePaths.First());
-                
-                _highlight.SetPoints(points);
-                _highlight.HighlightThePath();
-                _isPathHighlighted = true;
+                for (var index = 0; index < _isPathHighlighted.Count; index++)
+                {
+                    // Debug.Log(index);
+                    if (!_isPathHighlighted[index])
+                    {
+                        var path = _possiblePaths[index];
+                        Vector3[] points = GetPointsOfPath(index, path);
+
+                        _highlight.SetPoints(index ,points);
+                        _highlight.HighlightThePath(index);
+                        _isPathHighlighted[index] = true;
+                    }
+                    
+                }
             }
 
             if (!highlightPath)
             {
-                _highlight.ResetPoints();
-                _isPathHighlighted = false;
+                for (var index = 0; index < _possiblePaths.Count; index++)
+                {
+                    _highlight.ResetPoints(index);
+                    _isPathHighlighted[index] = false;
+                }
             }
         }
 
-        private Vector3[] GetPointsOfPath(List<Node> path)
+        private Vector3[] GetPointsOfPath(int pathIndex, List<Node> path)
         {
             Vector3[] points = new Vector3[path.Count];
 
@@ -90,8 +111,13 @@ namespace Code.Scripts.Pathfinding
                 Vector2Int coords = path[i].coordinates;
                 Vector3 point = _gridManager.GetTile(coords).transform.position;
                 
-                // shifting the position a little it above the tile, otherwise we get parts of lines disapearing in tiles
+                // shifting the position a little it above the tile, otherwise we get parts of lines disappearing in tiles
                 point.y += 0.5f;
+                
+                // shifting x and z according to the number of the path to place them next to each other instead of laying them on each other
+                // TODO: remove if we only show one path at once -> would be easier because we don't need to shift the lines
+                point.x += pathIndex;
+                point.z -= pathIndex;
                 
                 points[i] = point;
             }
