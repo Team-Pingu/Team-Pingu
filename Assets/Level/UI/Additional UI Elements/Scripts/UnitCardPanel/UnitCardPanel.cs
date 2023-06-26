@@ -16,12 +16,21 @@ namespace Game.CustomUI
 
         public List<UnitCard> Cards { get; private set; }
 
+        public enum UnitCardSize
+        {
+            s,
+            m,
+            l,
+            xl
+        }
+
         public static readonly int CARD_ROTATION_ANGLE_END = 8;
         public static readonly int CARD_ROTATION_ANGLE_START = -1;
         public static readonly int CARD_GAP_COLLAPSED = 180;
         public static readonly int CARD_GAP_EXPANDED = 0;
         public static readonly int CONTAINER_TRANSLATION = 200;
         private readonly string VIEW_ASSET_PATH = "Assets/Level/UI/Additional UI Elements/Scripts/UnitCardPanel/UnitCardPanel.uxml";
+        private readonly UnitCardSize unitCardSize = UnitCardSize.m;
 
         private VisualElement _mainContainer;
         private VisualElement _cardContainer;
@@ -111,6 +120,23 @@ namespace Game.CustomUI
             return result;
         }
 
+        public Vector2 GetUnitCardDimensions(UnitCardSize ucs)
+        {
+            switch (ucs)
+            {
+                case UnitCardSize.s:
+                    return new Vector2(220, 350);
+                case UnitCardSize.m:
+                    return new Vector2(260, 380);
+                case UnitCardSize.l:
+                    return new Vector2(300, 420);
+                case UnitCardSize.xl:
+                    return new Vector2(350, 500);
+                default:
+                    return Vector2.zero;
+            }
+        }
+
         private List<VisualElement> GetUnitCardVisualElementsFromView(bool ignoreDisabled = true)
         {
             List<VisualElement> result = new List<VisualElement>();
@@ -146,8 +172,9 @@ namespace Game.CustomUI
 
         public void AddUnitCard(UnitCard uc, bool inflateAndApplyFix = true)
         {
-            //uc.style.width = 300;
-            //uc.style.height = 450;
+            Vector2 cardDimensions = GetUnitCardDimensions(unitCardSize);
+            uc.style.width = cardDimensions.x;
+            uc.style.height = cardDimensions.y;
             uc.ParentUnitCardPanel = this;
 
             List<StylePropertyName> properties = new List<StylePropertyName>() { new StylePropertyName("margin") };
@@ -216,6 +243,13 @@ namespace Game.CustomUI
             // set abort button visibility
             if (SelectedUnits == 0) _abortButton.style.display = DisplayStyle.None;
             else _abortButton.style.display = DisplayStyle.Flex;
+        }
+
+        public new void Clear()
+        {
+            Cards.Clear();
+            _cardContainer.Clear();
+            SetSelectedUnits();
         }
     }
 }

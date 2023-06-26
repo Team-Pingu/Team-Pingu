@@ -4226,8 +4226,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58efc54f0f6444e59b684f1ace93ce49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chooseRoleUI: {fileID: 8626924159964230457, guid: 406d2b98953c9584f80d63d6223e0808,
-    type: 3}
+  Role: 1
+  PlayerController: {fileID: 0}
 --- !u!4 &748877937
 Transform:
   m_ObjectHideFlags: 0
@@ -5031,7 +5031,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f4b8866f627a234b9ebe378b13245a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UseSeedInitializer: 0
+  UseSeedInitializer: 1
   IsUpgradeMenuOpen: 0
 --- !u!114 &1892899512
 MonoBehaviour:

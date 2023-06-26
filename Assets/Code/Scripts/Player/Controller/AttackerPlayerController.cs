@@ -17,16 +17,8 @@ namespace Code.Scripts.Player
 
         private void LoadPrefab()
         {
-            AsyncOperationHandle<GameObject> handle = Addressables.LoadAssetAsync<GameObject>("Assets/Level/Prefabs/Minion.prefab");
-            handle.WaitForCompletion();
-
-            if (handle.Status == AsyncOperationStatus.Succeeded)
-            {
-                _minionPrefab = handle.Result;
-            } else {
-                Debug.LogError("Das Laden des Prefabs ist fehlgeschlagen.");
-                return;
-            }
+            var resource = new GameResource("Assets/Level/Prefabs/Minion.prefab", "", GameResourceType.AutoMinion);
+            _minionPrefab = resource.LoadRessource<GameObject>();
         }
 
         public override GameObject PlaceTroops(Vector3 position)

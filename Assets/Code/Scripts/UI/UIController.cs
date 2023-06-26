@@ -30,7 +30,7 @@ public class UIController : MonoBehaviour
     private readonly string ATTACKER_INIT_MODAL_NAME = "game-start-popup-attacker";
     private readonly string DEFENDER_INIT_MODAL_NAME = "game-start-popup-defender";
 
-    private PlayerController _playerController;
+    private Player _player;
 
     private void OnEnable()
     {
@@ -48,27 +48,29 @@ public class UIController : MonoBehaviour
         _root.Q<Button>($"{DEFENDER_INIT_MODAL_NAME}__actions__close").RegisterCallback<ClickEvent>(OnModalClose);
         _root.Q<VisualElement>("static")?.SendToBack();
 
-        //_playerController = GameObject.Find("").GetComponent<PlayerController>();
+        _player = GameObject.Find("Player").GetComponent<Player>();
 
-        //InitSeed();
+        InitSeed();
     }
 
-    //private void InitSeed()
-    //{
-    //    if (!UseSeedInitializer) return;
-    //    if (_playerController == null) return;
-    //    // TODO: IMPLEMENT SEEDS
-    //    ISeed Seed;
-    //    if (_playerController.role == PlayerController.Role.Attacker)
-    //    {
-    //        Seed = new AttackerSeed();
-    //    }
-    //    else
-    //    {
-    //        Seed = new DefenderSeed();
-    //    }
-    //    Seed.InflateUI(_root);
-    //}
+    private void InitSeed()
+    {
+        if (!UseSeedInitializer) return;
+        if (_player.PlayerController == null) return;
+
+        ISeed Seed;
+        if (_player.Role == PlayerRole.Attacker)
+        {
+            _cardPanel.UseSingleSelectionOnly = false;
+            Seed = new AttackerSeed();
+        }
+        else
+        {
+            _cardPanel.UseSingleSelectionOnly = true;
+            Seed = new DefenderSeed();
+        }
+        Seed.InflateUI(_root);
+    }
 
     void Update()
     {

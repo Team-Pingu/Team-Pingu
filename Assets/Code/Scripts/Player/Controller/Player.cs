@@ -6,28 +6,28 @@ using Object = UnityEngine.Object;
 
 namespace Code.Scripts.Player
 {
+    // Enum für die verschiedenen Rollen des Spielers
+    public enum PlayerRole
+    {
+        Attacker,
+        Defender
+    }
+
     public class Player : MonoBehaviour
     {
-        // Enum für die verschiedenen Rollen des Spielers
-        public enum Role
-        {
-            Attacker,
-            Defender
-        }
-
         [SerializeField]
-        private Role _role;
+        public PlayerRole Role;
         
-        private PlayerController _playerController;
+        public PlayerController PlayerController;
 
-        private void Start()
+        private void Awake()
         {
-            if (_role == Role.Defender)
+            if (Role == PlayerRole.Defender)
             {
-                _playerController = gameObject.AddComponent<DefenderPlayerController>();
+                PlayerController = gameObject.AddComponent<DefenderPlayerController>();
             } else
             {
-                _playerController = gameObject.AddComponent<AttackerPlayerController>();
+                PlayerController = gameObject.AddComponent<AttackerPlayerController>();
             }
         }
 

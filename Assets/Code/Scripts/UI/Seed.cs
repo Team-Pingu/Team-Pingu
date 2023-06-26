@@ -1,7 +1,9 @@
 using Game.CustomUI;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -11,10 +13,11 @@ namespace Game.CustomUI.Seed
     {
         public AbilityElement[] GetAbilityElements();
         public UnitCard[] GetUnitCards();
-        public UpgradeElement[] GetUpgradeElements();
+        public UpgradeElement[,] GetUpgradeElements();
         public void InflateUI(VisualElement rootVisualElement)
         {
-            //VisualElement upgradeElementContainer = rootVisualElement.Q<VisualElement>("");
+            VisualElement upgradeElementContainer = rootVisualElement.Q<VisualElement>("game-upgrade-popup");
+            ScrollView upgradeElementContent = upgradeElementContainer.Q<ScrollView>();
             VisualElement abilityElementContainer = rootVisualElement.Q<VisualElement>("player-controls__ability-bar");
             UnitCardPanel unitCardContainer = rootVisualElement.Q<VisualElement>("unit-card-panel") as UnitCardPanel;
 
@@ -26,6 +29,7 @@ namespace Game.CustomUI.Seed
             // clear all children
             abilityElementContainer.Clear();
             unitCardContainer.Clear();
+            upgradeElementContent.Clear();
 
             // inflate containers with content
             var unitCards = GetUnitCards();
@@ -40,6 +44,24 @@ namespace Game.CustomUI.Seed
                 abilityElement.style.marginBottom = new StyleLength(10);
                 abilityElementContainer.Add(abilityElement);
             }
+
+            var upgradeElements = GetUpgradeElements();
+            for (int i = 0; i < upgradeElements.GetLength(0); i++)
+            {
+                // row template
+                VisualElement row = new VisualElement();
+                row.style.flexDirection = FlexDirection.Row;
+                row.style.justifyContent = Justify.SpaceAround;
+                row.style.marginBottom = new StyleLength(10f);
+
+                for (int j = 0; j < upgradeElements.GetLength(1); j++)
+                {
+                    UpgradeElement upgradeElement = upgradeElements[i, j];
+                    row.Add(upgradeElement);
+                }
+
+                upgradeElementContent.Add(row);
+            }
         }
     }
 
@@ -49,22 +71,58 @@ namespace Game.CustomUI.Seed
         public AbilityElement[] GetAbilityElements()
         {
             var abilityElements = new List<AbilityElement>();
-            //abilityElements.Add(new AbilityElement());
+
+            abilityElements.Add(new AbilityElement("Blackout", "", 999));
+            abilityElements.Add(new AbilityElement("Other", "", 599));
+
             return abilityElements.ToArray();
         }
 
         public UnitCard[] GetUnitCards()
         {
             var unitCards = new List<UnitCard>();
-            //unitCards.Add(new UnitCard());
+            
+            unitCards.Add(new UnitCard("Aeather Shield Bearer", "Beschreibung hier", 233, null));
+            unitCards.Add(new UnitCard("Clockwork Scout", "Beschreibung hier", 250, null));
+            unitCards.Add(new UnitCard("Gearhead Sapper", "Beschreibung hier", 999, null));
+            unitCards.Add(new UnitCard("Steam Powered Goliath", "Beschreibung hier", 666, null));
+
             return unitCards.ToArray();
         }
 
-        public UpgradeElement[] GetUpgradeElements()
+        public UpgradeElement[,] GetUpgradeElements()
         {
-            var upgradeElements = new List<UpgradeElement>();
-            //upgradeElements.Add(new UpgradeElement());
-            return upgradeElements.ToArray();
+            // row 1
+            var r11 = new UpgradeElement("Movement Speed 1", "Increased Movement Speed by 5%", 200, "I");
+            var r12 = new UpgradeElement("Movement Speed 2", "", 200, "II");
+            var r13 = new UpgradeElement("Movement Speed 3", "", 200, "III");
+
+            // row 2
+            var r21 = new UpgradeElement("Health 1", "", 200, "I");
+            var r22 = new UpgradeElement("Health 2", "", 200, "II");
+            var r23 = new UpgradeElement("Health 3", "", 200, "III");
+
+            // row 3
+            var r31 = new UpgradeElement("Shovel", "", 200, null);
+
+            // row 4
+            var r41 = new UpgradeElement("Ressurection", "", 200, null);
+
+            var upgradeElements = new List<List<UpgradeElement>>();
+            upgradeElements.Add(new List<UpgradeElement> { r11, r12, r13 });
+            upgradeElements.Add(new List<UpgradeElement> { r21, r22, r23 });
+            upgradeElements.Add(new List<UpgradeElement> { r31 });
+            upgradeElements.Add(new List<UpgradeElement> { r41 });
+
+            UpgradeElement[,] array = new UpgradeElement[upgradeElements.Count, upgradeElements[0].Count];
+            for (int i = 0; i < upgradeElements.Count; i++)
+            {
+                for (int j = 0; j < upgradeElements[i].Count; j++)
+                {
+                    array[i, j] = upgradeElements[i][j];
+                }
+            }
+            return array;
         }
     }
 
@@ -73,22 +131,73 @@ namespace Game.CustomUI.Seed
         public AbilityElement[] GetAbilityElements()
         {
             var abilityElements = new List<AbilityElement>();
-            //abilityElements.Add(new AbilityElement());
+
+            abilityElements.Add(new AbilityElement("Dynamite Explosion", "", 300));
+            abilityElements.Add(new AbilityElement("Shock Field Trap", "", 155));
+
             return abilityElements.ToArray();
         }
 
         public UnitCard[] GetUnitCards()
         {
             var unitCards = new List<UnitCard>();
-            //unitCards.Add(new UnitCard());
+
+            unitCards.Add(new UnitCard("Bolt Thrower", "Beschreibung hier", 233, null));
+            unitCards.Add(new UnitCard("Thunder Coil", "Beschreibung hier", 250, null));
+            unitCards.Add(new UnitCard("Electric Fence Barricade", "Beschreibung hier", 999, null));
+
             return unitCards.ToArray();
         }
 
-        public UpgradeElement[] GetUpgradeElements()
+        public UpgradeElement[,] GetUpgradeElements()
         {
-            var upgradeElements = new List<UpgradeElement>();
-            //upgradeElements.Add(new UpgradeElement());
-            return upgradeElements.ToArray();
+            // row 1
+            var r11 = new UpgradeElement("Damage 1", "", 200, "I");
+            var r12 = new UpgradeElement("Damage 2", "", 200, "II");
+            var r13 = new UpgradeElement("Damage 3", "", 200, "III");
+
+            // row 2
+            var r21 = new UpgradeElement("Rate of Fire 1", "", 200, "I");
+            var r22 = new UpgradeElement("Rate of Fire 2", "", 200, "II");
+            var r23 = new UpgradeElement("Rate of Fire 3", "", 200, "III");
+
+            // row 3
+            var r31 = new UpgradeElement("Range 1", "", 200, "I");
+            var r32 = new UpgradeElement("Range 2", "", 200, "II");
+            var r33 = new UpgradeElement("Range 3", "", 200, "III");
+
+            // row 4
+            var r41 = new UpgradeElement("Area of Effect 1", "", 200, "I");
+            var r42 = new UpgradeElement("Area of Effect 2", "", 200, "II");
+            var r43 = new UpgradeElement("Area of Effect 3", "", 200, "III");
+
+            // row 5
+            var r51 = new UpgradeElement("Ricochet", "", 200, null);
+
+            // row 6
+            var r61 = new UpgradeElement("Knockback", "", 200, null);
+
+            // row 7
+            var r71 = new UpgradeElement("Bleed", "", 200, null);
+
+            var upgradeElements = new List<List<UpgradeElement>>();
+            upgradeElements.Add(new List<UpgradeElement> { r11, r12, r13 });
+            upgradeElements.Add(new List<UpgradeElement> { r21, r22, r23 });
+            upgradeElements.Add(new List<UpgradeElement> { r31, r32, r33 });
+            upgradeElements.Add(new List<UpgradeElement> { r41, r42, r43 });
+            upgradeElements.Add(new List<UpgradeElement> { r51 });
+            upgradeElements.Add(new List<UpgradeElement> { r61 });
+            upgradeElements.Add(new List<UpgradeElement> { r71 });
+
+            UpgradeElement[,] array = new UpgradeElement[upgradeElements.Count, upgradeElements[0].Count];
+            for (int i = 0; i < upgradeElements.Count; i++)
+            {
+                for (int j = 0; j < upgradeElements[i].Count; j++)
+                {
+                    array[i, j] = upgradeElements[i][j];
+                }
+            }
+            return array;
         }
     }
     #endregion
