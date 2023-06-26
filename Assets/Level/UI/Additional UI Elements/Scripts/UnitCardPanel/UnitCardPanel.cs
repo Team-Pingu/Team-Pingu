@@ -26,6 +26,12 @@ namespace Game.CustomUI
         private VisualElement _mainContainer;
         private VisualElement _cardContainer;
         private VisualElement _actionContainer;
+        private Button _spawnButton;
+        private Button _abortButton;
+
+        // depending on whether one card or multiple selections are allowed
+        public bool UseSingleSelectionOnly = true;
+        public int SelectedUnits = 0;
 
         public override VisualElement contentContainer => _mainContainer;
 
@@ -62,22 +68,24 @@ namespace Game.CustomUI
             _mainContainer = this.Q<VisualElement>("unit-card-panel");
             _cardContainer = this.Q<VisualElement>("unit-card-panel__cards");
             _actionContainer = this.Q<VisualElement>("unit-card-panel__actions");
+            _spawnButton = this.Q<Button>("unit-card-panel__actions__deploy");
+            _abortButton = this.Q<Button>("unit-card-panel__actions__abort");
 
             _mainContainer.RegisterCallback<MouseOverEvent>(OnMouseOver);
             _mainContainer.RegisterCallback<MouseOutEvent>(OnMouseOut);
 
-            //RegisterCallback<AttachToPanelEvent>(OnAttachedToPanel);
-            //RegisterCallback<DetachFromPanelEvent>(OnDetachedFromPanel);
+            //_spawnButton.RegisterCallback<ClickEvent>(OnSpawnButtonClicked);
+            _abortButton.RegisterCallback<ClickEvent>(OnAbortButtonClicked);
         }
 
         #region Events
-        private void OnAttachedToPanel(AttachToPanelEvent e)
+        private void OnSpawnButtonClicked(ClickEvent e)
         {
-            Debug.Log("Attached UnitCardPanel to Panel");
+            //Debug.Log("Attached UnitCardPanel to Panel");
         }
-        private void OnDetachedFromPanel(DetachFromPanelEvent e)
+        private void OnAbortButtonClicked(ClickEvent e)
         {
-            Debug.Log("Detached UnitCardPanel to Panel");
+            DeselectAllUnits();
         }
         private void OnMouseOver(MouseOverEvent e)
         {
@@ -118,6 +126,17 @@ namespace Game.CustomUI
         {
             // loop all cards and update state
             return false;
+        }
+
+        private UnitCard[] GetSelectedUnitCards()
+        {
+            var selectedCards = new List<UnitCard>();
+            foreach(UnitCard uc in Cards)
+            {
+                if (uc.SelectedUnitsAmount == 0) continue;
+                selectedCards.AddRange(Enumerable.Repeat(uc, uc.SelectedUnitsAmount));
+            }
+            return selectedCards.ToArray();
         }
 
         public void SpawnSelectedUnits()
@@ -179,12 +198,24 @@ namespace Game.CustomUI
             }
         }
 
-        private void DeselectAllUnits()
+        public void DeselectAllUnits()
         {
+            SetSelectedUnits();
             foreach (UnitCard uc in Cards)
             {
                 uc.ResetSelection();
             }
+        }
+
+        public void SetSelectedUnits(int diff = 1337)
+        {
+            if (diff == 1337) SelectedUnits = 0;
+            else SelectedUnits += diff;
+
+            // other actions
+            // set abort button visibility
+            if (SelectedUnits == 0) _abortButton.style.display = DisplayStyle.None;
+            else _abortButton.style.display = DisplayStyle.Flex;
         }
     }
 }
