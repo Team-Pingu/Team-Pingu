@@ -91,12 +91,12 @@ namespace Game.CustomUI
         {
             if (e.button == (int)MouseButton.LeftMouse)
             {
-                this.SelectUnit();
+                this.Select();
             }
 
             if (e.button == (int)MouseButton.RightMouse)
             {
-                this.DeselectUnit();
+                this.Deselect();
             }
         }
         #endregion
@@ -112,11 +112,27 @@ namespace Game.CustomUI
             // spawn unit on level grid
         }
 
-        private void SelectUnit()
+        private void Select()
         {
-            if (SelectedUnitsAmount >= MAX_UNITS_SELECTABLE)
+            int _MAX_UNITS_SELECTABLE;
+
+            if (ParentUnitCardPanel != null && ParentUnitCardPanel.UseSingleSelectionOnly)
+            {
+                _MAX_UNITS_SELECTABLE = 1;
+            }
+            else
+            {
+                _MAX_UNITS_SELECTABLE = MAX_UNITS_SELECTABLE;
+            }
+
+            if (SelectedUnitsAmount >= _MAX_UNITS_SELECTABLE)
             {
                 return;
+            }
+
+            if (ParentUnitCardPanel != null && ParentUnitCardPanel.UseSingleSelectionOnly)
+            {
+                ParentUnitCardPanel.DeselectAllUnits();
             }
 
             if (SelectedUnitsAmount == 0)
@@ -128,10 +144,11 @@ namespace Game.CustomUI
             }
 
             SelectedUnitsAmount += UNIT_SELECT_STEPS;
+            if (ParentUnitCardPanel != null) ParentUnitCardPanel.SetSelectedUnits(UNIT_SELECT_STEPS);
             _selectCounterText.text = $"x{SelectedUnitsAmount}";
         }
 
-        private void DeselectUnit()
+        private void Deselect()
         {
             if (SelectedUnitsAmount <= 0)
             {
@@ -147,15 +164,16 @@ namespace Game.CustomUI
             }
 
             SelectedUnitsAmount -= UNIT_SELECT_STEPS;
+            if (ParentUnitCardPanel != null) ParentUnitCardPanel.SetSelectedUnits(-UNIT_SELECT_STEPS);
             _selectCounterText.text = $"x{SelectedUnitsAmount}";
         }
 
         public void ResetSelection()
         {
             SelectedUnitsAmount = 0;
-            _backgroundDefault.SetEnabled(true);
-            _backgroundSelected.SetEnabled(false);
-            _selectCounter.SetEnabled(false);
+            _backgroundDefault.style.display = DisplayStyle.Flex;
+            _backgroundSelected.style.display = DisplayStyle.None;
+            _selectCounter.style.display = DisplayStyle.None;
         }
     }
 }
