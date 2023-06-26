@@ -15,24 +15,6 @@ namespace Game.CustomUI
         #region Boilerplate Component Code
         [UnityEngine.Scripting.Preserve]
         public new class UxmlFactory : UxmlFactory<UnitCard, UxmlTraits> { }
-
-        //[UnityEngine.Scripting.Preserve]
-        //public new class UxmlTraits : VisualElement.UxmlTraits
-        //{
-        //    private readonly UxmlBoolAttributeDescription startVisible = new UxmlBoolAttributeDescription { name = "start-visible", defaultValue = false };
-        //    private readonly UxmlIntAttributeDescription fadeTime = new UxmlIntAttributeDescription { name = "fade-time", defaultValue = 30 };
-
-        //    public override void Init(VisualElement ve, IUxmlAttributes bag, CreationContext cc)
-        //    {
-        //        base.Init(ve, bag, cc);
-
-        //        var item = ve as PopupPanel;
-        //        var vis = startVisible.GetValueFromBag(bag, cc);
-        //        item.FadeTime = fadeTime.GetValueFromBag(bag, cc);
-
-        //        item.SetStartVisibility(vis);
-        //    }
-        //}
         #endregion
 
         public string Name;
@@ -42,7 +24,7 @@ namespace Game.CustomUI
 
         public static readonly int MAX_UNITS_SELECTABLE = 10;
         public static readonly int UNIT_SELECT_STEPS = 1;
-        private readonly string VIEW_ASSET_PATH = "Assets\\Level\\UI\\Additional UI Elements\\Scripts\\UnitCards\\UnitCard.uxml";
+        private readonly string VIEW_ASSET_PATH = "Assets/Level/UI/Additional UI Elements/Scripts/UnitCards/UnitCard.uxml";
 
         private Label _nameLabel;
         private Label _descriptionLabel;
@@ -55,6 +37,8 @@ namespace Game.CustomUI
         private VisualElement _mainContainer;
         public UnitCardPanel ParentUnitCardPanel;
 
+        private GameResource _unitGameResource;
+
         public override VisualElement contentContainer => _mainContainer;
 
         public UnitCard()
@@ -66,13 +50,14 @@ namespace Game.CustomUI
             bool isParsed = int.TryParse(_costLabel.text, out Cost);
         }
 
-        public UnitCard(string name, string description, int cost)
+        public UnitCard(string name, string description, int cost, GameResource gameResource)
         {
             Init();
 
             Name = name;
             Description = description;
             Cost = cost;
+            _unitGameResource = gameResource;
 
             _nameLabel.text = name;
             _descriptionLabel.text = description;
@@ -82,10 +67,10 @@ namespace Game.CustomUI
         private void Init()
         {
             // load view and set values to view
-            #if UNITY_EDITOR
-                VisualTreeAsset viewAsset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(VIEW_ASSET_PATH);
-                viewAsset.CloneTree(this);
-            #endif
+            VisualTreeAsset viewAsset;
+            var __viewAssetResource = new GameResource(VIEW_ASSET_PATH, null, GameResourceType.UI);
+            viewAsset = __viewAssetResource.LoadRessource<VisualTreeAsset>();
+            viewAsset.CloneTree(this);
 
             _nameLabel = this.Q<Label>("unit-card__header__title");
             _descriptionLabel = this.Q<Label>("unit-card__body__description__text");
