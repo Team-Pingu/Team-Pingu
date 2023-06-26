@@ -54,12 +54,8 @@ namespace Game.CustomUI
         {
             // load view and set values to view
             VisualTreeAsset viewAsset;
-#if UNITY_EDITOR
-            viewAsset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(VIEW_ASSET_PATH);
-#else
             var __viewAssetResource = new GameResource(VIEW_ASSET_PATH, null, GameResourceType.UI);
             viewAsset = __viewAssetResource.LoadRessource<VisualTreeAsset>();
-#endif
             viewAsset.CloneTree(this);
 
             Cards = new List<UnitCard>();
