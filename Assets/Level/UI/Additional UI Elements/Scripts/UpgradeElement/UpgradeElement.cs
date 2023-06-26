@@ -1,4 +1,5 @@
 using Game.CustomUI;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -76,6 +77,10 @@ namespace Game.CustomUI
         private Label _tierLabel;
         public UnitCardPanel ParentUnitCardPanel;
 
+        private UpgradeManager _upgradeManager;
+        public Action<UpgradeManager> BuyAction;
+        public Action<UpgradeManager> SellAction;
+
         public override VisualElement contentContainer => _mainContainer;
 
         public UpgradeElement()
@@ -93,7 +98,7 @@ namespace Game.CustomUI
             IsBought = IsSelected;
         }
 
-        public UpgradeElement(string name, string description, int cost, string tier)
+        public UpgradeElement(string name, string description, int cost, Action<UpgradeManager> buyAction = null, Action<UpgradeManager> sellAction = null, string tier = null)
         {
             Init();
 
@@ -101,6 +106,8 @@ namespace Game.CustomUI
             Description = description;
             SetCost(cost);
             SetTier(tier);
+            BuyAction = buyAction;
+            SellAction = sellAction;
         }
 
         private void Init()
@@ -110,6 +117,8 @@ namespace Game.CustomUI
             var __viewAssetResource = new GameResource(VIEW_ASSET_PATH, null, GameResourceType.UI);
             viewAsset = __viewAssetResource.LoadRessource<VisualTreeAsset>();
             viewAsset.CloneTree(this);
+
+            _upgradeManager = GameObject.Find("UpgradeManager")?.GetComponent<UpgradeManager>();
 
             _costLabel = this.Q<Label>("upgrade-element__cost__text");
             _image = this.Q<VisualElement>("upgrade-element__content");
@@ -173,6 +182,7 @@ namespace Game.CustomUI
             if (!IsAffordable(999)) return;
             IsBought = true;
             // TODO: subtract money!
+            BuyAction?.Invoke(_upgradeManager);
         }
 
         private void Sell()
@@ -181,6 +191,7 @@ namespace Game.CustomUI
             if (!IsBought) return;
             IsBought = false;
             // TODO: add money to game state!
+            SellAction?.Invoke(_upgradeManager);
         }
 
         public void SetTier(string tier)
