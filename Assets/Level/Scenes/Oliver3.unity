@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.8106749, g: 0.8622048, b: 1.010136, a: 1}
+  m_IndirectSpecularColor: {r: 0.8107796, g: 0.8623098, b: 1.0102131, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -826,7 +826,7 @@ GameObject:
   m_Layer: 0
   m_Name: CameraRoot
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 2800000, guid: 7cba34d70552e144586a4d3ce4a33de5, type: 3}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -1006,12 +1006,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ced7cb39243d6a41b5bd391bdbba652, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HealthMultiplier: 1
-  MovementSpeedMultiplier: 1
-  AttackDamageMultiplier: 1
-  AttackKnockbackMultiplier: 1
-  AttackSpeedMultiplier: 1
-  MinionsCanOpenAlternativePath: 0
 --- !u!4 &530411794
 Transform:
   m_ObjectHideFlags: 0
@@ -4203,6 +4197,52 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 611714761}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &748877935
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 748877937}
+  - component: {fileID: 748877936}
+  m_Layer: 0
+  m_Name: Player
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &748877936
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 748877935}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58efc54f0f6444e59b684f1ace93ce49, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  chooseRoleUI: {fileID: 8626924159964230457, guid: 406d2b98953c9584f80d63d6223e0808,
+    type: 3}
+--- !u!4 &748877937
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 748877935}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &764545521
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4991,6 +5031,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f4b8866f627a234b9ebe378b13245a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  UseSeedInitializer: 0
   IsUpgradeMenuOpen: 0
 --- !u!114 &1892899512
 MonoBehaviour:

@@ -50,25 +50,25 @@ public class UIController : MonoBehaviour
 
         //_playerController = GameObject.Find("").GetComponent<PlayerController>();
 
-        InitSeed();
+        //InitSeed();
     }
 
-    private void InitSeed()
-    {
-        if (!UseSeedInitializer) return;
-        if (_playerController == null) return;
-        // TODO: IMPLEMENT SEEDS
-        ISeed Seed;
-        if (_playerController.role == PlayerController.Role.Attacker)
-        {
-            Seed = new AttackerSeed();
-        }
-        else
-        {
-            Seed = new DefenderSeed();
-        }
-        Seed.InflateUI(_root);
-    }
+    //private void InitSeed()
+    //{
+    //    if (!UseSeedInitializer) return;
+    //    if (_playerController == null) return;
+    //    // TODO: IMPLEMENT SEEDS
+    //    ISeed Seed;
+    //    if (_playerController.role == PlayerController.Role.Attacker)
+    //    {
+    //        Seed = new AttackerSeed();
+    //    }
+    //    else
+    //    {
+    //        Seed = new DefenderSeed();
+    //    }
+    //    Seed.InflateUI(_root);
+    //}
 
     void Update()
     {
