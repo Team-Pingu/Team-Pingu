@@ -12,24 +12,6 @@ namespace Game.CustomUI
         #region Boilerplate Component Code
         [UnityEngine.Scripting.Preserve]
         public new class UxmlFactory : UxmlFactory<UnitCardPanel, UxmlTraits> { }
-
-        //[UnityEngine.Scripting.Preserve]
-        //public new class UxmlTraits : VisualElement.UxmlTraits
-        //{
-        //    private readonly UxmlBoolAttributeDescription startVisible = new UxmlBoolAttributeDescription { name = "start-visible", defaultValue = false };
-        //    private readonly UxmlIntAttributeDescription fadeTime = new UxmlIntAttributeDescription { name = "fade-time", defaultValue = 30 };
-
-        //    public override void Init(VisualElement ve, IUxmlAttributes bag, CreationContext cc)
-        //    {
-        //        base.Init(ve, bag, cc);
-
-        //        var item = ve as PopupPanel;
-        //        var vis = startVisible.GetValueFromBag(bag, cc);
-        //        item.FadeTime = fadeTime.GetValueFromBag(bag, cc);
-
-        //        item.SetStartVisibility(vis);
-        //    }
-        //}
         #endregion
 
         public List<UnitCard> Cards { get; private set; }
@@ -39,7 +21,7 @@ namespace Game.CustomUI
         public static readonly int CARD_GAP_COLLAPSED = 180;
         public static readonly int CARD_GAP_EXPANDED = 0;
         public static readonly int CONTAINER_TRANSLATION = 200;
-        private readonly string VIEW_ASSET_PATH = "Assets\\Level\\UI\\Additional UI Elements\\Scripts\\UnitCardPanel\\UnitCardPanel.uxml";
+        private readonly string VIEW_ASSET_PATH = "Assets/Level/UI/Additional UI Elements/Scripts/UnitCardPanel/UnitCardPanel.uxml";
 
         private VisualElement _mainContainer;
         private VisualElement _cardContainer;
@@ -71,10 +53,14 @@ namespace Game.CustomUI
         private void Init()
         {
             // load view and set values to view
-            #if UNITY_EDITOR
-                VisualTreeAsset viewAsset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(VIEW_ASSET_PATH);
-                viewAsset.CloneTree(this);
-            #endif
+            VisualTreeAsset viewAsset;
+#if UNITY_EDITOR
+            viewAsset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(VIEW_ASSET_PATH);
+#else
+            var __viewAssetResource = new GameResource(VIEW_ASSET_PATH, null, GameResourceType.UI);
+            viewAsset = __viewAssetResource.LoadRessource<VisualTreeAsset>();
+#endif
+            viewAsset.CloneTree(this);
 
             Cards = new List<UnitCard>();
             _mainContainer = this.Q<VisualElement>("unit-card-panel");
@@ -157,7 +143,7 @@ namespace Game.CustomUI
             uc.style.transitionTimingFunction = new StyleList<EasingFunction>(easingFunctions);
 
             Cards.Add(uc);
-            if(inflateAndApplyFix)
+            if (inflateAndApplyFix)
             {
                 ApplyUnitCardStyleFix();
                 _cardContainer.Add(uc);

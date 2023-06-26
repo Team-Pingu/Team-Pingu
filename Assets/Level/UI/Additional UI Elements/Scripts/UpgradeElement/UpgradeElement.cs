@@ -64,7 +64,7 @@ namespace Game.CustomUI
         public bool IsBought { get; private set; } = false;
         public bool IsLocked { get; private set; } = false;
 
-        private readonly string VIEW_ASSET_PATH = "Assets\\Level\\UI\\Additional UI Elements\\Scripts\\UpgradeElement\\UpgradeElement.uxml";
+        private readonly string VIEW_ASSET_PATH = "Assets/Level/UI/Additional UI Elements/Scripts/UpgradeElement/UpgradeElement.uxml";
 
         private Label _costLabel;
         private VisualElement _image;
@@ -106,10 +106,14 @@ namespace Game.CustomUI
         private void Init()
         {
             // load view and set values to view
-            #if UNITY_EDITOR
-                VisualTreeAsset viewAsset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(VIEW_ASSET_PATH);
-                viewAsset.CloneTree(this);
-            #endif
+            VisualTreeAsset viewAsset;
+#if UNITY_EDITOR
+            viewAsset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(VIEW_ASSET_PATH);
+#else
+            var __viewAssetResource = new GameResource(VIEW_ASSET_PATH, null, GameResourceType.UI);
+            viewAsset = __viewAssetResource.LoadRessource<VisualTreeAsset>();
+#endif
+            viewAsset.CloneTree(this);
 
             _costLabel = this.Q<Label>("upgrade-element__cost__text");
             _image = this.Q<VisualElement>("upgrade-element__content");

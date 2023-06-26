@@ -38,7 +38,7 @@ namespace Game.CustomUI
         public string Description;
         public int Cost;
 
-        private readonly string VIEW_ASSET_PATH = "Assets\\Level\\UI\\Additional UI Elements\\Scripts\\AbilityElement\\AbilityElement.uxml";
+        private readonly string VIEW_ASSET_PATH = "Assets/Level/UI/Additional UI Elements/Scripts/AbilityElement/AbilityElement.uxml";
 
         private Label _nameLabel;
         private Label _descriptionLabel;
@@ -74,10 +74,14 @@ namespace Game.CustomUI
         private void Init()
         {
             // load view and set values to view
-            #if UNITY_EDITOR
-                VisualTreeAsset viewAsset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(VIEW_ASSET_PATH);
-                viewAsset.CloneTree(this);
-            #endif
+            VisualTreeAsset viewAsset;
+#if UNITY_EDITOR
+            viewAsset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(VIEW_ASSET_PATH);
+#else
+            var __viewAssetResource = new GameResource(VIEW_ASSET_PATH, null, GameResourceType.UI);
+            viewAsset = __viewAssetResource.LoadRessource<VisualTreeAsset>();
+#endif
+            viewAsset.CloneTree(this);
 
             //_nameLabel = this.Q<Label>("ability-element-popup__title");
             //_descriptionLabel = this.Q<Label>("ability-element-popup__description");
