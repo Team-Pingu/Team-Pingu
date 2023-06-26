@@ -9,18 +9,20 @@ using UnityEngine;
 public class UpgradeManager : MonoBehaviour
 {
     [SerializeField]
-    private float HealthMultiplier = 1f;
+    public float HealthMultiplier { get; private set; } = 1f;
     [SerializeField]
-    private float MovementSpeedMultiplier = 1f;
+    public float MovementSpeedMultiplier { get; private set; } = 1f;
     [SerializeField]
-    private float AttackDamageMultiplier = 1f;
+    public float AttackDamageMultiplier { get; private set; } = 1f;
     [SerializeField]
-    private float AttackKnockbackMultiplier = 1f;
+    public float AttackKnockbackMultiplier { get; private set; } = 1f;
     [SerializeField]
-    private float AttackSpeedMultiplier = 1f;
+    public float AttackSpeedMultiplier { get; private set; } = 1f;
+    [SerializeField]
+    public float MoneyBonusMultiplier { get; private set; } = 1f;
 
     [SerializeField]
-    private bool MinionsCanOpenAlternativePath = false;
+    public bool MinionsCanOpenAlternativePath { get; private set; } = false;
 
     #region MonoBehaviour Methods
     // Start is called before the first frame update
@@ -80,6 +82,15 @@ public class UpgradeManager : MonoBehaviour
     public void UpdateAttackSpeedMultiplier(float updateDiff)
     {
         AttackSpeedMultiplier += updateDiff;
+    }
+
+    /// <summary>
+    /// Updates the global money bonus multiplier
+    /// </summary>
+    /// <param name="updateDiff">negative or positive delta which is added to the global money bonus multiplier</param>
+    public void UpdateMoneyBonusMultiplier(float updateDiff)
+    {
+        MoneyBonusMultiplier += updateDiff;
     }
     #endregion
 
