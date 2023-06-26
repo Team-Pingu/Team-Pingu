@@ -20,7 +20,7 @@ namespace Code.Scripts.Player
         
         public PlayerController PlayerController;
 
-        private void Awake()
+        private void OnEnable()
         {
             if (Role == PlayerRole.Defender)
             {

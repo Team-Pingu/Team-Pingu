@@ -1,3 +1,4 @@
+using Code.Scripts;
 using Game.CustomUI;
 using System.Collections;
 using System.Collections.Generic;
@@ -46,6 +47,8 @@ namespace Game.CustomUI
         private VisualElement _mainContainer;
         private PopupPanelCustom _popupPanel;
 
+        private Bank _bank;
+
         public override VisualElement contentContainer => _mainContainer;
 
         public AbilityElement()
@@ -90,12 +93,19 @@ namespace Game.CustomUI
             //_content.RegisterCallback<MouseOverEvent>(OnMouseOver);
             //_content.RegisterCallback<MouseOutEvent>(OnMouseOut);
             _mainContainer.RegisterCallback<ClickEvent>(MouseClick);
+
+            _bank = GameObject.Find("Player").GetComponent<Bank>();
+            _bank.OnBalanceChanged += currentBalance => IsAffordable(currentBalance);
         }
 
         #region Events
         private void MouseClick(ClickEvent e)
         {
             Debug.Log("ClickEvent");
+            if (IsAffordable(_bank.CurrentBalance))
+            {
+                Buy();
+            }
         }
         private void OnMouseOver(MouseOverEvent e)
         {
@@ -108,5 +118,22 @@ namespace Game.CustomUI
             _popupPanel?.Hide();
         }
         #endregion
+
+        private bool IsAffordable(int globalCurrencyAmount)
+        {
+            bool isAffordable = Cost <= globalCurrencyAmount;
+            _costLabel.style.backgroundColor = new StyleColor(isAffordable ? new Color(0, 0, 0, 0) : Color.red);
+            return isAffordable;
+        }
+
+        private void Buy()
+        {
+            _bank?.Withdraw(Cost);
+        }
+
+        private void Sell(int amount = 1)
+        {
+            _bank?.Deposit(Cost * amount);
+        }
     }
 }

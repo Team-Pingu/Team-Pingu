@@ -13,7 +13,7 @@ namespace Code.Scripts.Player
 
         private void Start()
         {
-            _bank = gameObject.AddComponent<Bank>();
+            _bank = GetComponent<Bank>();
         }
 
         public Bank GetBank()

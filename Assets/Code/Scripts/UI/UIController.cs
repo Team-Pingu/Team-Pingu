@@ -5,6 +5,7 @@ using UnityEngine.UIElements;
 using Game.CustomUI;
 using Game.CustomUI.Seed;
 using Code.Scripts.Player;
+using Code.Scripts;
 
 enum ModalType
 {
@@ -25,14 +26,16 @@ public class UIController : MonoBehaviour
     private VisualElement _upgradeMenu;
     private Button _upgradeMenuOpenButton;
     private Button _upgradeMenuCloseButton;
+    private Label _currencyLabel;
 
     private readonly string UPGRADE_MODAL_NAME = "game-upgrade-popup";
     private readonly string ATTACKER_INIT_MODAL_NAME = "game-start-popup-attacker";
     private readonly string DEFENDER_INIT_MODAL_NAME = "game-start-popup-defender";
 
     private Player _player;
+    private Bank _bank;
 
-    private void OnEnable()
+    private void Start()
     {
         _root = GetComponent<UIDocument>().rootVisualElement;
 
@@ -41,6 +44,7 @@ public class UIController : MonoBehaviour
         _upgradeMenuOpenButton = _root.Q<Button>("player-controls__upgrade-btn");
         _upgradeMenuCloseButton = _root.Q<Button>("game-upgrade-popup__actions__close");
         _upgradeMenu = _root.Q<VisualElement>(UPGRADE_MODAL_NAME);
+        _currencyLabel = _root.Q<Label>("player-controls__currency__text");
 
         _upgradeMenuOpenButton.RegisterCallback<ClickEvent, VisualElement>(OnUpgradeMenuOpenClick, _upgradeMenu);
         _upgradeMenuCloseButton.RegisterCallback<ClickEvent>(OnUpgradeMenuCloseClick);
@@ -49,8 +53,16 @@ public class UIController : MonoBehaviour
         _root.Q<VisualElement>("static")?.SendToBack();
 
         _player = GameObject.Find("Player").GetComponent<Player>();
+        _bank = _player.PlayerController.GetBank();
+        UpdateCurrencyText(_bank.CurrentBalance);
+        _bank.OnBalanceChanged += currentBalance => UpdateCurrencyText(currentBalance);
 
         InitSeed();
+    }
+
+    private void UpdateCurrencyText(int currentBalance)
+    {
+        _currencyLabel.text = $"{currentBalance}";
     }
 
     private void InitSeed()
@@ -128,7 +140,8 @@ public class UIController : MonoBehaviour
             if (ve.name == GetModalNameFromType(modalType))
             {
                 ve.style.display = DisplayStyle.Flex;
-            } else
+            }
+            else
             {
                 ve.style.display = DisplayStyle.None;
             }

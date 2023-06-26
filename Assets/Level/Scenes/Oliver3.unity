@@ -1006,6 +1006,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ced7cb39243d6a41b5bd391bdbba652, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  HealthMultiplier: 1
+  MovementSpeedMultiplier: 1
+  AttackDamageMultiplier: 1
+  AttackKnockbackMultiplier: 0.1
+  AttackSpeedMultiplier: 1
+  MoneyBonusMultiplier: 1
+  AttackRangeMultiplier: 1
+  AttackAreaOfEffectMultiplier: 1
+  MinionsCanOpenAlternativePath: 0
 --- !u!4 &530411794
 Transform:
   m_ObjectHideFlags: 0
@@ -4207,6 +4216,7 @@ GameObject:
   m_Component:
   - component: {fileID: 748877937}
   - component: {fileID: 748877936}
+  - component: {fileID: 748877938}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -4226,7 +4236,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58efc54f0f6444e59b684f1ace93ce49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Role: 1
+  Role: 0
   PlayerController: {fileID: 0}
 --- !u!4 &748877937
 Transform:
@@ -4243,6 +4253,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &748877938
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 748877935}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa6880caa4c0afe48956808876b864a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startingBalance: 1500
+  _currentBalance: 0
 --- !u!1001 &764545521
 PrefabInstance:
   m_ObjectHideFlags: 0

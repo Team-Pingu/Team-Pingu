@@ -1,3 +1,5 @@
+using Code.Scripts.Player;
+using Code.Scripts;
 using Game.CustomUI;
 using System;
 using System.Collections;
@@ -80,6 +82,7 @@ namespace Game.CustomUI
         private UpgradeManager _upgradeManager;
         public Action<UpgradeManager> BuyAction;
         public Action<UpgradeManager> SellAction;
+        private Bank _bank;
 
         public override VisualElement contentContainer => _mainContainer;
 
@@ -130,6 +133,9 @@ namespace Game.CustomUI
             _lockedOverlay = this.Q<VisualElement>("upgrade-element__locked-overlay");
 
             _mainContainer.RegisterCallback<MouseDownEvent>(OnMouseClick);
+
+            _bank = GameObject.Find("Player").GetComponent<Bank>();
+            _bank.OnBalanceChanged += currentBalance => IsAffordable(currentBalance);
         }
 
         #region Events
@@ -153,14 +159,16 @@ namespace Game.CustomUI
         #region Methods
         private bool IsAffordable(int globalCurrencyAmount)
         {
-            if (this.Cost <= globalCurrencyAmount) return true;
-            return false;
+            bool isAffordable = Cost <= globalCurrencyAmount;
+            _costLabel.style.backgroundColor = new StyleColor(isAffordable ? new Color(0, 0, 0, 0) : Color.red);
+            return isAffordable;
         }
 
         private void Select()
         {
             if (IsLocked) return;
             if (IsSelected) return;
+            if (!IsAffordable(_bank.CurrentBalance)) return;
             IsSelected = true;
             _backgroundDefault.style.display = DisplayStyle.None;
             _backgroundSelected.style.display = DisplayStyle.Flex;
@@ -179,10 +187,11 @@ namespace Game.CustomUI
         {
             if (IsLocked) return;
             if (IsBought) return;
-            if (!IsAffordable(999)) return;
+            if (!IsAffordable(_bank.CurrentBalance)) return;
             IsBought = true;
             // TODO: subtract money!
             BuyAction?.Invoke(_upgradeManager);
+            _bank.Withdraw(Cost);
         }
 
         private void Sell()
@@ -192,6 +201,7 @@ namespace Game.CustomUI
             IsBought = false;
             // TODO: add money to game state!
             SellAction?.Invoke(_upgradeManager);
+            _bank.Deposit(Cost);
         }
 
         public void SetTier(string tier)

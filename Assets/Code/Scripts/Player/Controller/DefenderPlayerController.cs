@@ -19,7 +19,7 @@ namespace Code.Scripts.Player
 
         private void LoadPrefab()
         {
-            var resource = new GameResource("Assets/Level/Prefabs/Minion.prefab", "", GameResourceType.AutoMinion);
+            var resource = new GameResource("Assets/Level/Prefabs/Towers/ThunderCoil.prefab", "", GameResourceType.AutoMinion);
             _buildingPrefab = resource.LoadRessource<GameObject>();
         }
 

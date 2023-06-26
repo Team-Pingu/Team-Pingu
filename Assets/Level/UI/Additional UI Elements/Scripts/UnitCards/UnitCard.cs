@@ -1,3 +1,5 @@
+using Code.Scripts;
+using Code.Scripts.Player;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -38,6 +40,7 @@ namespace Game.CustomUI
         public UnitCardPanel ParentUnitCardPanel;
 
         private GameResource _unitGameResource;
+        private Bank _bank;
 
         public override VisualElement contentContainer => _mainContainer;
 
@@ -83,6 +86,9 @@ namespace Game.CustomUI
             _mainContainer = this.Q<VisualElement>("unit-card-container");
 
             _mainContainer.RegisterCallback<MouseDownEvent>(OnMouseClick);
+
+            _bank = GameObject.Find("Player").GetComponent<Bank>();
+            _bank.OnBalanceChanged += currentBalance => IsAffordable(currentBalance);
         }
 
         #region Events
@@ -101,10 +107,11 @@ namespace Game.CustomUI
         }
         #endregion
 
-        private bool IsUnitCardAffordable(int globalCurrencyAmount)
+        private bool IsAffordable(int globalCurrencyAmount)
         {
-            if (this.Cost <= globalCurrencyAmount) return true;
-            return false;
+            bool isAffordable = Cost <= globalCurrencyAmount;
+            _costLabel.style.backgroundColor = new StyleColor(isAffordable ? new Color(0, 0, 0, 0) : Color.red);
+            return isAffordable;
         }
 
         private void SpawnUnit(int amount = 1)
@@ -130,6 +137,11 @@ namespace Game.CustomUI
                 return;
             }
 
+            if (!IsAffordable(_bank.CurrentBalance))
+            {
+                return;
+            }
+
             if (ParentUnitCardPanel != null && ParentUnitCardPanel.UseSingleSelectionOnly)
             {
                 ParentUnitCardPanel.DeselectAllUnits();
@@ -146,6 +158,7 @@ namespace Game.CustomUI
             SelectedUnitsAmount += UNIT_SELECT_STEPS;
             if (ParentUnitCardPanel != null) ParentUnitCardPanel.SetSelectedUnits(UNIT_SELECT_STEPS);
             _selectCounterText.text = $"x{SelectedUnitsAmount}";
+            Buy();
         }
 
         private void Deselect()
@@ -166,14 +179,26 @@ namespace Game.CustomUI
             SelectedUnitsAmount -= UNIT_SELECT_STEPS;
             if (ParentUnitCardPanel != null) ParentUnitCardPanel.SetSelectedUnits(-UNIT_SELECT_STEPS);
             _selectCounterText.text = $"x{SelectedUnitsAmount}";
+            Sell();
         }
 
         public void ResetSelection()
         {
+            Sell(SelectedUnitsAmount);
             SelectedUnitsAmount = 0;
             _backgroundDefault.style.display = DisplayStyle.Flex;
             _backgroundSelected.style.display = DisplayStyle.None;
             _selectCounter.style.display = DisplayStyle.None;
+        }
+        
+        private void Buy()
+        {
+            _bank?.Withdraw(Cost);
+        }
+
+        private void Sell(int amount = 1)
+        {
+            _bank?.Deposit(Cost * amount);
         }
     }
 }
