@@ -82,10 +82,30 @@ namespace Game.CustomUI.Seed
         {
             var unitCards = new List<UnitCard>();
 
-            unitCards.Add(new UnitCard("Aeather Shield Bearer", "Beschreibung hier", 233, null));
-            unitCards.Add(new UnitCard("Clockwork Scout", "Beschreibung hier", 250, null));
-            unitCards.Add(new UnitCard("Gearhead Sapper", "Beschreibung hier", 999, null));
-            unitCards.Add(new UnitCard("Steam Powered Goliath", "Beschreibung hier", 666, null));
+            unitCards.Add(new UnitCard(
+                "Aeather Shield Bearer",
+                "Beschreibung hier",
+                100,
+                new GameResource("Assets/Level/Prefabs/Units/AetherShieldBearer.prefab", null, GameResourceType.Minion)
+            ));
+            unitCards.Add(new UnitCard(
+                "Clockwork Scout",
+                "Beschreibung hier",
+                250,
+                new GameResource("Assets/Level/Prefabs/Units/ClockworkScout.prefab", null, GameResourceType.Minion)
+            ));
+            unitCards.Add(new UnitCard(
+                "Gearhead Sapper",
+                "Beschreibung hier",
+                400,
+                new GameResource("Assets/Level/Prefabs/Units/GearheadSapper.prefab", null, GameResourceType.Minion)
+            ));
+            unitCards.Add(new UnitCard(
+                "Steam Powered Goliath",
+                "Beschreibung hier",
+                1000,
+                new GameResource("Assets/Level/Prefabs/Units/SteamPoweredGoliath.prefab", null, GameResourceType.Minion)
+            ));
 
             return unitCards.ToArray();
         }
@@ -190,9 +210,24 @@ namespace Game.CustomUI.Seed
         {
             var unitCards = new List<UnitCard>();
 
-            unitCards.Add(new UnitCard("Bolt Thrower", "Beschreibung hier", 233, null));
-            unitCards.Add(new UnitCard("Thunder Coil", "Beschreibung hier", 250, null));
-            unitCards.Add(new UnitCard("Electric Fence Barricade", "Beschreibung hier", 999, null));
+            unitCards.Add(new UnitCard(
+                "Bolt Thrower",
+                "Beschreibung hier",
+                100,
+                new GameResource("Assets/Level/Prefabs/Towers/BoltThrower.prefab", null, GameResourceType.Minion)
+            ));
+            unitCards.Add(new UnitCard(
+                "Thunder Coil",
+                "Beschreibung hier",
+                250,
+                new GameResource("Assets/Level/Prefabs/Towers/ThunderCoil.prefab", null, GameResourceType.Minion)
+            ));
+            unitCards.Add(new UnitCard(
+                "Electric Fence Barricade",
+                "Beschreibung hier",
+                400,
+                new GameResource("Assets/Level/Prefabs/Barricades/ElectricFence.prefab", null, GameResourceType.Minion)
+            ));
 
             return unitCards.ToArray();
         }

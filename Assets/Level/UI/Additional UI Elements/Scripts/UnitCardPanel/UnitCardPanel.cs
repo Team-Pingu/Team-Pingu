@@ -1,9 +1,11 @@
+using Code.Scripts.Player;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 namespace Game.CustomUI
 {
@@ -41,6 +43,8 @@ namespace Game.CustomUI
         // depending on whether one card or multiple selections are allowed
         public bool UseSingleSelectionOnly = true;
         public int SelectedUnits = 0;
+
+        private Player _player;
 
         public override VisualElement contentContainer => _mainContainer;
 
@@ -83,14 +87,18 @@ namespace Game.CustomUI
             _mainContainer.RegisterCallback<MouseOverEvent>(OnMouseOver);
             _mainContainer.RegisterCallback<MouseOutEvent>(OnMouseOut);
 
-            //_spawnButton.RegisterCallback<ClickEvent>(OnSpawnButtonClicked);
+            _spawnButton.RegisterCallback<ClickEvent>(OnSpawnButtonClicked);
             _abortButton.RegisterCallback<ClickEvent>(OnAbortButtonClicked);
+
+            _player = GameObject.Find("Player").GetComponent<Player>();
         }
 
         #region Events
         private void OnSpawnButtonClicked(ClickEvent e)
         {
-            //Debug.Log("Attached UnitCardPanel to Panel");
+            //TODO: improve implementation! THIS IS ONLY TEMPORARY FOR THE PREVIEW
+            SpawnSelectedUnits();
+            DeselectAllUnits();
         }
         private void OnAbortButtonClicked(ClickEvent e)
         {
@@ -156,18 +164,37 @@ namespace Game.CustomUI
 
         private UnitCard[] GetSelectedUnitCards()
         {
-            var selectedCards = new List<UnitCard>();
+            var result = new List<UnitCard>();
             foreach(UnitCard uc in Cards)
             {
                 if (uc.SelectedUnitsAmount == 0) continue;
-                selectedCards.AddRange(Enumerable.Repeat(uc, uc.SelectedUnitsAmount));
+                result.AddRange(Enumerable.Repeat(uc, uc.SelectedUnitsAmount));
             }
-            return selectedCards.ToArray();
+            return result.ToArray();
+        }
+
+        private Dictionary<GameResource, int> GetSelectedUnitCardGameResources()
+        {
+            Dictionary<GameResource, int> result = new Dictionary<GameResource, int>();
+            foreach (UnitCard uc in Cards)
+            {
+                if (uc.SelectedUnitsAmount == 0) continue;
+                result.Add(uc._unitGameResource, uc.SelectedUnitsAmount);
+            }
+            return result;
         }
 
         public void SpawnSelectedUnits()
         {
-            // spawn selected units on level grid
+            // TODO: spawn selected units on level grid
+            var units = GetSelectedUnitCardGameResources();
+            if (_player.Role == PlayerRole.Defender)
+            {
+                _player.PlayerController.PlaceUnits(units, new Vector3(-25, 0, 25));
+            } else
+            {
+                _player.PlayerController.PlaceUnits(units, new Vector3(-15, 0, 5));
+            }
         }
 
         public void AddUnitCard(UnitCard uc, bool inflateAndApplyFix = true)
@@ -241,8 +268,16 @@ namespace Game.CustomUI
 
             // other actions
             // set abort button visibility
-            if (SelectedUnits == 0) _abortButton.style.display = DisplayStyle.None;
-            else _abortButton.style.display = DisplayStyle.Flex;
+            if (SelectedUnits == 0)
+            {
+                _abortButton.style.display = DisplayStyle.None;
+                _spawnButton.style.display = DisplayStyle.None;
+            }
+            else
+            {
+                _abortButton.style.display = DisplayStyle.Flex;
+                _spawnButton.style.display = DisplayStyle.Flex;
+            }
         }
 
         public new void Clear()

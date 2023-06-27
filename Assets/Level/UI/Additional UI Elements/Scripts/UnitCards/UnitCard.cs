@@ -39,7 +39,7 @@ namespace Game.CustomUI
         private VisualElement _mainContainer;
         public UnitCardPanel ParentUnitCardPanel;
 
-        private GameResource _unitGameResource;
+        public GameResource _unitGameResource { get; private set; }
         private Bank _bank;
 
         public override VisualElement contentContainer => _mainContainer;

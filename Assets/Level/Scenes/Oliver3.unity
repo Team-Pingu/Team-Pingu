@@ -265,6 +265,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7150824010048992310, guid: b2aa498275611c846af1ea7c4a1ef93e,
+        type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 3079099734
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b2aa498275611c846af1ea7c4a1ef93e, type: 3}
 --- !u!4 &128982390 stripped
@@ -1096,6 +1101,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ThunderCoil
+      objectReference: {fileID: 0}
+    - target: {fileID: 7236577891535704680, guid: 259cba23b3a96ed4d8949d1e2de50a66,
+        type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 4096740142
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 259cba23b3a96ed4d8949d1e2de50a66, type: 3}
@@ -4236,7 +4246,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58efc54f0f6444e59b684f1ace93ce49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Role: 0
+  Role: 1
   PlayerController: {fileID: 0}
 --- !u!4 &748877937
 Transform:
