@@ -20,7 +20,6 @@ namespace Code.Scripts.Player.Controller
 
         public Role role;
         public GameObject playerUI;
-
         public GameObject playerUIInstance;
         
         private Bank _bank;

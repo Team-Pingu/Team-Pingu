@@ -46,11 +46,13 @@ namespace Code.Scripts.Player.Controller
             if(IsServer) return;
             
             if(NetworkManager.Singleton.LocalClientId == 1) {
+                _playerController = gameObject.AddComponent<DefenderPlayerController>();
                 _playerController.role = PlayerController.Role.Defender;
                 return;
             }
             
             if(NetworkManager.Singleton.LocalClientId == 2) {
+                _playerController = gameObject.AddComponent<AttackerPlayerController>();
                 _playerController.role = PlayerController.Role.Attacker;
                 return;
             }

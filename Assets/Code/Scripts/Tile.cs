@@ -13,10 +13,9 @@ namespace Code.Scripts
 
         private GridManager _gridManager;
         private Vector2Int _coordinates = new Vector2Int();
-        
-        private DefenderPlayerController _defenderPlayerController;
-        private AttackerPlayerController _attackerPlayerController;
+        private GameObject _objectSpawnManager;
 
+        
         private void Awake()
         {
             _gridManager = FindObjectOfType<GridManager>();
@@ -24,9 +23,6 @@ namespace Code.Scripts
 
         private void Start()
         {
-            this._defenderPlayerController = FindObjectOfType<DefenderPlayerController>();
-            this._attackerPlayerController = FindObjectOfType<AttackerPlayerController>();
-
             if (_gridManager != null)
             {
                 _coordinates = _gridManager.GetCoordinatesFromPosition(transform.position);
@@ -36,51 +32,57 @@ namespace Code.Scripts
                     _gridManager.BlockNode(_coordinates);
                 }
             }
+
+            _objectSpawnManager = GameObject.Find("ServerObjectSpawner");
         }
 
         private void OnMouseDown()
         {
-            if(IsServer || (int) NetworkManager.Singleton.LocalClientId > 2) return;
+            int localId =  (int) NetworkManager.Singleton.LocalClientId;
+            if(IsServer || localId > 2) return;
 
+            // if((int) NetworkManager.Singleton.LocalClientId  == 1) 
+            _objectSpawnManager.GetComponent<ObjectSpawnManager>().SpawnObjectServerRpc(localId, transform.position);
             Debug.Log("Mouse Clicked");
-            SpawnEntityServerRpc();
         }
 
         [ServerRpc(RequireOwnership = false)]
         private void SpawnEntityServerRpc() {
 
-            if (_defenderPlayerController == null)
-            {
-                _defenderPlayerController = FindObjectOfType<DefenderPlayerController>();
-            }
+            // this.PlayerController.GetComponent<PlayerObject>();
 
-            if (_attackerPlayerController == null)
-            {
-                _attackerPlayerController = FindObjectOfType<AttackerPlayerController>();
-            }
+            // if (_defenderPlayerController == null)
+            // {
+            //     _defenderPlayerController = FindObjectOfType<DefenderPlayerController>();
+            // }
 
-            GameObject spawnedEntity = null;
+            // if (_attackerPlayerController == null)
+            // {
+            //     _attackerPlayerController = FindObjectOfType<AttackerPlayerController>();
+            // }
 
-            if(isPlaceable && _defenderPlayerController != null) {
-                Debug.Log("Placing defender troop");
-                spawnedEntity = _defenderPlayerController.PlaceTroops(transform.position);
+            // GameObject spawnedEntity = null;
 
-                if (spawnedEntity == null) return;
+            // if(isPlaceable && _defenderPlayerController != null) {
+            //     Debug.Log("Placing defender troop");
+            //     spawnedEntity = _defenderPlayerController.PlaceTroops(transform.position);
+
+            //     if (spawnedEntity == null) return;
                 
-                isPlaceable = false;
-                _gridManager.BlockNode(_coordinates);
+            //     isPlaceable = false;
+            //     _gridManager.BlockNode(_coordinates);
 
-                Debug.Log(spawnedEntity);
-                spawnedEntity.GetComponent<NetworkObject>().Spawn();
-                return;
-            }
+            //     Debug.Log(spawnedEntity);
+            //     spawnedEntity.GetComponent<NetworkObject>().Spawn();
+            //     return;
+            // }
                         
-            if (isWalkable && _attackerPlayerController != null)
-            {
-                spawnedEntity = _attackerPlayerController.PlaceTroops(transform.position);
-                // nothing for now
-                spawnedEntity.GetComponent<NetworkObject>().Spawn();
-            }
+            // if (isWalkable && _attackerPlayerController != null)
+            // {
+            //     spawnedEntity = _attackerPlayerController.PlaceTroops(transform.position);
+            //     // nothing for now
+            //     spawnedEntity.GetComponent<NetworkObject>().Spawn();
+            // }
 
         }
     }

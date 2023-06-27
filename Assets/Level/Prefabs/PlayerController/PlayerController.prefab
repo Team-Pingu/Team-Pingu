@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3833096618242161273}
   - component: {fileID: 4860855976814519029}
-  - component: {fileID: 594132746533991307}
+  - component: {fileID: 6279960577938524695}
   m_Layer: 0
   m_Name: PlayerController
   m_TagString: Untagged
@@ -49,7 +49,7 @@ MonoBehaviour:
   AlwaysReplicateAsRoot: 0
   DontDestroyWithOwner: 1
   AutoObjectParentSync: 1
---- !u!114 &594132746533991307
+--- !u!114 &6279960577938524695
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -58,7 +58,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 777731756897385972}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 58efc54f0f6444e59b684f1ace93ce49, type: 3}
+  m_Script: {fileID: 11500000, guid: 325089060761afd4ab8d6922a6020bfe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chooseRoleUI: {fileID: 0}

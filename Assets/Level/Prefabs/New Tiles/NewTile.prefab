@@ -63,6 +63,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isPlaceable: 1
   isWalkable: 0
+  player: {fileID: 777731756897385972, guid: 0578cf80bd236c64aa8b9a2d98499e91, type: 3}
 --- !u!114 &3769772997658060545
 MonoBehaviour:
   m_ObjectHideFlags: 0

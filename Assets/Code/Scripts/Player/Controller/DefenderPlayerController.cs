@@ -19,7 +19,7 @@ namespace Code.Scripts.Player.Controller
 
         private void LoadPrefab()
         {
-            AsyncOperationHandle<GameObject> handle = Addressables.LoadAssetAsync<GameObject>("Assets/Level/Prefabs/Building.prefab");
+            AsyncOperationHandle<GameObject> handle = Addressables.LoadAssetAsync<GameObject>("Assets/Level/Prefabs/PrototypeModels/Building.prefab");
             handle.WaitForCompletion();
 
             if (handle.Status == AsyncOperationStatus.Succeeded)
@@ -34,13 +34,13 @@ namespace Code.Scripts.Player.Controller
         public override GameObject PlaceTroops(Vector3 position)
         {
             // Platzierung der Verteidigertruppen
-            if (GetBank().CurrentBalance >= _cost)
-            {
-                GetBank().Withdraw(_cost);
+            // if (GetBank().CurrentBalance >= _cost)
+            // {
+            //     GetBank().Withdraw(_cost);
                 return Instantiate(_buildingPrefab, position, Quaternion.identity);
-            }
+            // }
 
-            return null;
+            // return null;
         }
     }
 }
