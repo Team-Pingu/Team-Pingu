@@ -1,3 +1,4 @@
+using Code.Scripts;
 using Game.CustomUI;
 using System.Collections;
 using System.Collections.Generic;
@@ -38,13 +39,15 @@ namespace Game.CustomUI
         public string Description;
         public int Cost;
 
-        private readonly string VIEW_ASSET_PATH = "Assets\\Level\\UI\\Additional UI Elements\\Scripts\\AbilityElement\\AbilityElement.uxml";
+        private readonly string VIEW_ASSET_PATH = "Assets/Level/UI/Additional UI Elements/Scripts/AbilityElement/AbilityElement.uxml";
 
         private Label _nameLabel;
         private Label _descriptionLabel;
         private Label _costLabel;
         private VisualElement _mainContainer;
         private PopupPanelCustom _popupPanel;
+
+        private Bank _bank;
 
         public override VisualElement contentContainer => _mainContainer;
 
@@ -74,8 +77,9 @@ namespace Game.CustomUI
         private void Init()
         {
             // load view and set values to view
-            VisualTreeAsset viewAsset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(VIEW_ASSET_PATH);
-
+            VisualTreeAsset viewAsset;
+            var __viewAssetResource = new GameResource(VIEW_ASSET_PATH, null, GameResourceType.UI);
+            viewAsset = __viewAssetResource.LoadRessource<VisualTreeAsset>();
             viewAsset.CloneTree(this);
 
             //_nameLabel = this.Q<Label>("ability-element-popup__title");
@@ -86,15 +90,22 @@ namespace Game.CustomUI
 
             _popupPanel = new PopupPanelCustom("something", "something", _mainContainer, PopupPositionAnchor.TopLeft);
 
-            _content.RegisterCallback<MouseOverEvent>(OnMouseOver);
-            _content.RegisterCallback<MouseOutEvent>(OnMouseOut);
-            _content.RegisterCallback<ClickEvent>(MouseClick);
+            //_content.RegisterCallback<MouseOverEvent>(OnMouseOver);
+            //_content.RegisterCallback<MouseOutEvent>(OnMouseOut);
+            _mainContainer.RegisterCallback<ClickEvent>(MouseClick);
+
+            _bank = GameObject.Find("Player").GetComponent<Bank>();
+            _bank.OnBalanceChanged += currentBalance => IsAffordable(currentBalance);
         }
 
         #region Events
         private void MouseClick(ClickEvent e)
         {
             Debug.Log("ClickEvent");
+            if (IsAffordable(_bank.CurrentBalance))
+            {
+                Buy();
+            }
         }
         private void OnMouseOver(MouseOverEvent e)
         {
@@ -107,5 +118,22 @@ namespace Game.CustomUI
             _popupPanel?.Hide();
         }
         #endregion
+
+        private bool IsAffordable(int globalCurrencyAmount)
+        {
+            bool isAffordable = Cost <= globalCurrencyAmount;
+            _costLabel.style.backgroundColor = new StyleColor(isAffordable ? new Color(0, 0, 0, 0) : Color.red);
+            return isAffordable;
+        }
+
+        private void Buy()
+        {
+            _bank?.Withdraw(Cost);
+        }
+
+        private void Sell(int amount = 1)
+        {
+            _bank?.Deposit(Cost * amount);
+        }
     }
 }

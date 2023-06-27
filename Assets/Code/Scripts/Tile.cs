@@ -2,10 +2,11 @@ using System;
 using Code.Scripts.Pathfinding;
 using Code.Scripts.Player;
 using UnityEngine;
+using Unity.Netcode;
 
 namespace Code.Scripts
 {
-    public class Tile : MonoBehaviour
+    public class Tile : NetworkBehaviour
     {
         [SerializeField] public bool isPlaceable;
         [SerializeField] public bool isWalkable;
@@ -23,6 +24,9 @@ namespace Code.Scripts
 
         private void Start()
         {
+            this._defenderPlayerController = FindObjectOfType<DefenderPlayerController>();
+            this._attackerPlayerController = FindObjectOfType<AttackerPlayerController>();
+
             if (_gridManager != null)
             {
                 _coordinates = _gridManager.GetCoordinatesFromPosition(transform.position);
@@ -36,36 +40,47 @@ namespace Code.Scripts
 
         private void OnMouseDown()
         {
-            if (_defenderPlayerController == null)
-            {
-                _defenderPlayerController = FindObjectOfType<DefenderPlayerController>();
-            }
-            
-            if (_attackerPlayerController == null)
-            {
-                _attackerPlayerController = FindObjectOfType<AttackerPlayerController>();
-            }
-            
-            if (isPlaceable && _defenderPlayerController != null)
-            {
+            int playerID = (int) NetworkManager.Singleton.LocalClientId;
+            if(IsServer || playerID > 2) return;
+            Debug.Log("Mouse Clicked");
+
+            Debug.Log(playerID);
+            SpawnEntityServerRpc(playerID);
+
+        }
+
+        [ServerRpc(RequireOwnership = false)]
+        private void SpawnEntityServerRpc(int playerID) {
+
+            Debug.Log("player ID: " + playerID);
+            Debug.Log("Spawning Entity Server Rpc called");
+
+            GameObject spawnedEntity = null;
+
+            if(playerID == 1 && isPlaceable && _defenderPlayerController != null) {
                 // Instantiate(buildingPrefab, transform.position, Quaternion.identity);
                 // isPlaceable = false;
                 // _gridManager.BlockNode(_coordinates);
-                
-                bool isPlaced = _defenderPlayerController.PlaceTroops(transform.position);
+                Debug.Log("Placing defender troop");
+                spawnedEntity = _defenderPlayerController.PlacePlaceholderUnit(transform.position);
 
-                if (!isPlaced) return;
+                if (spawnedEntity == null) return;
                 
                 isPlaceable = false;
                 _gridManager.BlockNode(_coordinates);
-                
+
+                Debug.Log(spawnedEntity);
+                spawnedEntity.GetComponent<NetworkObject>().Spawn();
+                return;
+            }
+                        
+            if (playerID == 2 && isWalkable && _attackerPlayerController != null)
+            {
+                spawnedEntity = _attackerPlayerController.PlacePlaceholderUnit(transform.position);
+                // nothing for now
+                spawnedEntity.GetComponent<NetworkObject>().Spawn();
             }
 
-            if (isWalkable && _attackerPlayerController != null)
-            {
-                bool isPlaced = _attackerPlayerController.PlaceTroops(transform.position);
-                // nothing for now
-            }
         }
     }
 }

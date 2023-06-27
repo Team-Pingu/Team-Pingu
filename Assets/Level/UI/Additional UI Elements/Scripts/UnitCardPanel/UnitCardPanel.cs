@@ -1,10 +1,11 @@
+using Code.Scripts.Player;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
-using static UnityEditor.Rendering.FilterWindow;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 namespace Game.CustomUI
 {
@@ -13,38 +14,37 @@ namespace Game.CustomUI
         #region Boilerplate Component Code
         [UnityEngine.Scripting.Preserve]
         public new class UxmlFactory : UxmlFactory<UnitCardPanel, UxmlTraits> { }
-
-        //[UnityEngine.Scripting.Preserve]
-        //public new class UxmlTraits : VisualElement.UxmlTraits
-        //{
-        //    private readonly UxmlBoolAttributeDescription startVisible = new UxmlBoolAttributeDescription { name = "start-visible", defaultValue = false };
-        //    private readonly UxmlIntAttributeDescription fadeTime = new UxmlIntAttributeDescription { name = "fade-time", defaultValue = 30 };
-
-        //    public override void Init(VisualElement ve, IUxmlAttributes bag, CreationContext cc)
-        //    {
-        //        base.Init(ve, bag, cc);
-
-        //        var item = ve as PopupPanel;
-        //        var vis = startVisible.GetValueFromBag(bag, cc);
-        //        item.FadeTime = fadeTime.GetValueFromBag(bag, cc);
-
-        //        item.SetStartVisibility(vis);
-        //    }
-        //}
         #endregion
 
         public List<UnitCard> Cards { get; private set; }
+
+        public enum UnitCardSize
+        {
+            s,
+            m,
+            l,
+            xl
+        }
 
         public static readonly int CARD_ROTATION_ANGLE_END = 8;
         public static readonly int CARD_ROTATION_ANGLE_START = -1;
         public static readonly int CARD_GAP_COLLAPSED = 180;
         public static readonly int CARD_GAP_EXPANDED = 0;
         public static readonly int CONTAINER_TRANSLATION = 200;
-        private readonly string VIEW_ASSET_PATH = "Assets\\Level\\UI\\Additional UI Elements\\Scripts\\UnitCardPanel\\UnitCardPanel.uxml";
+        private readonly string VIEW_ASSET_PATH = "Assets/Level/UI/Additional UI Elements/Scripts/UnitCardPanel/UnitCardPanel.uxml";
+        private readonly UnitCardSize unitCardSize = UnitCardSize.m;
 
         private VisualElement _mainContainer;
         private VisualElement _cardContainer;
         private VisualElement _actionContainer;
+        private Button _spawnButton;
+        private Button _abortButton;
+
+        // depending on whether one card or multiple selections are allowed
+        public bool UseSingleSelectionOnly = true;
+        public int SelectedUnits = 0;
+
+        private Player _player;
 
         public override VisualElement contentContainer => _mainContainer;
 
@@ -72,30 +72,37 @@ namespace Game.CustomUI
         private void Init()
         {
             // load view and set values to view
-            VisualTreeAsset viewAsset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(VIEW_ASSET_PATH);
-
+            VisualTreeAsset viewAsset;
+            var __viewAssetResource = new GameResource(VIEW_ASSET_PATH, null, GameResourceType.UI);
+            viewAsset = __viewAssetResource.LoadRessource<VisualTreeAsset>();
             viewAsset.CloneTree(this);
 
             Cards = new List<UnitCard>();
             _mainContainer = this.Q<VisualElement>("unit-card-panel");
             _cardContainer = this.Q<VisualElement>("unit-card-panel__cards");
             _actionContainer = this.Q<VisualElement>("unit-card-panel__actions");
+            _spawnButton = this.Q<Button>("unit-card-panel__actions__deploy");
+            _abortButton = this.Q<Button>("unit-card-panel__actions__abort");
 
             _mainContainer.RegisterCallback<MouseOverEvent>(OnMouseOver);
             _mainContainer.RegisterCallback<MouseOutEvent>(OnMouseOut);
 
-            //RegisterCallback<AttachToPanelEvent>(OnAttachedToPanel);
-            //RegisterCallback<DetachFromPanelEvent>(OnDetachedFromPanel);
+            _spawnButton.RegisterCallback<ClickEvent>(OnSpawnButtonClicked);
+            _abortButton.RegisterCallback<ClickEvent>(OnAbortButtonClicked);
+
+            _player = GameObject.Find("Player").GetComponent<Player>();
         }
 
         #region Events
-        private void OnAttachedToPanel(AttachToPanelEvent e)
+        private void OnSpawnButtonClicked(ClickEvent e)
         {
-            Debug.Log("Attached UnitCardPanel to Panel");
+            //TODO: improve implementation! THIS IS ONLY TEMPORARY FOR THE PREVIEW
+            SpawnSelectedUnits();
+            DeselectAllUnits();
         }
-        private void OnDetachedFromPanel(DetachFromPanelEvent e)
+        private void OnAbortButtonClicked(ClickEvent e)
         {
-            Debug.Log("Detached UnitCardPanel to Panel");
+            DeselectAllUnits();
         }
         private void OnMouseOver(MouseOverEvent e)
         {
@@ -121,6 +128,23 @@ namespace Game.CustomUI
             return result;
         }
 
+        public Vector2 GetUnitCardDimensions(UnitCardSize ucs)
+        {
+            switch (ucs)
+            {
+                case UnitCardSize.s:
+                    return new Vector2(220, 350);
+                case UnitCardSize.m:
+                    return new Vector2(260, 380);
+                case UnitCardSize.l:
+                    return new Vector2(300, 420);
+                case UnitCardSize.xl:
+                    return new Vector2(350, 500);
+                default:
+                    return Vector2.zero;
+            }
+        }
+
         private List<VisualElement> GetUnitCardVisualElementsFromView(bool ignoreDisabled = true)
         {
             List<VisualElement> result = new List<VisualElement>();
@@ -138,15 +162,46 @@ namespace Game.CustomUI
             return false;
         }
 
+        private UnitCard[] GetSelectedUnitCards()
+        {
+            var result = new List<UnitCard>();
+            foreach(UnitCard uc in Cards)
+            {
+                if (uc.SelectedUnitsAmount == 0) continue;
+                result.AddRange(Enumerable.Repeat(uc, uc.SelectedUnitsAmount));
+            }
+            return result.ToArray();
+        }
+
+        private Dictionary<GameResource, int> GetSelectedUnitCardGameResources()
+        {
+            Dictionary<GameResource, int> result = new Dictionary<GameResource, int>();
+            foreach (UnitCard uc in Cards)
+            {
+                if (uc.SelectedUnitsAmount == 0) continue;
+                result.Add(uc._unitGameResource, uc.SelectedUnitsAmount);
+            }
+            return result;
+        }
+
         public void SpawnSelectedUnits()
         {
-            // spawn selected units on level grid
+            // TODO: spawn selected units on level grid
+            var units = GetSelectedUnitCardGameResources();
+            if (_player.Role == PlayerRole.Defender)
+            {
+                _player.PlayerController.PlaceUnits(units, new Vector3(-25, 0, 25));
+            } else
+            {
+                _player.PlayerController.PlaceUnits(units, new Vector3(-15, 0, 5));
+            }
         }
 
         public void AddUnitCard(UnitCard uc, bool inflateAndApplyFix = true)
         {
-            //uc.style.width = 300;
-            //uc.style.height = 450;
+            Vector2 cardDimensions = GetUnitCardDimensions(unitCardSize);
+            uc.style.width = cardDimensions.x;
+            uc.style.height = cardDimensions.y;
             uc.ParentUnitCardPanel = this;
 
             List<StylePropertyName> properties = new List<StylePropertyName>() { new StylePropertyName("margin") };
@@ -157,7 +212,7 @@ namespace Game.CustomUI
             uc.style.transitionTimingFunction = new StyleList<EasingFunction>(easingFunctions);
 
             Cards.Add(uc);
-            if(inflateAndApplyFix)
+            if (inflateAndApplyFix)
             {
                 ApplyUnitCardStyleFix();
                 _cardContainer.Add(uc);
@@ -197,12 +252,39 @@ namespace Game.CustomUI
             }
         }
 
-        private void DeselectAllUnits()
+        public void DeselectAllUnits()
         {
+            SetSelectedUnits();
             foreach (UnitCard uc in Cards)
             {
                 uc.ResetSelection();
             }
+        }
+
+        public void SetSelectedUnits(int diff = 1337)
+        {
+            if (diff == 1337) SelectedUnits = 0;
+            else SelectedUnits += diff;
+
+            // other actions
+            // set abort button visibility
+            if (SelectedUnits == 0)
+            {
+                _abortButton.style.display = DisplayStyle.None;
+                _spawnButton.style.display = DisplayStyle.None;
+            }
+            else
+            {
+                _abortButton.style.display = DisplayStyle.Flex;
+                _spawnButton.style.display = DisplayStyle.Flex;
+            }
+        }
+
+        public new void Clear()
+        {
+            Cards.Clear();
+            _cardContainer.Clear();
+            SetSelectedUnits();
         }
     }
 }

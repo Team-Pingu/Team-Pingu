@@ -1,10 +1,11 @@
+using Code.Scripts;
+using Code.Scripts.Player;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEditor;
-using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 using MouseButton = UnityEngine.UIElements.MouseButton;
@@ -16,24 +17,6 @@ namespace Game.CustomUI
         #region Boilerplate Component Code
         [UnityEngine.Scripting.Preserve]
         public new class UxmlFactory : UxmlFactory<UnitCard, UxmlTraits> { }
-
-        //[UnityEngine.Scripting.Preserve]
-        //public new class UxmlTraits : VisualElement.UxmlTraits
-        //{
-        //    private readonly UxmlBoolAttributeDescription startVisible = new UxmlBoolAttributeDescription { name = "start-visible", defaultValue = false };
-        //    private readonly UxmlIntAttributeDescription fadeTime = new UxmlIntAttributeDescription { name = "fade-time", defaultValue = 30 };
-
-        //    public override void Init(VisualElement ve, IUxmlAttributes bag, CreationContext cc)
-        //    {
-        //        base.Init(ve, bag, cc);
-
-        //        var item = ve as PopupPanel;
-        //        var vis = startVisible.GetValueFromBag(bag, cc);
-        //        item.FadeTime = fadeTime.GetValueFromBag(bag, cc);
-
-        //        item.SetStartVisibility(vis);
-        //    }
-        //}
         #endregion
 
         public string Name;
@@ -43,7 +26,7 @@ namespace Game.CustomUI
 
         public static readonly int MAX_UNITS_SELECTABLE = 10;
         public static readonly int UNIT_SELECT_STEPS = 1;
-        private readonly string VIEW_ASSET_PATH = "Assets\\Level\\UI\\Additional UI Elements\\Scripts\\UnitCards\\UnitCard.uxml";
+        private readonly string VIEW_ASSET_PATH = "Assets/Level/UI/Additional UI Elements/Scripts/UnitCards/UnitCard.uxml";
 
         private Label _nameLabel;
         private Label _descriptionLabel;
@@ -56,6 +39,9 @@ namespace Game.CustomUI
         private VisualElement _mainContainer;
         public UnitCardPanel ParentUnitCardPanel;
 
+        public GameResource _unitGameResource { get; private set; }
+        private Bank _bank;
+
         public override VisualElement contentContainer => _mainContainer;
 
         public UnitCard()
@@ -67,13 +53,14 @@ namespace Game.CustomUI
             bool isParsed = int.TryParse(_costLabel.text, out Cost);
         }
 
-        public UnitCard(string name, string description, int cost)
+        public UnitCard(string name, string description, int cost, GameResource gameResource)
         {
             Init();
 
             Name = name;
             Description = description;
             Cost = cost;
+            _unitGameResource = gameResource;
 
             _nameLabel.text = name;
             _descriptionLabel.text = description;
@@ -83,8 +70,9 @@ namespace Game.CustomUI
         private void Init()
         {
             // load view and set values to view
-            VisualTreeAsset viewAsset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(VIEW_ASSET_PATH);
-
+            VisualTreeAsset viewAsset;
+            var __viewAssetResource = new GameResource(VIEW_ASSET_PATH, null, GameResourceType.UI);
+            viewAsset = __viewAssetResource.LoadRessource<VisualTreeAsset>();
             viewAsset.CloneTree(this);
 
             _nameLabel = this.Q<Label>("unit-card__header__title");
@@ -98,6 +86,9 @@ namespace Game.CustomUI
             _mainContainer = this.Q<VisualElement>("unit-card-container");
 
             _mainContainer.RegisterCallback<MouseDownEvent>(OnMouseClick);
+
+            _bank = GameObject.Find("Player").GetComponent<Bank>();
+            _bank.OnBalanceChanged += currentBalance => IsAffordable(currentBalance);
         }
 
         #region Events
@@ -106,20 +97,21 @@ namespace Game.CustomUI
         {
             if (e.button == (int)MouseButton.LeftMouse)
             {
-                this.SelectUnit();
+                this.Select();
             }
 
             if (e.button == (int)MouseButton.RightMouse)
             {
-                this.DeselectUnit();
+                this.Deselect();
             }
         }
         #endregion
 
-        private bool IsUnitCardAffordable(int globalCurrencyAmount)
+        private bool IsAffordable(int globalCurrencyAmount)
         {
-            if (this.Cost <= globalCurrencyAmount) return true;
-            return false;
+            bool isAffordable = Cost <= globalCurrencyAmount;
+            _costLabel.style.backgroundColor = new StyleColor(isAffordable ? new Color(0, 0, 0, 0) : Color.red);
+            return isAffordable;
         }
 
         private void SpawnUnit(int amount = 1)
@@ -127,11 +119,32 @@ namespace Game.CustomUI
             // spawn unit on level grid
         }
 
-        private void SelectUnit()
+        private void Select()
         {
-            if (SelectedUnitsAmount >= MAX_UNITS_SELECTABLE)
+            int _MAX_UNITS_SELECTABLE;
+
+            if (ParentUnitCardPanel != null && ParentUnitCardPanel.UseSingleSelectionOnly)
+            {
+                _MAX_UNITS_SELECTABLE = 1;
+            }
+            else
+            {
+                _MAX_UNITS_SELECTABLE = MAX_UNITS_SELECTABLE;
+            }
+
+            if (SelectedUnitsAmount >= _MAX_UNITS_SELECTABLE)
             {
                 return;
+            }
+
+            if (!IsAffordable(_bank.CurrentBalance))
+            {
+                return;
+            }
+
+            if (ParentUnitCardPanel != null && ParentUnitCardPanel.UseSingleSelectionOnly)
+            {
+                ParentUnitCardPanel.DeselectAllUnits();
             }
 
             if (SelectedUnitsAmount == 0)
@@ -143,10 +156,12 @@ namespace Game.CustomUI
             }
 
             SelectedUnitsAmount += UNIT_SELECT_STEPS;
+            if (ParentUnitCardPanel != null) ParentUnitCardPanel.SetSelectedUnits(UNIT_SELECT_STEPS);
             _selectCounterText.text = $"x{SelectedUnitsAmount}";
+            Buy();
         }
 
-        private void DeselectUnit()
+        private void Deselect()
         {
             if (SelectedUnitsAmount <= 0)
             {
@@ -162,15 +177,28 @@ namespace Game.CustomUI
             }
 
             SelectedUnitsAmount -= UNIT_SELECT_STEPS;
+            if (ParentUnitCardPanel != null) ParentUnitCardPanel.SetSelectedUnits(-UNIT_SELECT_STEPS);
             _selectCounterText.text = $"x{SelectedUnitsAmount}";
+            Sell();
         }
 
         public void ResetSelection()
         {
+            Sell(SelectedUnitsAmount);
             SelectedUnitsAmount = 0;
-            _backgroundDefault.SetEnabled(true);
-            _backgroundSelected.SetEnabled(false);
-            _selectCounter.SetEnabled(false);
+            _backgroundDefault.style.display = DisplayStyle.Flex;
+            _backgroundSelected.style.display = DisplayStyle.None;
+            _selectCounter.style.display = DisplayStyle.None;
+        }
+        
+        private void Buy()
+        {
+            _bank?.Withdraw(Cost);
+        }
+
+        private void Sell(int amount = 1)
+        {
+            _bank?.Deposit(Cost * amount);
         }
     }
 }

@@ -8,11 +8,14 @@ namespace Code.Scripts
 {
     public class Bank : MonoBehaviour
     {
-        [SerializeField] public int startingBalance = 150;
+        [SerializeField] public int startingBalance = 1500;
 
         public int CurrentBalance { get { return _currentBalance; } }
 
         [SerializeField] private int _currentBalance;
+
+        // custom event handler for balance change
+        public event Action<int> OnBalanceChanged;
 
         public void Awake()
         {
@@ -22,17 +25,18 @@ namespace Code.Scripts
         public void Deposit(int amount)
         {
             _currentBalance += Mathf.Abs(amount);
+            OnBalanceChanged(_currentBalance);
         }
 
         public void Withdraw(int amount)
         {
             _currentBalance -= Mathf.Abs(amount);
+            OnBalanceChanged(_currentBalance);
 
             if (_currentBalance < 0)
             {
-                // lose game or whatever
-                // TODO: change if multiplayer is invented
-                ReloadScene();
+                // TODO: handle action when balance is negative!
+                //ReloadScene();
             }
         }
 

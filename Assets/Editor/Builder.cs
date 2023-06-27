@@ -12,7 +12,7 @@ public class Builder
             scenes = scenes,
             locationPathName = "Build/Windows/Server/TeamPingu.exe",
             target = BuildTarget.StandaloneWindows64,
-            subtarget = (int) StandaloneBuildSubtarget.Server,
+            subtarget = (int) StandaloneBuildSubtarget.Player,
             options = BuildOptions.None
         };
 

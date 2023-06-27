@@ -1,4 +1,7 @@
+using Code.Scripts.Player;
+using Code.Scripts;
 using Game.CustomUI;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -64,7 +67,7 @@ namespace Game.CustomUI
         public bool IsBought { get; private set; } = false;
         public bool IsLocked { get; private set; } = false;
 
-        private readonly string VIEW_ASSET_PATH = "Assets\\Level\\UI\\Additional UI Elements\\Scripts\\UpgradeElement\\UpgradeElement.uxml";
+        private readonly string VIEW_ASSET_PATH = "Assets/Level/UI/Additional UI Elements/Scripts/UpgradeElement/UpgradeElement.uxml";
 
         private Label _costLabel;
         private VisualElement _image;
@@ -75,6 +78,11 @@ namespace Game.CustomUI
         private VisualElement _tierContainer;
         private Label _tierLabel;
         public UnitCardPanel ParentUnitCardPanel;
+
+        private UpgradeManager _upgradeManager;
+        public Action<UpgradeManager> BuyAction;
+        public Action<UpgradeManager> SellAction;
+        private Bank _bank;
 
         public override VisualElement contentContainer => _mainContainer;
 
@@ -93,7 +101,7 @@ namespace Game.CustomUI
             IsBought = IsSelected;
         }
 
-        public UpgradeElement(string name, string description, int cost, string tier)
+        public UpgradeElement(string name, string description, int cost, Action<UpgradeManager> buyAction = null, Action<UpgradeManager> sellAction = null, string tier = null)
         {
             Init();
 
@@ -101,14 +109,19 @@ namespace Game.CustomUI
             Description = description;
             SetCost(cost);
             SetTier(tier);
+            BuyAction = buyAction;
+            SellAction = sellAction;
         }
 
         private void Init()
         {
             // load view and set values to view
-            VisualTreeAsset viewAsset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(VIEW_ASSET_PATH);
-
+            VisualTreeAsset viewAsset;
+            var __viewAssetResource = new GameResource(VIEW_ASSET_PATH, null, GameResourceType.UI);
+            viewAsset = __viewAssetResource.LoadRessource<VisualTreeAsset>();
             viewAsset.CloneTree(this);
+
+            _upgradeManager = GameObject.Find("UpgradeManager")?.GetComponent<UpgradeManager>();
 
             _costLabel = this.Q<Label>("upgrade-element__cost__text");
             _image = this.Q<VisualElement>("upgrade-element__content");
@@ -120,6 +133,9 @@ namespace Game.CustomUI
             _lockedOverlay = this.Q<VisualElement>("upgrade-element__locked-overlay");
 
             _mainContainer.RegisterCallback<MouseDownEvent>(OnMouseClick);
+
+            _bank = GameObject.Find("Player").GetComponent<Bank>();
+            _bank.OnBalanceChanged += currentBalance => IsAffordable(currentBalance);
         }
 
         #region Events
@@ -143,14 +159,16 @@ namespace Game.CustomUI
         #region Methods
         private bool IsAffordable(int globalCurrencyAmount)
         {
-            if (this.Cost <= globalCurrencyAmount) return true;
-            return false;
+            bool isAffordable = Cost <= globalCurrencyAmount;
+            _costLabel.style.backgroundColor = new StyleColor(isAffordable ? new Color(0, 0, 0, 0) : Color.red);
+            return isAffordable;
         }
 
         private void Select()
         {
             if (IsLocked) return;
             if (IsSelected) return;
+            if (!IsAffordable(_bank.CurrentBalance)) return;
             IsSelected = true;
             _backgroundDefault.style.display = DisplayStyle.None;
             _backgroundSelected.style.display = DisplayStyle.Flex;
@@ -169,9 +187,11 @@ namespace Game.CustomUI
         {
             if (IsLocked) return;
             if (IsBought) return;
-            if (!IsAffordable(999)) return;
+            if (!IsAffordable(_bank.CurrentBalance)) return;
             IsBought = true;
             // TODO: subtract money!
+            BuyAction?.Invoke(_upgradeManager);
+            _bank.Withdraw(Cost);
         }
 
         private void Sell()
@@ -180,6 +200,8 @@ namespace Game.CustomUI
             if (!IsBought) return;
             IsBought = false;
             // TODO: add money to game state!
+            SellAction?.Invoke(_upgradeManager);
+            _bank.Deposit(Cost);
         }
 
         public void SetTier(string tier)

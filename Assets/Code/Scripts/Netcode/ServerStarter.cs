@@ -4,13 +4,13 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Unity.Netcode;
 
-public class ServerStarter : NetworkBehaviour
+public class ServerStarter : NetworkManager
 {
     // Start is called before the first frame update
     void Start()
     {
-        NetworkManager.Singleton.StartServer();
         Debug.Log("Starting Server");
+        StartServer();
         NetworkManager.Singleton.SceneManager.LoadScene("MainScene", LoadSceneMode.Single);
     }
 
