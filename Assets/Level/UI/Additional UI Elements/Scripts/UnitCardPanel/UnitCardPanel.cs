@@ -12,24 +12,6 @@ namespace Game.CustomUI
         #region Boilerplate Component Code
         [UnityEngine.Scripting.Preserve]
         public new class UxmlFactory : UxmlFactory<UnitCardPanel, UxmlTraits> { }
-
-        //[UnityEngine.Scripting.Preserve]
-        //public new class UxmlTraits : VisualElement.UxmlTraits
-        //{
-        //    private readonly UxmlBoolAttributeDescription startVisible = new UxmlBoolAttributeDescription { name = "start-visible", defaultValue = false };
-        //    private readonly UxmlIntAttributeDescription fadeTime = new UxmlIntAttributeDescription { name = "fade-time", defaultValue = 30 };
-
-        //    public override void Init(VisualElement ve, IUxmlAttributes bag, CreationContext cc)
-        //    {
-        //        base.Init(ve, bag, cc);
-
-        //        var item = ve as PopupPanel;
-        //        var vis = startVisible.GetValueFromBag(bag, cc);
-        //        item.FadeTime = fadeTime.GetValueFromBag(bag, cc);
-
-        //        item.SetStartVisibility(vis);
-        //    }
-        //}
         #endregion
 
         public List<UnitCard> Cards { get; private set; }
@@ -39,11 +21,17 @@ namespace Game.CustomUI
         public static readonly int CARD_GAP_COLLAPSED = 180;
         public static readonly int CARD_GAP_EXPANDED = 0;
         public static readonly int CONTAINER_TRANSLATION = 200;
-        private readonly string VIEW_ASSET_PATH = "Assets\\Level\\UI\\Additional UI Elements\\Scripts\\UnitCardPanel\\UnitCardPanel.uxml";
+        private readonly string VIEW_ASSET_PATH = "Assets/Level/UI/Additional UI Elements/Scripts/UnitCardPanel/UnitCardPanel.uxml";
 
         private VisualElement _mainContainer;
         private VisualElement _cardContainer;
         private VisualElement _actionContainer;
+        private Button _spawnButton;
+        private Button _abortButton;
+
+        // depending on whether one card or multiple selections are allowed
+        public bool UseSingleSelectionOnly = true;
+        public int SelectedUnits = 0;
 
         public override VisualElement contentContainer => _mainContainer;
 
@@ -71,31 +59,33 @@ namespace Game.CustomUI
         private void Init()
         {
             // load view and set values to view
-            #if UNITY_EDITOR
-                VisualTreeAsset viewAsset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(VIEW_ASSET_PATH);
-                viewAsset.CloneTree(this);
-            #endif
+            VisualTreeAsset viewAsset;
+            var __viewAssetResource = new GameResource(VIEW_ASSET_PATH, null, GameResourceType.UI);
+            viewAsset = __viewAssetResource.LoadRessource<VisualTreeAsset>();
+            viewAsset.CloneTree(this);
 
             Cards = new List<UnitCard>();
             _mainContainer = this.Q<VisualElement>("unit-card-panel");
             _cardContainer = this.Q<VisualElement>("unit-card-panel__cards");
             _actionContainer = this.Q<VisualElement>("unit-card-panel__actions");
+            _spawnButton = this.Q<Button>("unit-card-panel__actions__deploy");
+            _abortButton = this.Q<Button>("unit-card-panel__actions__abort");
 
             _mainContainer.RegisterCallback<MouseOverEvent>(OnMouseOver);
             _mainContainer.RegisterCallback<MouseOutEvent>(OnMouseOut);
 
-            //RegisterCallback<AttachToPanelEvent>(OnAttachedToPanel);
-            //RegisterCallback<DetachFromPanelEvent>(OnDetachedFromPanel);
+            //_spawnButton.RegisterCallback<ClickEvent>(OnSpawnButtonClicked);
+            _abortButton.RegisterCallback<ClickEvent>(OnAbortButtonClicked);
         }
 
         #region Events
-        private void OnAttachedToPanel(AttachToPanelEvent e)
+        private void OnSpawnButtonClicked(ClickEvent e)
         {
-            Debug.Log("Attached UnitCardPanel to Panel");
+            //Debug.Log("Attached UnitCardPanel to Panel");
         }
-        private void OnDetachedFromPanel(DetachFromPanelEvent e)
+        private void OnAbortButtonClicked(ClickEvent e)
         {
-            Debug.Log("Detached UnitCardPanel to Panel");
+            DeselectAllUnits();
         }
         private void OnMouseOver(MouseOverEvent e)
         {
@@ -138,6 +128,17 @@ namespace Game.CustomUI
             return false;
         }
 
+        private UnitCard[] GetSelectedUnitCards()
+        {
+            var selectedCards = new List<UnitCard>();
+            foreach(UnitCard uc in Cards)
+            {
+                if (uc.SelectedUnitsAmount == 0) continue;
+                selectedCards.AddRange(Enumerable.Repeat(uc, uc.SelectedUnitsAmount));
+            }
+            return selectedCards.ToArray();
+        }
+
         public void SpawnSelectedUnits()
         {
             // spawn selected units on level grid
@@ -157,7 +158,7 @@ namespace Game.CustomUI
             uc.style.transitionTimingFunction = new StyleList<EasingFunction>(easingFunctions);
 
             Cards.Add(uc);
-            if(inflateAndApplyFix)
+            if (inflateAndApplyFix)
             {
                 ApplyUnitCardStyleFix();
                 _cardContainer.Add(uc);
@@ -197,12 +198,24 @@ namespace Game.CustomUI
             }
         }
 
-        private void DeselectAllUnits()
+        public void DeselectAllUnits()
         {
+            SetSelectedUnits();
             foreach (UnitCard uc in Cards)
             {
                 uc.ResetSelection();
             }
+        }
+
+        public void SetSelectedUnits(int diff = 1337)
+        {
+            if (diff == 1337) SelectedUnits = 0;
+            else SelectedUnits += diff;
+
+            // other actions
+            // set abort button visibility
+            if (SelectedUnits == 0) _abortButton.style.display = DisplayStyle.None;
+            else _abortButton.style.display = DisplayStyle.Flex;
         }
     }
 }

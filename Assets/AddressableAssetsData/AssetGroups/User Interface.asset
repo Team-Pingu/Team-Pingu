@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: User Interface
+  m_EditorClassIdentifier: 
+  m_GroupName: User Interface
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 395c08dbe879ce641afdc6a6da0cea52
+  m_SerializeEntries:
+  - m_GUID: 34a00c9217f9bd94ebe22573f83e2346
+    m_Address: Assets/Level/UI/Additional UI Elements/Scripts/AbilityElement/AbilityElement.uxml
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 9658284c0e92a4449917189a9386a8f5
+    m_Address: Assets/Level/UI/Additional UI Elements/Scripts/UnitCards/UnitCard.uxml
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 3a5f3dcbb15eb0347af4b2c5a2952c16
+    m_Address: Assets/Level/UI/Additional UI Elements/Scripts/UnitCardPanel/UnitCardPanel.uxml
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 68f15e64b1562a14684244659029b4e7
+    m_Address: Assets/Level/UI/Additional UI Elements/Scripts/UpgradeElement/UpgradeElement.uxml
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 305b91d93a3e83442ba751e5dc8322f3, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 8fe41accd1d3ba440b6a1e3244cbe6e2, type: 2}
+    - {fileID: 11400000, guid: ef89b1f3840cc8944a70bcfb53f50323, type: 2}

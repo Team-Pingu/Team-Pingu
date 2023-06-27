@@ -4,6 +4,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
+using UnityEngine.UIElements;
 
 public enum GameResourceType
 {
@@ -11,6 +12,7 @@ public enum GameResourceType
     Minion,
     AutoMinion,
     Barricade,
+    UI,
     Undefined
 }
 
@@ -27,8 +29,23 @@ public class GameResource
         ResourceType = resourceType;
     }
 
-    public AsyncOperationHandle<GameObject> LoadRessource()
+    public T LoadRessource<T>()
     {
-        return Addressables.LoadAssetAsync<GameObject>(AddressablesResourceKey);
+        //#if UNITY_EDITOR
+        //return AssetDatabase.LoadAssetAtPath<T>(AddressablesResourceKey);
+        //#endif
+        AsyncOperationHandle<T> opHandle = Addressables.LoadAssetAsync<T>(AddressablesResourceKey);
+        opHandle.WaitForCompletion();
+
+        if (opHandle.Status == AsyncOperationStatus.Succeeded)
+        {
+            T prefab = opHandle.Result;
+            return prefab;
+        }
+        else
+        {
+            Addressables.Release(opHandle);
+            return default(T);
+        }
     }
 }
