@@ -87,9 +87,9 @@ namespace Game.CustomUI
 
             _popupPanel = new PopupPanelCustom("something", "something", _mainContainer, PopupPositionAnchor.TopLeft);
 
-            _content.RegisterCallback<MouseOverEvent>(OnMouseOver);
-            _content.RegisterCallback<MouseOutEvent>(OnMouseOut);
-            _content.RegisterCallback<ClickEvent>(MouseClick);
+            //_content.RegisterCallback<MouseOverEvent>(OnMouseOver);
+            //_content.RegisterCallback<MouseOutEvent>(OnMouseOut);
+            _mainContainer.RegisterCallback<ClickEvent>(MouseClick);
         }
 
         #region Events

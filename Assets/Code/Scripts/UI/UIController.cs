@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using Game.CustomUI;
 using Game.CustomUI.Seed;
+using Code.Scripts.Player;
 
 enum ModalType
 {
@@ -14,6 +15,8 @@ enum ModalType
 
 public class UIController : MonoBehaviour
 {
+    [SerializeField]
+    private bool UseSeedInitializer = false;
     public bool IsUpgradeMenuOpen;
 
     private VisualElement _root;
@@ -26,6 +29,8 @@ public class UIController : MonoBehaviour
     private readonly string UPGRADE_MODAL_NAME = "game-upgrade-popup";
     private readonly string ATTACKER_INIT_MODAL_NAME = "game-start-popup-attacker";
     private readonly string DEFENDER_INIT_MODAL_NAME = "game-start-popup-defender";
+
+    private PlayerController _playerController;
 
     private void OnEnable()
     {
@@ -43,16 +48,26 @@ public class UIController : MonoBehaviour
         _root.Q<Button>($"{DEFENDER_INIT_MODAL_NAME}__actions__close").RegisterCallback<ClickEvent>(OnModalClose);
         _root.Q<VisualElement>("static")?.SendToBack();
 
+        //_playerController = GameObject.Find("").GetComponent<PlayerController>();
+
+        InitSeed();
+    }
+
+    private void InitSeed()
+    {
+        if (!UseSeedInitializer) return;
+        if (_playerController == null) return;
         // TODO: IMPLEMENT SEEDS
-        //ISeed Seed;
-        //if (true)
-        //{
-        //    Seed = new AttackerSeed();
-        //} else
-        //{
-        //    Seed = new DefenderSeed();
-        //}
-        //Seed.InflateUI(_root);
+        ISeed Seed;
+        if (_playerController.role == PlayerController.Role.Attacker)
+        {
+            Seed = new AttackerSeed();
+        }
+        else
+        {
+            Seed = new DefenderSeed();
+        }
+        Seed.InflateUI(_root);
     }
 
     void Update()
