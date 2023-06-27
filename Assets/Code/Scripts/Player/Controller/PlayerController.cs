@@ -50,12 +50,16 @@ namespace Code.Scripts.Player
                 if (gameObject != null)
                 {
                     // scale and position adjustments to spread GameObjects
-                    Vector3 positionAdjust = new Vector3(Random.Range(-5.0f, 5.0f), 0, Random.Range(-5.0f, 5.0f));
-                    float localScale = 0.66f;
-                    gameObject.transform.localScale *= localScale;
+                    const float positionRange = 5f;
+                    const float localScale = 0.75f;
 
-                    GameObject instantiatedGameObject = Instantiate(gameObject, position + positionAdjust, Quaternion.identity);
-                    outPrefabs.AddRange(Enumerable.Repeat(instantiatedGameObject, prefabAmount));
+                    for(int i = 0; i < prefabAmount; i++)
+                    {
+                        Vector3 positionAdjust = new Vector3(Random.Range(-positionRange, positionRange), 0, Random.Range(-positionRange, positionRange));
+                        GameObject instantiatedGameObject = Instantiate(gameObject, position + positionAdjust, Quaternion.identity);
+                        instantiatedGameObject.transform.localScale *= localScale;
+                        outPrefabs.Add(instantiatedGameObject);
+                    }
                 }
             }
 
