@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using Game.CustomUI;
 using Game.CustomUI.Seed;
-using Code.Scripts.Player;
+using Code.Scripts.Player.Controller;
 
 enum ModalType
 {

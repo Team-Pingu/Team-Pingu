@@ -1,5 +1,5 @@
 ﻿using System;
-using Code.Scripts.Player;
+using Code.Scripts.Player.Controller;
 using UnityEngine;
 
 namespace Code.Scripts

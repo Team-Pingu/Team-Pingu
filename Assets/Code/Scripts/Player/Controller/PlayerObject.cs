@@ -7,7 +7,7 @@ using Object = UnityEngine.Object;
 
 namespace Code.Scripts.Player.Controller
 {
-    public class Player : NetworkBehaviour
+    public class PlayerObject : NetworkBehaviour
     {
 
         private Button _attackerButton;
@@ -40,22 +40,28 @@ namespace Code.Scripts.Player.Controller
         //         DeactivateUI();
         //     });
         // }
-
         private void Start()
         {
             if(IsServer) return;
             
+            
             if(NetworkManager.Singleton.LocalClientId == 1) {
+                _playerController = this.gameObject.AddComponent<DefenderPlayerController>();
                 _playerController.role = PlayerController.Role.Defender;
                 return;
             }
             
             if(NetworkManager.Singleton.LocalClientId == 2) {
+                _playerController = this.gameObject.AddComponent<AttackerPlayerController>();
                 _playerController.role = PlayerController.Role.Attacker;
                 return;
             }
             
-            _playerController.role = PlayerController.Role.Spectator;
+            // _playerController.role = PlayerController.Role.Spectator;
+        }
+
+        public PlayerController GetPlayerController() {
+            return _playerController;
         }
 
         // private void Update()

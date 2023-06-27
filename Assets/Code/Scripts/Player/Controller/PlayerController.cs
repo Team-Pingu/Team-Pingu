@@ -5,7 +5,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.UI;
 using Unity.Netcode;
 
-namespace Code.Scripts.Player
+namespace Code.Scripts.Player.Controller
 {
     // Hauptklasse für den PlayerController
     public abstract class PlayerController : NetworkBehaviour

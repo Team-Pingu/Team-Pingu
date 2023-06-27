@@ -1,6 +1,6 @@
 using System;
 using Code.Scripts.Pathfinding;
-using Code.Scripts.Player;
+using Code.Scripts.Player.Controller;
 using UnityEngine;
 using Unity.Netcode;
 
