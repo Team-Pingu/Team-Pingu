@@ -45,6 +45,7 @@ public class GameResource
         else
         {
             Addressables.Release(opHandle);
+            Debug.LogWarning($"Resource {AddressablesResourceKey} could not be loaded");
             return default(T);
         }
     }

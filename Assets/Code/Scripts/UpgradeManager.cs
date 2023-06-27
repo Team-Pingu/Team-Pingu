@@ -9,18 +9,25 @@ using UnityEngine;
 public class UpgradeManager : MonoBehaviour
 {
     [SerializeField]
-    private float HealthMultiplier = 1f;
+    public float HealthMultiplier = 1f;
     [SerializeField]
-    private float MovementSpeedMultiplier = 1f;
+    public float MovementSpeedMultiplier = 1f;
     [SerializeField]
-    private float AttackDamageMultiplier = 1f;
+    public float AttackDamageMultiplier = 1f;
     [SerializeField]
-    private float AttackKnockbackMultiplier = 1f;
+    public float AttackKnockbackMultiplier = 0.1f;
     [SerializeField]
-    private float AttackSpeedMultiplier = 1f;
+    public float AttackSpeedMultiplier = 1f;
+    [SerializeField]
+    public float MoneyBonusMultiplier = 1f;
+    [SerializeField]
+    public float AttackRangeMultiplier = 1f;
 
     [SerializeField]
-    private bool MinionsCanOpenAlternativePath = false;
+    public float AttackAreaOfEffectMultiplier = 1f;
+
+    [SerializeField]
+    public bool MinionsCanOpenAlternativePath = false;
 
     #region MonoBehaviour Methods
     // Start is called before the first frame update
@@ -43,7 +50,7 @@ public class UpgradeManager : MonoBehaviour
     /// <param name="updateDiff">negative or positive delta which is added to the global health multiplier</param>
     public void UpdateHealthMultiplier(float updateDiff)
     {
-        HealthMultiplier += updateDiff;
+        HealthMultiplier *= updateDiff;
     }
 
     /// <summary>
@@ -52,7 +59,7 @@ public class UpgradeManager : MonoBehaviour
     /// <param name="updateDiff">negative or positive delta which is added to the global movement speed multiplier</param>
     public void UpdateMovementSpeedMultiplier(float updateDiff)
     {
-        MovementSpeedMultiplier += updateDiff;
+        MovementSpeedMultiplier *= updateDiff;
     }
 
     /// <summary>
@@ -61,7 +68,7 @@ public class UpgradeManager : MonoBehaviour
     /// <param name="updateDiff">negative or positive delta which is added to the global attack damage multiplier</param>
     public void UpdateAttackDamageMultiplier(float updateDiff)
     {
-        AttackDamageMultiplier += updateDiff;
+        AttackDamageMultiplier *= updateDiff;
     }
 
     /// <summary>
@@ -70,7 +77,7 @@ public class UpgradeManager : MonoBehaviour
     /// <param name="updateDiff">negative or positive delta which is added to the global attack knockback multiplier</param>
     public void UpdateAttackKnockbackMultiplier(float updateDiff)
     {
-        AttackKnockbackMultiplier += updateDiff;
+        AttackKnockbackMultiplier *= updateDiff;
     }
 
     /// <summary>
@@ -79,7 +86,26 @@ public class UpgradeManager : MonoBehaviour
     /// <param name="updateDiff">negative or positive delta which is added to the global attack speed multiplier</param>
     public void UpdateAttackSpeedMultiplier(float updateDiff)
     {
-        AttackSpeedMultiplier += updateDiff;
+        AttackSpeedMultiplier *= updateDiff;
+    }
+
+    /// <summary>
+    /// Updates the global money bonus multiplier
+    /// </summary>
+    /// <param name="updateDiff">negative or positive delta which is added to the global money bonus multiplier</param>
+    public void UpdateMoneyBonusMultiplier(float updateDiff)
+    {
+        MoneyBonusMultiplier *= updateDiff;
+    }
+
+    public void UpdateAttackRangeMultiplier(float updateDiff)
+    {
+        AttackRangeMultiplier *= updateDiff;
+    }
+
+    public void UpdateAttackAreaOfEffectMultiplier(float updateDiff)
+    {
+        AttackAreaOfEffectMultiplier *= updateDiff;
     }
     #endregion
 

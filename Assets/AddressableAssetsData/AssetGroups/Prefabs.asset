@@ -1,0 +1,61 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Prefabs
+  m_EditorClassIdentifier: 
+  m_GroupName: Prefabs
+  m_Data:
+    m_SerializedData: []
+  m_GUID: df7d2500345802b4a96b71fc88edd3e2
+  m_SerializeEntries:
+  - m_GUID: 259cba23b3a96ed4d8949d1e2de50a66
+    m_Address: Assets/Level/Prefabs/Towers/ThunderCoil.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 367a3e69aa916eb4c98847f786a6d504
+    m_Address: Assets/Level/Prefabs/Units/AutoMinion.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: f2f94c07db058f946bfd91f93df57625
+    m_Address: Assets/Level/Prefabs/Units/AetherShieldBearer.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 04d0d8f204c74114bb67c81291c29bb3
+    m_Address: Assets/Level/Prefabs/Units/ClockworkScout.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 5df57afdea0620146a2ef3490fced41c
+    m_Address: Assets/Level/Prefabs/Units/GearheadSapper.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 28c6a444559aacd42b5e33929f734ad4
+    m_Address: Assets/Level/Prefabs/Units/SteamPoweredGoliath.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 3aa7ad90549f95b4691979f86e4420b0
+    m_Address: Assets/Level/Prefabs/Towers/Core.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: b2aa498275611c846af1ea7c4a1ef93e
+    m_Address: Assets/Level/Prefabs/Towers/BoltThrower.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: c1e0a255c2c8285479c327d02f989849
+    m_Address: Assets/Level/Prefabs/Barricades/ElectricFence.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 305b91d93a3e83442ba751e5dc8322f3, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 1f806dc2399abb44286b40c21cc63867, type: 2}
+    - {fileID: 11400000, guid: 37e1811235bff134b8eb02aaf219f2d8, type: 2}

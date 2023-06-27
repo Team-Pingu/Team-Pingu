@@ -1,26 +1,27 @@
-﻿using System;
 using Code.Scripts.Player;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Code.Scripts
 {
-    public class Minion : MonoBehaviour
+    public class Tower : MonoBehaviour
     {
         [SerializeField] public int goldReward = 25;
         [SerializeField] public int goldPenalty = 25;
 
-        private AttackerPlayerController _attackerPlayerController;
+        private DefenderPlayerController _defenderPlayerController;
         private Bank _bank;
         private UpgradeManager _upgradeManager;
 
         private void Start()
         {
-            _attackerPlayerController = FindObjectOfType<AttackerPlayerController>();
+            _defenderPlayerController = FindObjectOfType<DefenderPlayerController>();
             _upgradeManager = FindObjectOfType<UpgradeManager>();
 
-            if (_attackerPlayerController == null) return;
+            if (_defenderPlayerController == null) return;
 
-            _bank = _attackerPlayerController.GetBank();
+            _bank = _defenderPlayerController.GetBank();
         }
 
         public void RewardGold()
@@ -33,7 +34,7 @@ namespace Code.Scripts
         public void StealGold()
         {
             if (_bank == null) return;
-            
+
             _bank.Withdraw(goldPenalty);
         }
     }

@@ -62,7 +62,7 @@ namespace Code.Scripts
                 // isPlaceable = false;
                 // _gridManager.BlockNode(_coordinates);
                 Debug.Log("Placing defender troop");
-                spawnedEntity = _defenderPlayerController.PlaceTroops(transform.position);
+                spawnedEntity = _defenderPlayerController.PlacePlaceholderUnit(transform.position);
 
                 if (spawnedEntity == null) return;
                 
@@ -76,7 +76,7 @@ namespace Code.Scripts
                         
             if (playerID == 2 && isWalkable && _attackerPlayerController != null)
             {
-                spawnedEntity = _attackerPlayerController.PlaceTroops(transform.position);
+                spawnedEntity = _attackerPlayerController.PlacePlaceholderUnit(transform.position);
                 // nothing for now
                 spawnedEntity.GetComponent<NetworkObject>().Spawn();
             }
