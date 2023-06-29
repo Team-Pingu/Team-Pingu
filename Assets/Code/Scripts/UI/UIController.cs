@@ -6,6 +6,7 @@ using Game.CustomUI;
 using Game.CustomUI.Seed;
 using Code.Scripts.Player;
 using Code.Scripts;
+using Code.Scripts.TimelineEvents;
 
 enum ModalType
 {
@@ -27,6 +28,7 @@ public class UIController : MonoBehaviour
     private Button _upgradeMenuOpenButton;
     private Button _upgradeMenuCloseButton;
     private Label _currencyLabel;
+    private Label _timerLabel;
 
     private readonly string UPGRADE_MODAL_NAME = "game-upgrade-popup";
     private readonly string ATTACKER_INIT_MODAL_NAME = "game-start-popup-attacker";
@@ -34,6 +36,7 @@ public class UIController : MonoBehaviour
 
     private Player _player;
     private Bank _bank;
+    private TimelineEventsManager _timelineEventsManager;
 
     private void Start()
     {
@@ -45,6 +48,7 @@ public class UIController : MonoBehaviour
         _upgradeMenuCloseButton = _root.Q<Button>("game-upgrade-popup__actions__close");
         _upgradeMenu = _root.Q<VisualElement>(UPGRADE_MODAL_NAME);
         _currencyLabel = _root.Q<Label>("player-controls__currency__text");
+        _timerLabel = _root.Q<Label>("timer__text");
 
         _upgradeMenuOpenButton.RegisterCallback<ClickEvent, VisualElement>(OnUpgradeMenuOpenClick, _upgradeMenu);
         _upgradeMenuCloseButton.RegisterCallback<ClickEvent>(OnUpgradeMenuCloseClick);
@@ -55,9 +59,16 @@ public class UIController : MonoBehaviour
         _player = GameObject.Find("Player").GetComponent<Player>();
         _bank = _player.PlayerController.GetBank();
         UpdateCurrencyText(_bank.CurrentBalance);
+        _timelineEventsManager = GameObject.Find("TimelineEventsManager").GetComponent<TimelineEventsManager>();
+
         _bank.OnBalanceChanged += currentBalance => UpdateCurrencyText(currentBalance);
 
         InitSeed();
+    }
+
+    void Update()
+    {
+        _timerLabel.text = _timelineEventsManager?.GetFormattedSecondsRunning();
     }
 
     private void UpdateCurrencyText(int currentBalance)
@@ -82,11 +93,6 @@ public class UIController : MonoBehaviour
             Seed = new DefenderSeed();
         }
         Seed.InflateUI(_root);
-    }
-
-    void Update()
-    {
-
     }
 
     #region Events
