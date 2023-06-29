@@ -17,7 +17,7 @@ enum ModalType
 public class UIController : MonoBehaviour
 {
     [SerializeField]
-    private bool UseSeedInitializer = false;
+    private bool UseSeedInitializer = true;
     public bool IsUpgradeMenuOpen;
 
     private VisualElement _root;
