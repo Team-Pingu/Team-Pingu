@@ -1036,7 +1036,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28178c1276083db4c9c6518e1c66e4b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TimelineEventsConfig: {fileID: 11400000, guid: fb162107883608e43885a8f054ff28da,
+  TimelineEventsConfig: {fileID: 11400000, guid: 08e72099ffd8e814b9fa86322df79fa4,
     type: 2}
 --- !u!4 &494059738
 Transform:

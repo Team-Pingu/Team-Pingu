@@ -7,6 +7,7 @@ using Game.CustomUI.Seed;
 using Code.Scripts.Player;
 using Code.Scripts;
 using Code.Scripts.TimelineEvents;
+using System.Linq;
 
 enum ModalType
 {
@@ -29,6 +30,12 @@ public class UIController : MonoBehaviour
     private Button _upgradeMenuCloseButton;
     private Label _currencyLabel;
     private Label _timerLabel;
+    private VisualElement _timelineContainer;
+    private VisualElement _timelineEventTemplate;
+    private VisualElement _timelinePreparationPhase;
+    private VisualElement _timelineTimer;
+    private VisualElement _timelineMatchEventsContainer;
+    private VisualElement _timelinePhaseContainer;
 
     private readonly string UPGRADE_MODAL_NAME = "game-upgrade-popup";
     private readonly string ATTACKER_INIT_MODAL_NAME = "game-start-popup-attacker";
@@ -63,12 +70,71 @@ public class UIController : MonoBehaviour
 
         _bank.OnBalanceChanged += currentBalance => UpdateCurrencyText(currentBalance);
 
+        InitTimelineElements();
+
+        // TODO: implement event handlers for timeline
+        //_timelineEventsManager.OnTimelineEventExecuted += (e) => {
+        //    _root.Q<Label>("timer-next-event-text").text = e.NextTimelineEvent.Name;
+        //};
+
         InitSeed();
+    }
+
+    void InitTimelineElements()
+    {
+        _timelineContainer = _root.Q("timeline");
+        _timelineEventTemplate = _timelineContainer.Q("timeline-event-template");
+        _timelinePreparationPhase = _timelineContainer.Q("timeline__phases__preparation");
+        _timelineTimer = _timelineContainer.Q("timeline-timer");
+        _timelineMatchEventsContainer = _timelineContainer.Q("timeline__phases__match__events");
+        _timelinePhaseContainer = _timelineContainer.Q("timeline__phases");
+
+        int matchPhaseDuration = _timelineEventsManager.TimelineEventsConfig.MatchPhaseDuration;
+        foreach (TimelineEvent e in _timelineEventsManager.TimelineEvents)
+        {
+            VisualElement eventElement = new VisualElement();
+            eventElement.AddToClassList("timeline-event-template");
+            float percentage = (e.ExecutionTime / (float)matchPhaseDuration) * 100;
+            eventElement.style.marginLeft = new StyleLength(new Length(percentage, LengthUnit.Percent));
+            if (e.Type == TimelineEventType.AutominionSpawn)
+            {
+                eventElement.style.backgroundColor = new StyleColor(Color.white);
+            } else if (e.Type == TimelineEventType.MoneyBonus)
+            {
+                eventElement.style.backgroundColor = new StyleColor(Color.yellow);
+            }
+            _timelineMatchEventsContainer.Add(eventElement);
+        }
+
+        float preparationPhasePercentage = (_timelineEventsManager.TimelineEventsConfig.PreperationPhaseDuration / (float)_timelineEventsManager.AllPhasesDuration) * 100;
+        _timelinePreparationPhase.style.width = new StyleLength(new Length(preparationPhasePercentage, LengthUnit.Percent));
+
+        // disable template event
+        _timelineEventTemplate.style.display = DisplayStyle.None;
+    }
+
+    private string GetFormattedSecondsRunning(float currentTime)
+    {
+        int seconds = (int)currentTime;
+        int minutes = seconds / 60;
+        string __minutes = (minutes < 10 ? "0" : "") + minutes.ToString();
+        string __seconds = (seconds < 10 ? "0" : "") + (seconds % 60).ToString();
+        return $"{__minutes}:{__seconds}";
     }
 
     void Update()
     {
-        _timerLabel.text = _timelineEventsManager?.GetFormattedSecondsRunning();
+        if (_timelineEventsManager.TimerRunning)
+        {
+            float currentTime = _timelineEventsManager.GetSecondsRunning();
+            _timerLabel.text = GetFormattedSecondsRunning(currentTime);
+
+            float percentage = (currentTime / (float)_timelineEventsManager.AllPhasesDuration) * 100;
+            _timelineTimer.style.width = new StyleLength(new Length(percentage, LengthUnit.Percent));
+        } else
+        {
+            _timerLabel.text = "No Timer Running";
+        }
     }
 
     private void UpdateCurrencyText(int currentBalance)

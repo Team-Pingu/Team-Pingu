@@ -1,57 +1,114 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Code.Scripts.TimelineEvents
 {
-    public class SimpleTimelineEvent
+    public class TimelinePhaseChangedEventParams
     {
-        public string Name;
-        public float Percentage;
+        public TimelinePhase NextTimelinePhase;
+        public TimelinePhase CurrentTimelinePhase;
+    }
+
+    public class TimelineEventChangedEventParams
+    {
+        public TimelineEvent NextTimelineEvent;
+        public TimelineEvent CurrentTimelineEvent;
     }
 
     public class TimelineEventsManager : MonoBehaviour
     {
+        [SerializeField]
         public TimelineEventsScriptableObject TimelineEventsConfig;
         public bool TimerRunning { get; private set; } = false;
+        public TimelineEvent[] TimelineEvents { get; private set; }
+        public TimelinePhase[] TimelinePhases { get; private set; }
 
         private float _startTime = 0;
         private UpgradeManager _upgradeManager;
         private int _autoMinionSpawnAmount;
-        private TimelineEvent[] _timelineEvents;
+        private TimelinePhase _currentPhase;
 
-        public event Action<TimelineEvent> OnTimelineEventExecuted;
+        public event Action<TimelineEventChangedEventParams> OnTimelineEventExecuted;
+        public event Action<TimelinePhaseChangedEventParams> OnTimelinePhaseChanged;
+        public event Action OnTimelineEnded;
+        public int AllPhasesDuration { get; private set; }
 
         void Start()
         {
             _autoMinionSpawnAmount = TimelineEventsConfig.InitialAutoMinionSpawnAmount;
-            _timelineEvents = TimelineEventsConfig.GetPropagatedMatchEvents();
+            TimelineEvents = TimelineEventsConfig.GetPropagatedMatchEventsInExecutionOrder();
+            TimelinePhases = TimelineEventsConfig.GetTimelinePhasesInExecutionOrder();
             _upgradeManager = GameObject.Find("UpgradeManager").GetComponent<UpgradeManager>();
+            AllPhasesDuration = TimelinePhases.Sum(x => x.Duration);
 
             StartTimelineEvents();
         }
 
         private void Update()
         {
+            EvaluateTimelinePhases();
             EvaluateTimelineEvents();
         }
 
         private void EvaluateTimelineEvents()
         {
-            if (TimerRunning)
+            if (_currentPhase == null) return;
+            if (!TimerRunning) return;
+            if (_currentPhase.Type == TimelinePhaseType.Match)
             {
-                int currentTime = (int)GetSecondsRunning();
-                foreach(TimelineEvent tle in _timelineEvents)
+                int currentTime = (int)GetSecondsRunning() - _currentPhase.StartTime;
+                int i = 0;
+                foreach (TimelineEvent tle in TimelineEvents)
                 {
+                    i++;
                     if (tle.IsExecuted) continue;
                     if (currentTime >= tle.ExecutionTime)
                     {
+                        Debug.Log($"Executing Event {tle.Name}");
                         ExecuteEvent(tle);
-                        OnTimelineEventExecuted?.Invoke(tle);
+                        var eventParams = new TimelineEventChangedEventParams()
+                        {
+                            NextTimelineEvent = i+1 >= TimelineEvents.Length ? null : TimelineEvents[i+1],
+                            CurrentTimelineEvent = tle,
+                        };
+                        OnTimelineEventExecuted?.Invoke(eventParams);
                         tle.SetExecuted();
                     }
                 }
+            }
+        }
+
+        private void EvaluateTimelinePhases()
+        {
+            if (!TimerRunning) return;
+
+            int currentTime = (int)GetSecondsRunning();
+            int i = 0;
+            foreach (TimelinePhase tlp in TimelinePhases)
+            {
+                i++;
+                if (tlp.IsExecuted) continue;
+                if (currentTime >= tlp.StartTime)
+                {
+                    Debug.Log($"Current Phase started: {tlp.Name}");
+                    OnTimelinePhaseChanged?.Invoke(new TimelinePhaseChangedEventParams()
+                    {
+                        NextTimelinePhase = i >= TimelinePhases.Length ? null : TimelinePhases[i],
+                        CurrentTimelinePhase = tlp
+                    });
+                    _currentPhase = tlp;
+                    tlp.SetExecuted();
+                }
+            }
+
+            if (currentTime >= AllPhasesDuration)
+            {
+                Debug.Log("Match Ended!");
+                OnTimelineEnded?.Invoke();
+                StopTimelineEvents();
             }
         }
 
@@ -63,14 +120,15 @@ namespace Code.Scripts.TimelineEvents
 
         public void StopTimelineEvents()
         {
+            _startTime = 0;
             ResetTimelineEvents();
+            ResetTimelinePhases();
             TimerRunning = false;
         }
 
-        public void ResetTimelineEvents()
+        private void ResetTimelineEvents()
         {
-            _startTime = 0;
-            foreach(TimelineEvent tle in _timelineEvents)
+            foreach (TimelineEvent tle in TimelineEvents)
             {
                 tle.SetExecuted(false);
             }
@@ -79,26 +137,18 @@ namespace Code.Scripts.TimelineEvents
             // TODO: Reset Money Bonus too?
         }
 
+        private void ResetTimelinePhases()
+        {
+            foreach (TimelinePhase tlp in TimelinePhases)
+            {
+                tlp.SetExecuted(false);
+            }
+        }
+
         public float GetSecondsRunning()
         {
             if (!TimerRunning) return 0;
             return Time.realtimeSinceStartup - _startTime;
-        }
-
-        public string GetFormattedSecondsRunning()
-        {
-            float currentTime = GetSecondsRunning();
-            int seconds = (int)currentTime;
-            int minutes = seconds / 60;
-            string _minutes = (minutes < 10 ? "0" : "") + minutes.ToString();
-            string _seconds = (seconds < 10 ? "0" : "") + (seconds % 60).ToString();
-            return $"{_minutes}:{_seconds}";
-        }
-
-        public SimpleTimelineEvent[] GetWholeTimescale()
-        {
-            // TODO: List of all Phases and Events
-            return null;
         }
 
         private void ExecuteEvent(TimelineEvent timelineEvent)
@@ -107,7 +157,9 @@ namespace Code.Scripts.TimelineEvents
             if (timelineEvent.Type == TimelineEventType.AutominionSpawn)
             {
                 ExecuteAutominionSpawnEvent(timelineEvent);
-            } else if (timelineEvent.Type == TimelineEventType.MoneyBonus) {
+            }
+            else if (timelineEvent.Type == TimelineEventType.MoneyBonus)
+            {
                 ExecuteMoneyBonusEvent(timelineEvent);
             }
         }
@@ -128,7 +180,8 @@ namespace Code.Scripts.TimelineEvents
             {
                 // relative minion amount adjustment
                 _autoMinionSpawnAmount += minionAmount;
-            } else
+            }
+            else
             {
                 // absolute
                 _autoMinionSpawnAmount = minionAmount;

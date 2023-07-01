@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -10,6 +11,27 @@ namespace Code.Scripts.TimelineEvents
     {
         AutominionSpawn,
         MoneyBonus,
+    }
+
+    public enum TimelinePhaseType
+    {
+        Preparation,
+        Match,
+        Pre
+    }
+
+    [Serializable]
+    public class TimelinePhase
+    {
+        public string Name;
+        public TimelinePhaseType Type;
+        public int Duration;
+        public int StartTime = 0;
+        public bool IsExecuted { get; private set; } = false;
+        public void SetExecuted(bool executed = true)
+        {
+            IsExecuted = executed;
+        }
     }
 
     [Serializable]
@@ -33,7 +55,7 @@ namespace Code.Scripts.TimelineEvents
         }
     }
 
-    [CreateAssetMenu(fileName ="TimelineEventsConfig", menuName ="ScriptableObjects/TimelineEvents")]
+    [CreateAssetMenu(fileName = "TimelineEventsConfig", menuName = "ScriptableObjects/TimelineEvents")]
     public class TimelineEventsScriptableObject : ScriptableObject
     {
         [Tooltip("Preperation Phase Duration in seconds")]
@@ -49,7 +71,7 @@ namespace Code.Scripts.TimelineEvents
 
         private void ValidateEvents()
         {
-            foreach(var e in MatchEvents)
+            foreach (var e in MatchEvents)
             {
                 if (e.ExecutionTime >= MatchPhaseDuration)
                 {
@@ -59,7 +81,7 @@ namespace Code.Scripts.TimelineEvents
                 if (e.IsRepeated)
                 {
                     if (e.MaxExecutionAmount != 0 && ((e.ExecutionTime + e.MaxExecutionAmount * e.RepeatInterval) >= MatchPhaseDuration))
-                    Debug.LogWarning($"{e.Name} repeated executed events exceed match duration.");
+                        Debug.LogWarning($"{e.Name} repeated executed events exceed match duration.");
                 }
             }
         }
@@ -73,7 +95,7 @@ namespace Code.Scripts.TimelineEvents
         /// Unpack all Matchevents in a straight event timeline, removing repeated events completely and mapping them
         /// </summary>
         /// <returns></returns>
-        public TimelineEvent[] GetPropagatedMatchEvents()
+        public TimelineEvent[] GetPropagatedMatchEventsInExecutionOrder()
         {
             var propagatedEvents = new List<TimelineEvent>();
             foreach (var e in MatchEvents)
@@ -82,12 +104,12 @@ namespace Code.Scripts.TimelineEvents
                 {
                     int executionTime = e.ExecutionTime;
                     int i = 0;
-                    while(executionTime < MatchPhaseDuration)
+                    while (executionTime < MatchPhaseDuration)
                     {
                         if (e.MaxExecutionAmount != 0 && i >= e.MaxExecutionAmount) break;
                         TimelineEvent newEvent = new TimelineEvent()
                         {
-                            Name = $"{e.Name} ({i+1})",
+                            Name = $"{e.Name} ({i + 1})",
                             Type = e.Type,
                             IsRepeated = e.IsRepeated,
                             RepeatInterval = e.RepeatInterval,
@@ -100,13 +122,45 @@ namespace Code.Scripts.TimelineEvents
                         executionTime += e.RepeatInterval;
                         i++;
                     }
-                } else
+                }
+                else
                 {
                     propagatedEvents.Add(e);
                 }
             }
 
-            return propagatedEvents.ToArray();
+            return propagatedEvents.OrderBy(e => e.ExecutionTime).ToArray();
+        }
+
+        public TimelinePhase[] GetTimelinePhasesInExecutionOrder()
+        {
+            var result = new List<TimelinePhase>();
+            result.Add(
+                new TimelinePhase()
+                {
+                    Name = "Preparation Phase",
+                    Type = TimelinePhaseType.Preparation,
+                    Duration = this.PreperationPhaseDuration
+                }
+            );
+            result.Add(
+                new TimelinePhase()
+                {
+                    Name = "Match Phase",
+                    Type = TimelinePhaseType.Match,
+                    Duration = this.MatchPhaseDuration,
+                }
+            );
+
+            // calc start time of each event based on previous events
+            int startTime = 0;
+            foreach(var e in result)
+            {
+                e.StartTime = startTime;
+                startTime += e.Duration;
+            }
+
+            return result.OrderBy(e => e.StartTime).ToArray();
         }
     }
 }
