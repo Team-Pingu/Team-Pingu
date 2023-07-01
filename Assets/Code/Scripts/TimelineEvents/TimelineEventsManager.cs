@@ -1,32 +1,41 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Code.Scripts.TimelineEvents
 {
-    public class SimpleTimelineEvent
+    public class TimelinePhaseChangedEventParams
     {
-        public string Name;
-        public float Percentage;
+        public TimelinePhase PreviousTimelinePhase;
+        public TimelinePhase CurrentTimelinePhase;
     }
 
     public class TimelineEventsManager : MonoBehaviour
     {
-        public TimelineEventsScriptableObject TimelineEventsConfig;
+        [SerializeField]
+        private TimelineEventsScriptableObject _timelineEventsConfig;
         public bool TimerRunning { get; private set; } = false;
+        public TimelineEvent[] TimelineEvents { get; private set; }
+        public TimelinePhase[] TimelinePhases { get; private set; }
 
         private float _startTime = 0;
         private UpgradeManager _upgradeManager;
         private int _autoMinionSpawnAmount;
-        private TimelineEvent[] _timelineEvents;
+        private TimelinePhase _currentPhase;
 
         public event Action<TimelineEvent> OnTimelineEventExecuted;
+        /// <summary>
+        /// Event for Phase change. First value = current phase, second = previous phase
+        /// </summary>
+        public event Action<TimelinePhaseChangedEventParams> OnTimelinePhaseChanged;
 
         void Start()
         {
-            _autoMinionSpawnAmount = TimelineEventsConfig.InitialAutoMinionSpawnAmount;
-            _timelineEvents = TimelineEventsConfig.GetPropagatedMatchEvents();
+            _autoMinionSpawnAmount = _timelineEventsConfig.InitialAutoMinionSpawnAmount;
+            TimelineEvents = _timelineEventsConfig.GetPropagatedMatchEventsInExecutionOrder();
+            TimelinePhases = _timelineEventsConfig.GetTimelinePhasesInExecutionOrder();
             _upgradeManager = GameObject.Find("UpgradeManager").GetComponent<UpgradeManager>();
 
             StartTimelineEvents();
@@ -34,23 +43,49 @@ namespace Code.Scripts.TimelineEvents
 
         private void Update()
         {
+            EvaluateTimelinePhases();
             EvaluateTimelineEvents();
         }
 
         private void EvaluateTimelineEvents()
         {
-            if (TimerRunning)
+            if (_currentPhase == null) return;
+            if (!TimerRunning) return;
+            if (_currentPhase.Type == TimelinePhaseType.Match)
             {
-                int currentTime = (int)GetSecondsRunning();
-                foreach(TimelineEvent tle in _timelineEvents)
+                int currentTime = (int)GetSecondsRunning() - _currentPhase.StartTime;
+                foreach (TimelineEvent tle in TimelineEvents)
                 {
                     if (tle.IsExecuted) continue;
                     if (currentTime >= tle.ExecutionTime)
                     {
+                        Debug.Log($"Executing Event {tle.Name}");
                         ExecuteEvent(tle);
                         OnTimelineEventExecuted?.Invoke(tle);
                         tle.SetExecuted();
                     }
+                }
+            }
+        }
+
+        private void EvaluateTimelinePhases()
+        {
+            if (!TimerRunning) return;
+
+            int currentTime = (int)GetSecondsRunning();
+            foreach (TimelinePhase tlp in TimelinePhases)
+            {
+                if (tlp.IsExecuted) continue;
+                if (currentTime >= tlp.StartTime)
+                {
+                    Debug.Log($"Current Phase started: {tlp.Name}");
+                    OnTimelinePhaseChanged?.Invoke(new TimelinePhaseChangedEventParams()
+                    {
+                        PreviousTimelinePhase = _currentPhase,
+                        CurrentTimelinePhase = tlp
+                    });
+                    _currentPhase = tlp;
+                    tlp.SetExecuted();
                 }
             }
         }
@@ -63,20 +98,29 @@ namespace Code.Scripts.TimelineEvents
 
         public void StopTimelineEvents()
         {
+            _startTime = 0;
             ResetTimelineEvents();
+            ResetTimelinePhases();
             TimerRunning = false;
         }
 
-        public void ResetTimelineEvents()
+        private void ResetTimelineEvents()
         {
-            _startTime = 0;
-            foreach(TimelineEvent tle in _timelineEvents)
+            foreach (TimelineEvent tle in TimelineEvents)
             {
                 tle.SetExecuted(false);
             }
 
-            _autoMinionSpawnAmount = TimelineEventsConfig.InitialAutoMinionSpawnAmount;
+            _autoMinionSpawnAmount = _timelineEventsConfig.InitialAutoMinionSpawnAmount;
             // TODO: Reset Money Bonus too?
+        }
+
+        private void ResetTimelinePhases()
+        {
+            foreach (TimelinePhase tlp in TimelinePhases)
+            {
+                tlp.SetExecuted(false);
+            }
         }
 
         public float GetSecondsRunning()
@@ -95,19 +139,15 @@ namespace Code.Scripts.TimelineEvents
             return $"{_minutes}:{_seconds}";
         }
 
-        public SimpleTimelineEvent[] GetWholeTimescale()
-        {
-            // TODO: List of all Phases and Events
-            return null;
-        }
-
         private void ExecuteEvent(TimelineEvent timelineEvent)
         {
             if (timelineEvent == null) return;
             if (timelineEvent.Type == TimelineEventType.AutominionSpawn)
             {
                 ExecuteAutominionSpawnEvent(timelineEvent);
-            } else if (timelineEvent.Type == TimelineEventType.MoneyBonus) {
+            }
+            else if (timelineEvent.Type == TimelineEventType.MoneyBonus)
+            {
                 ExecuteMoneyBonusEvent(timelineEvent);
             }
         }
@@ -128,7 +168,8 @@ namespace Code.Scripts.TimelineEvents
             {
                 // relative minion amount adjustment
                 _autoMinionSpawnAmount += minionAmount;
-            } else
+            }
+            else
             {
                 // absolute
                 _autoMinionSpawnAmount = minionAmount;
