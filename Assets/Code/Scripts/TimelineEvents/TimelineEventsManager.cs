@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Code.Scripts.TimelineEvents
 {
-    public class TimelinePhaseChangedEventParams
+    public class TimelinePhaseChangedPhaseParams
     {
         public TimelinePhase NextTimelinePhase;
         public TimelinePhase CurrentTimelinePhase;
@@ -16,6 +16,7 @@ namespace Code.Scripts.TimelineEvents
     {
         public TimelineEvent NextTimelineEvent;
         public TimelineEvent CurrentTimelineEvent;
+        public int PhaseExecutionOffset;
     }
 
     public class TimelineEventsManager : MonoBehaviour
@@ -32,9 +33,11 @@ namespace Code.Scripts.TimelineEvents
         private TimelinePhase _currentPhase;
 
         public event Action<TimelineEventChangedEventParams> OnTimelineEventExecuted;
-        public event Action<TimelinePhaseChangedEventParams> OnTimelinePhaseChanged;
+        public event Action<TimelinePhaseChangedPhaseParams> OnTimelinePhaseChanged;
         public event Action OnTimelineEnded;
+        public event Action<int> OnTimerChanged;
         public int AllPhasesDuration { get; private set; }
+        public int Timer { get; private set; } = 0;
 
         void Start()
         {
@@ -49,6 +52,7 @@ namespace Code.Scripts.TimelineEvents
 
         private void Update()
         {
+            Timer = GetSecondsRunning();
             EvaluateTimelinePhases();
             EvaluateTimelineEvents();
         }
@@ -59,7 +63,7 @@ namespace Code.Scripts.TimelineEvents
             if (!TimerRunning) return;
             if (_currentPhase.Type == TimelinePhaseType.Match)
             {
-                int currentTime = (int)GetSecondsRunning() - _currentPhase.StartTime;
+                int currentTime = Timer - _currentPhase.StartTime;
                 int i = 0;
                 foreach (TimelineEvent tle in TimelineEvents)
                 {
@@ -71,8 +75,9 @@ namespace Code.Scripts.TimelineEvents
                         ExecuteEvent(tle);
                         var eventParams = new TimelineEventChangedEventParams()
                         {
-                            NextTimelineEvent = i+1 >= TimelineEvents.Length ? null : TimelineEvents[i+1],
+                            NextTimelineEvent = i >= TimelineEvents.Length ? null : TimelineEvents[i],
                             CurrentTimelineEvent = tle,
+                            PhaseExecutionOffset = _currentPhase.StartTime
                         };
                         OnTimelineEventExecuted?.Invoke(eventParams);
                         tle.SetExecuted();
@@ -85,7 +90,7 @@ namespace Code.Scripts.TimelineEvents
         {
             if (!TimerRunning) return;
 
-            int currentTime = (int)GetSecondsRunning();
+            int currentTime = Timer;
             int i = 0;
             foreach (TimelinePhase tlp in TimelinePhases)
             {
@@ -94,13 +99,23 @@ namespace Code.Scripts.TimelineEvents
                 if (currentTime >= tlp.StartTime)
                 {
                     Debug.Log($"Current Phase started: {tlp.Name}");
-                    OnTimelinePhaseChanged?.Invoke(new TimelinePhaseChangedEventParams()
+                    OnTimelinePhaseChanged?.Invoke(new TimelinePhaseChangedPhaseParams()
                     {
                         NextTimelinePhase = i >= TimelinePhases.Length ? null : TimelinePhases[i],
                         CurrentTimelinePhase = tlp
                     });
                     _currentPhase = tlp;
                     tlp.SetExecuted();
+
+                    if (tlp.Type == TimelinePhaseType.Match)
+                    {
+                        OnTimelineEventExecuted?.Invoke(new TimelineEventChangedEventParams()
+                        {
+                            NextTimelineEvent = TimelineEvents.FirstOrDefault(),
+                            CurrentTimelineEvent = null,
+                            PhaseExecutionOffset = tlp.StartTime
+                        });
+                    }
                 }
             }
 
@@ -145,10 +160,13 @@ namespace Code.Scripts.TimelineEvents
             }
         }
 
-        public float GetSecondsRunning()
+        private int GetSecondsRunning()
         {
             if (!TimerRunning) return 0;
-            return Time.realtimeSinceStartup - _startTime;
+            int seconds = (int)(Time.realtimeSinceStartup - _startTime);
+            //int seconds = (int)(_startTime + Time.deltaTime);
+            OnTimerChanged?.Invoke(seconds);
+            return seconds;
         }
 
         private void ExecuteEvent(TimelineEvent timelineEvent)

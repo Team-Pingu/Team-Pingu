@@ -37,6 +37,22 @@ namespace Code.Scripts.TimelineEvents
     [Serializable]
     public class TimelineEvent
     {
+        public TimelineEvent()
+        {
+
+        }
+
+        public TimelineEvent(TimelineEvent original)
+        {
+            Name = original.Name;
+            Type = original.Type;
+            IsRepeated = original.IsRepeated;
+            RepeatInterval = original.RepeatInterval;
+            MaxExecutionAmount = original.MaxExecutionAmount;
+            CustomAttributeValue = original.CustomAttributeValue;
+            ExecutionTime = original.ExecutionTime;
+        }
+
         public string Name;
         public TimelineEventType Type;
         public bool IsRepeated = false;
@@ -107,16 +123,10 @@ namespace Code.Scripts.TimelineEvents
                     while (executionTime < MatchPhaseDuration)
                     {
                         if (e.MaxExecutionAmount != 0 && i >= e.MaxExecutionAmount) break;
-                        TimelineEvent newEvent = new TimelineEvent()
-                        {
-                            Name = $"{e.Name} ({i + 1})",
-                            Type = e.Type,
-                            IsRepeated = e.IsRepeated,
-                            RepeatInterval = e.RepeatInterval,
-                            MaxExecutionAmount = e.MaxExecutionAmount,
-                            CustomAttributeValue = e.CustomAttributeValue,
-                            ExecutionTime = executionTime,
-                        };
+                        var newEvent = new TimelineEvent(e);
+                        newEvent.Name = $"{e.Name} ({i + 1})";
+                        newEvent.ExecutionTime = executionTime;
+
                         propagatedEvents.Add(newEvent);
 
                         executionTime += e.RepeatInterval;
@@ -125,7 +135,8 @@ namespace Code.Scripts.TimelineEvents
                 }
                 else
                 {
-                    propagatedEvents.Add(e);
+                    var newEvent = new TimelineEvent(e);
+                    propagatedEvents.Add(newEvent);
                 }
             }
 

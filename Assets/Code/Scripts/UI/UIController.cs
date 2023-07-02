@@ -29,13 +29,16 @@ public class UIController : MonoBehaviour
     private Button _upgradeMenuOpenButton;
     private Button _upgradeMenuCloseButton;
     private Label _currencyLabel;
-    private Label _timerLabel;
     private VisualElement _timelineContainer;
     private VisualElement _timelineEventTemplate;
     private VisualElement _timelinePreparationPhase;
     private VisualElement _timelineTimer;
     private VisualElement _timelineMatchEventsContainer;
     private VisualElement _timelinePhaseContainer;
+    private Label _timerPhaseLabel;
+    private Label _timerPhaseTimerLabel;
+    private Label _timerEventLabel;
+    private Label _timerEventTimerLabel;
 
     private readonly string UPGRADE_MODAL_NAME = "game-upgrade-popup";
     private readonly string ATTACKER_INIT_MODAL_NAME = "game-start-popup-attacker";
@@ -55,7 +58,12 @@ public class UIController : MonoBehaviour
         _upgradeMenuCloseButton = _root.Q<Button>("game-upgrade-popup__actions__close");
         _upgradeMenu = _root.Q<VisualElement>(UPGRADE_MODAL_NAME);
         _currencyLabel = _root.Q<Label>("player-controls__currency__text");
-        _timerLabel = _root.Q<Label>("timer__text");
+        const string timerEventBaseClass = "timer__next-event";
+        _timerEventLabel = _root.Q<Label>($"{timerEventBaseClass}__event-text");
+        _timerEventTimerLabel = _root.Q<Label>($"{timerEventBaseClass}__timer-text");
+        const string timerPhaseBaseClass = "timer__current-phase";
+        _timerPhaseLabel = _root.Q<Label>($"{timerPhaseBaseClass}__phase-text");
+        _timerPhaseTimerLabel = _root.Q<Label>($"{timerPhaseBaseClass}__timer-text");
 
         _upgradeMenuOpenButton.RegisterCallback<ClickEvent, VisualElement>(OnUpgradeMenuOpenClick, _upgradeMenu);
         _upgradeMenuCloseButton.RegisterCallback<ClickEvent>(OnUpgradeMenuCloseClick);
@@ -72,13 +80,75 @@ public class UIController : MonoBehaviour
 
         InitTimelineElements();
 
-        // TODO: implement event handlers for timeline
-        //_timelineEventsManager.OnTimelineEventExecuted += (e) => {
-        //    _root.Q<Label>("timer-next-event-text").text = e.NextTimelineEvent.Name;
-        //};
+        _timelineEventsManager.OnTimerChanged += OnTimerChanged;
+        _timelineEventsManager.OnTimelineEventExecuted += OnTimelineEventExecuted;
+        _timelineEventsManager.OnTimelinePhaseChanged += OnTimelinePhaseChanged;
+        _timelineEventsManager.OnTimelineEnded += OnTimelineEnded;
 
         InitSeed();
     }
+
+    #region Events
+    private void OnTimerChanged(int currentTimerInSeconds)
+    {
+        //_timerPhaseTimerLabel.text = GetFormattedSecondsRunning(_timelineEventsManager.AllPhasesDuration - _timelineEventsManager.Timer);
+
+        if (_timerEventTimerLabel?.userData != null && _timerEventTimerLabel.userData.GetType() == typeof(int) && (int)_timerEventTimerLabel.userData >= 0)
+        {
+            int eventTimerSecondsLeft = (int)_timerEventTimerLabel.userData - currentTimerInSeconds;
+            if (eventTimerSecondsLeft > 5 || eventTimerSecondsLeft <= 0)
+            {
+                _timerEventTimerLabel.parent.style.display = DisplayStyle.None;
+            }
+            else
+            {
+                _timerEventTimerLabel.parent.style.display = DisplayStyle.Flex;
+                _timerEventTimerLabel.text = eventTimerSecondsLeft.ToString();
+            }
+        }
+
+        if (_timerPhaseTimerLabel?.userData != null && _timerPhaseTimerLabel.userData.GetType() == typeof(int) && (int)_timerPhaseTimerLabel.userData >= 0)
+        {
+            int phaseTimerSecondsLeft = (int)_timerPhaseTimerLabel.userData - currentTimerInSeconds;
+            _timerPhaseTimerLabel.text = GetFormattedSecondsRunning(phaseTimerSecondsLeft);
+        }
+
+        float percentage = (_timelineEventsManager.Timer / (float)_timelineEventsManager.AllPhasesDuration) * 100;
+        _timelineTimer.style.width = new StyleLength(new Length(percentage, LengthUnit.Percent));
+    }
+
+    private void OnTimelineEventExecuted(TimelineEventChangedEventParams args)
+    {
+        if (args.NextTimelineEvent == null)
+        {
+            _timerEventLabel.parent.style.display = DisplayStyle.None;
+        } else
+        {
+            _timerEventLabel.parent.style.display = DisplayStyle.Flex;
+            _timerEventLabel.text = args.NextTimelineEvent.Name;
+            _timerEventTimerLabel.userData = args.NextTimelineEvent.ExecutionTime + args.PhaseExecutionOffset;
+        }
+    }
+
+    private void OnTimelinePhaseChanged(TimelinePhaseChangedPhaseParams args)
+    {
+        if (args.CurrentTimelinePhase == null)
+        {
+            _timerPhaseLabel.parent.style.display = DisplayStyle.None;
+        }
+        else
+        {
+            _timerPhaseLabel.parent.style.display = DisplayStyle.Flex;
+            _timerPhaseLabel.text = args.CurrentTimelinePhase.Name;
+            _timerPhaseTimerLabel.userData = args.CurrentTimelinePhase.StartTime + args.CurrentTimelinePhase.Duration;
+        }
+    }
+
+    private void OnTimelineEnded()
+    {
+
+    }
+    #endregion
 
     void InitTimelineElements()
     {
@@ -98,10 +168,10 @@ public class UIController : MonoBehaviour
             eventElement.style.marginLeft = new StyleLength(new Length(percentage, LengthUnit.Percent));
             if (e.Type == TimelineEventType.AutominionSpawn)
             {
-                eventElement.style.backgroundColor = new StyleColor(Color.white);
+                eventElement.AddToClassList("timeline-event-template--autominion");
             } else if (e.Type == TimelineEventType.MoneyBonus)
             {
-                eventElement.style.backgroundColor = new StyleColor(Color.yellow);
+                eventElement.AddToClassList("timeline-event-template--moneybonus");
             }
             _timelineMatchEventsContainer.Add(eventElement);
         }
@@ -113,28 +183,12 @@ public class UIController : MonoBehaviour
         _timelineEventTemplate.style.display = DisplayStyle.None;
     }
 
-    private string GetFormattedSecondsRunning(float currentTime)
+    private string GetFormattedSecondsRunning(int seconds)
     {
-        int seconds = (int)currentTime;
         int minutes = seconds / 60;
         string __minutes = (minutes < 10 ? "0" : "") + minutes.ToString();
         string __seconds = (seconds < 10 ? "0" : "") + (seconds % 60).ToString();
         return $"{__minutes}:{__seconds}";
-    }
-
-    void Update()
-    {
-        if (_timelineEventsManager.TimerRunning)
-        {
-            float currentTime = _timelineEventsManager.GetSecondsRunning();
-            _timerLabel.text = GetFormattedSecondsRunning(currentTime);
-
-            float percentage = (currentTime / (float)_timelineEventsManager.AllPhasesDuration) * 100;
-            _timelineTimer.style.width = new StyleLength(new Length(percentage, LengthUnit.Percent));
-        } else
-        {
-            _timerLabel.text = "No Timer Running";
-        }
     }
 
     private void UpdateCurrencyText(int currentBalance)
