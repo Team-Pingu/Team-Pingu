@@ -1,6 +1,6 @@
 using System;
 using Code.Scripts.Pathfinding;
-using Code.Scripts.Player;
+using Code.Scripts.Player.Controller;
 using UnityEngine;
 using Unity.Netcode;
 
@@ -13,7 +13,7 @@ namespace Code.Scripts
 
         private GridManager _gridManager;
         private Vector2Int _coordinates = new Vector2Int();
-        
+
         private DefenderPlayerController _defenderPlayerController;
         private AttackerPlayerController _attackerPlayerController;
 
@@ -42,11 +42,16 @@ namespace Code.Scripts
         {
             int playerID = (int) NetworkManager.Singleton.LocalClientId;
             if(IsServer || playerID > 2) return;
-            Debug.Log("Mouse Clicked");
 
-            Debug.Log(playerID);
-            SpawnEntityServerRpc(playerID);
+            GameObject objectSpawner = GameObject.Find("ObjectSpawner");
+            Code.Scripts.Player.Controller.Player player = GameObject.Find("Player").GetComponent<Code.Scripts.Player.Controller.Player>();
 
+            if(player.Role == PlayerRole.Attacker) {
+                objectSpawner.GetComponent<ObjectSpawner>().SpawnAttackerUnitServerRpc(this.transform.position);
+                return;
+            }
+
+            if(player.Role == PlayerRole.Defender) objectSpawner.GetComponent<ObjectSpawner>().SpawnDefenderUnitServerRpc(this.transform.position);
         }
 
         [ServerRpc(RequireOwnership = false)]
@@ -65,7 +70,7 @@ namespace Code.Scripts
                 spawnedEntity = _defenderPlayerController.PlacePlaceholderUnit(transform.position);
 
                 if (spawnedEntity == null) return;
-                
+
                 isPlaceable = false;
                 _gridManager.BlockNode(_coordinates);
 

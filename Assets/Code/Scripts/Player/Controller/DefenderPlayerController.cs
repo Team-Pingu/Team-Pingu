@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
-namespace Code.Scripts.Player
+namespace Code.Scripts.Player.Controller
 {
     public class DefenderPlayerController : PlayerController
     {

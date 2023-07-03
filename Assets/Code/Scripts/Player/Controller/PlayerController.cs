@@ -7,7 +7,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
-namespace Code.Scripts.Player
+namespace Code.Scripts.Player.Controller
 {
     // Hauptklasse für den PlayerController
     public abstract class PlayerController : MonoBehaviour

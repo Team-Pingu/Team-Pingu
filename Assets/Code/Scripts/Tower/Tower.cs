@@ -1,4 +1,4 @@
-using Code.Scripts.Player;
+using Code.Scripts.Player.Controller;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
