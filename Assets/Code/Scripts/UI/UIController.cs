@@ -72,7 +72,7 @@ public class UIController : MonoBehaviour
         _root.Q<VisualElement>("static")?.SendToBack();
 
         _player = GameObject.Find("Player").GetComponent<Player>();
-        _bank = _player.PlayerController.GetBank();
+        _bank = GameObject.Find("Player").GetComponent<Bank>();
         UpdateCurrencyText(_bank.CurrentBalance);
         _timelineEventsManager = GameObject.Find("TimelineEventsManager").GetComponent<TimelineEventsManager>();
 
