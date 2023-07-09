@@ -137,6 +137,9 @@ namespace Game.CustomUI.Seed
                 um => { um.UpdateMovementSpeedMultiplier(2 / 5f); },
                 "III"
             );
+            r11.SetChainedElements(null, r12);
+            r12.SetChainedElements(r11, r13);
+            r13.SetChainedElements(r12, null);
 
             // row 2
             var r21 = new UpgradeElement(
@@ -163,6 +166,9 @@ namespace Game.CustomUI.Seed
                 um => { um.UpdateHealthMultiplier(2 / 5f); },
                 "III"
             );
+            r21.SetChainedElements(null, r22);
+            r22.SetChainedElements(r21, r23);
+            r23.SetChainedElements(r22, null);
 
             // row 3
             var r31 = new UpgradeElement(
@@ -238,21 +244,33 @@ namespace Game.CustomUI.Seed
             var r11 = new UpgradeElement("Damage 1", "", 200, um => { um.UpdateAttackDamageMultiplier(3 / 2f); }, um => { um.UpdateAttackDamageMultiplier(2 / 3f); }, "I");
             var r12 = new UpgradeElement("Damage 2", "", 200, um => { um.UpdateAttackDamageMultiplier(3.5f / 2f); }, um => { um.UpdateAttackDamageMultiplier(2 / 3.5f); }, "II");
             var r13 = new UpgradeElement("Damage 3", "", 200, um => { um.UpdateAttackDamageMultiplier(5 / 2f); }, um => { um.UpdateAttackDamageMultiplier(2 / 5f); }, "III");
+            r11.SetChainedElements(null, r12);
+            r12.SetChainedElements(r11, r13);
+            r13.SetChainedElements(r12, null);
 
             // row 2 (50%, 75%, 150%)
             var r21 = new UpgradeElement("Rate of Fire 1", "", 200, um => { um.UpdateAttackSpeedMultiplier(3 / 2f); }, um => { um.UpdateAttackSpeedMultiplier(2 / 3f); }, "I");
             var r22 = new UpgradeElement("Rate of Fire 2", "", 200, um => { um.UpdateAttackSpeedMultiplier(3.5f / 2f); }, um => { um.UpdateAttackSpeedMultiplier(2 / 3.5f); }, "II");
             var r23 = new UpgradeElement("Rate of Fire 3", "", 200, um => { um.UpdateAttackSpeedMultiplier(5 / 2f); }, um => { um.UpdateAttackSpeedMultiplier(2 / 5f); }, "III");
+            r21.SetChainedElements(null, r22);
+            r22.SetChainedElements(r21, r23);
+            r23.SetChainedElements(r22, null);
 
             // row 3 (50%, 75%, 150%)
             var r31 = new UpgradeElement("Range 1", "", 200, um => { um.UpdateAttackRangeMultiplier(3 / 2f); }, um => { um.UpdateAttackRangeMultiplier(2 / 3f); }, "I");
             var r32 = new UpgradeElement("Range 2", "", 200, um => { um.UpdateAttackRangeMultiplier(3.5f / 2f); }, um => { um.UpdateAttackRangeMultiplier(2 / 3.5f); }, "II");
             var r33 = new UpgradeElement("Range 3", "", 200, um => { um.UpdateAttackRangeMultiplier(5 / 2f); }, um => { um.UpdateAttackRangeMultiplier(2 / 5f); }, "III");
+            r31.SetChainedElements(null, r32);
+            r32.SetChainedElements(r31, r33);
+            r33.SetChainedElements(r32, null);
 
             // row 4 (50%, 75%, 150%)
             var r41 = new UpgradeElement("Area of Effect 1", "", 200, um => { um.UpdateAttackAreaOfEffectMultiplier(3 / 2f); }, um => { um.UpdateAttackAreaOfEffectMultiplier(2 / 3f); }, "I");
             var r42 = new UpgradeElement("Area of Effect 2", "", 200, um => { um.UpdateAttackAreaOfEffectMultiplier(3.5f / 2f); }, um => { um.UpdateAttackAreaOfEffectMultiplier(2 / 3.5f); }, "II");
             var r43 = new UpgradeElement("Area of Effect 3", "", 200, um => { um.UpdateAttackAreaOfEffectMultiplier(5 / 2f); }, um => { um.UpdateAttackAreaOfEffectMultiplier(2 / 5f); }, "III");
+            r41.SetChainedElements(null, r42);
+            r42.SetChainedElements(r41, r43);
+            r43.SetChainedElements(r42, null);
 
             // row 5
             var r51 = new UpgradeElement("Ricochet", "", 200, null);
