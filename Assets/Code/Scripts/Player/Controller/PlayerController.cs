@@ -18,6 +18,7 @@ namespace Code.Scripts.Player.Controller
 
         private void Awake()
         {
+            _bank = GetComponent<Bank>();
             LoadPrefab();
         }
 
@@ -25,11 +26,6 @@ namespace Code.Scripts.Player.Controller
         {
             var resource = new GameResource("Assets/Level/Prefabs/Towers/ThunderCoil.prefab", "", GameResourceType.AutoMinion);
             _placeholderPrefab = resource.LoadRessource<GameObject>();
-        }
-
-        private void Start()
-        {
-            _bank = GetComponent<Bank>();
         }
 
         public Bank GetBank()

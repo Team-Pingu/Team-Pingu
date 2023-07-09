@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
-using static UnityEditor.Experimental.GraphView.GraphView;
+// using static UnityEditor.Experimental.GraphView.GraphView;
 
 namespace Game.CustomUI
 {
@@ -102,7 +102,7 @@ namespace Game.CustomUI
         }
         private void OnAbortButtonClicked(ClickEvent e)
         {
-            DeselectAllUnits();
+            DeselectAllUnits(true);
         }
         private void OnMouseOver(MouseOverEvent e)
         {
@@ -252,11 +252,12 @@ namespace Game.CustomUI
             }
         }
 
-        public void DeselectAllUnits()
+        public void DeselectAllUnits(bool sell = false)
         {
             SetSelectedUnits();
             foreach (UnitCard uc in Cards)
             {
+                if (sell) uc.Sell(uc.SelectedUnitsAmount);
                 uc.ResetSelection();
             }
         }

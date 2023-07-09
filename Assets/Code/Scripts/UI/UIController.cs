@@ -48,7 +48,7 @@ public class UIController : MonoBehaviour
     private Bank _bank;
     private TimelineEventsManager _timelineEventsManager;
 
-    private void Start()
+    private void Awake()
     {
         _root = GetComponent<UIDocument>().rootVisualElement;
 
@@ -64,7 +64,10 @@ public class UIController : MonoBehaviour
         const string timerPhaseBaseClass = "timer__current-phase";
         _timerPhaseLabel = _root.Q<Label>($"{timerPhaseBaseClass}__phase-text");
         _timerPhaseTimerLabel = _root.Q<Label>($"{timerPhaseBaseClass}__timer-text");
+    }
 
+    void Start()
+    {
         _upgradeMenuOpenButton.RegisterCallback<ClickEvent, VisualElement>(OnUpgradeMenuOpenClick, _upgradeMenu);
         _upgradeMenuCloseButton.RegisterCallback<ClickEvent>(OnUpgradeMenuCloseClick);
         _root.Q<Button>($"{ATTACKER_INIT_MODAL_NAME}__actions__close").RegisterCallback<ClickEvent>(OnModalClose);
@@ -72,6 +75,7 @@ public class UIController : MonoBehaviour
         _root.Q<VisualElement>("static")?.SendToBack();
 
         _player = GameObject.Find("Player").GetComponent<Player>();
+        //_bank = GameObject.Find("Player").GetComponent<Bank>();
         _bank = _player.PlayerController.GetBank();
         UpdateCurrencyText(_bank.CurrentBalance);
         _timelineEventsManager = GameObject.Find("TimelineEventsManager").GetComponent<TimelineEventsManager>();
