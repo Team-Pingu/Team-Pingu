@@ -122,7 +122,7 @@ namespace Game.CustomUI
             SellAction = sellAction;
             IsSpecializationUpgrade = string.IsNullOrEmpty(tier);
 
-            var popupExtraInfo = IsSpecializationUpgrade ? "This is a Specialization, it cannot be sold!" : $"Upgrades can be sold for {SELL_PENALTY * 100} of their original value.";
+            var popupExtraInfo = IsSpecializationUpgrade ? "This is a Specialization, it cannot be sold!" : $"Upgrades can be sold for {SELL_PENALTY * 100}% of their original value.";
             _popupPanel = new PopupPanelCustom(name, description, this, popupExtraInfo);
         }
 
