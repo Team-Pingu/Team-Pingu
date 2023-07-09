@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
+using Unity.VisualScripting;
+using Game.UI;
 
 namespace Game.CustomUI
 {
@@ -83,6 +85,7 @@ namespace Game.CustomUI
         private VisualElement _tierContainer;
         private Label _tierLabel;
         public UnitCardPanel ParentUnitCardPanel;
+        private PopupPanelCustom _popupPanel;
 
         private UpgradeManager _upgradeManager;
         public Action<UpgradeManager> BuyAction;
@@ -118,6 +121,9 @@ namespace Game.CustomUI
             BuyAction = buyAction;
             SellAction = sellAction;
             IsSpecializationUpgrade = string.IsNullOrEmpty(tier);
+
+            var popupExtraInfo = IsSpecializationUpgrade ? "This is a Specialization, it cannot be sold!" : $"Upgrades can be sold for {SELL_PENALTY * 100} of their original value.";
+            _popupPanel = new PopupPanelCustom(name, description, this, popupExtraInfo);
         }
 
         public void SetChainedElements(UpgradeElement previous, UpgradeElement next)
@@ -148,24 +154,40 @@ namespace Game.CustomUI
             _lockedOverlay = this.Q<VisualElement>("upgrade-element__locked-overlay");
 
             _mainContainer.RegisterCallback<MouseDownEvent>(OnMouseClick);
+            _mainContainer.RegisterCallback<MouseEnterEvent>(OnMouseEnter);
+            _mainContainer.RegisterCallback<MouseLeaveEvent>(OnMouseExit);
 
             _bank = GameObject.Find("Player").GetComponent<Bank>();
             _bank.OnBalanceChanged += currentBalance => IsAffordable(currentBalance);
+            this.CaptureMouse();
         }
 
         #region Events
 
         private void OnMouseClick(MouseDownEvent e)
         {
-            if (e.button == (int)MouseButton.LeftMouse)
+            if (e.button == (int)UnityEngine.UIElements.MouseButton.LeftMouse)
             {
                 Buy();
             }
 
-            if (e.button == (int)MouseButton.RightMouse)
+            if (e.button == (int)UnityEngine.UIElements.MouseButton.RightMouse)
             {
                 Sell();
             }
+        }
+
+        private void OnMouseEnter(MouseEnterEvent e)
+        {
+            Debug.Log("ENTER");
+            _popupPanel.SetScreenPos(this);
+            _popupPanel.Show();
+        }
+
+        private void OnMouseExit(MouseLeaveEvent e)
+        {
+            Debug.Log("EXIT");
+            _popupPanel.Hide();
         }
         #endregion
 
