@@ -97,12 +97,12 @@ namespace Game.CustomUI
         {
             if (e.button == (int)MouseButton.LeftMouse)
             {
-                this.Select();
+                if (Select()) Buy();
             }
 
             if (e.button == (int)MouseButton.RightMouse)
             {
-                this.Deselect();
+                if (Deselect()) Sell();
             }
         }
         #endregion
@@ -119,7 +119,7 @@ namespace Game.CustomUI
             // spawn unit on level grid
         }
 
-        private void Select()
+        private bool Select()
         {
             int _MAX_UNITS_SELECTABLE;
 
@@ -134,17 +134,17 @@ namespace Game.CustomUI
 
             if (SelectedUnitsAmount >= _MAX_UNITS_SELECTABLE)
             {
-                return;
+                return false;
             }
 
             if (!IsAffordable(_bank.CurrentBalance))
             {
-                return;
+                return false;
             }
 
             if (ParentUnitCardPanel != null && ParentUnitCardPanel.UseSingleSelectionOnly)
             {
-                ParentUnitCardPanel.DeselectAllUnits();
+                ParentUnitCardPanel.DeselectAllUnits(true);
             }
 
             if (SelectedUnitsAmount == 0)
@@ -158,14 +158,14 @@ namespace Game.CustomUI
             SelectedUnitsAmount += UNIT_SELECT_STEPS;
             if (ParentUnitCardPanel != null) ParentUnitCardPanel.SetSelectedUnits(UNIT_SELECT_STEPS);
             _selectCounterText.text = $"x{SelectedUnitsAmount}";
-            Buy();
+            return true;
         }
 
-        private void Deselect()
+        private bool Deselect()
         {
             if (SelectedUnitsAmount <= 0)
             {
-                return;
+                return false;
             }
 
             if (SelectedUnitsAmount - UNIT_SELECT_STEPS <= 0)
@@ -179,25 +179,25 @@ namespace Game.CustomUI
             SelectedUnitsAmount -= UNIT_SELECT_STEPS;
             if (ParentUnitCardPanel != null) ParentUnitCardPanel.SetSelectedUnits(-UNIT_SELECT_STEPS);
             _selectCounterText.text = $"x{SelectedUnitsAmount}";
-            Sell();
+            return true;
         }
 
         public void ResetSelection()
         {
-            Sell(SelectedUnitsAmount);
             SelectedUnitsAmount = 0;
             _backgroundDefault.style.display = DisplayStyle.Flex;
             _backgroundSelected.style.display = DisplayStyle.None;
             _selectCounter.style.display = DisplayStyle.None;
         }
         
-        private void Buy()
+        public void Buy()
         {
             _bank?.Withdraw(Cost);
         }
 
-        private void Sell(int amount = 1)
+        public void Sell(int amount = 1)
         {
+            if (amount <= 0) return;
             _bank?.Deposit(Cost * amount);
         }
     }
