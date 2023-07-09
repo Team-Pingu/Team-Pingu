@@ -2,6 +2,7 @@ using Code.Scripts;
 using Game.CustomUI;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -72,6 +73,8 @@ namespace Game.CustomUI
             //_nameLabel.text = name;
             //_descriptionLabel.text = description;
             _costLabel.text = $"{cost}";
+
+            _popupPanel = new PopupPanelCustom(name, description, _mainContainer, "This is an instant Action");
         }
 
         private void Init()
@@ -88,10 +91,8 @@ namespace Game.CustomUI
             _mainContainer = this.Q<VisualElement>("ability-element-container");
             var _content = this.Q<VisualElement>("ability-element");
 
-            _popupPanel = new PopupPanelCustom("something", "something", _mainContainer, PopupPositionAnchor.TopLeft);
-
-            //_content.RegisterCallback<MouseOverEvent>(OnMouseOver);
-            //_content.RegisterCallback<MouseOutEvent>(OnMouseOut);
+            _mainContainer.RegisterCallback<MouseEnterEvent>(OnMouseEnter);
+            _mainContainer.RegisterCallback<MouseLeaveEvent>(OnMouseExit);
             _mainContainer.RegisterCallback<ClickEvent>(MouseClick);
 
             _bank = GameObject.Find("Player").GetComponent<Bank>();
@@ -107,15 +108,18 @@ namespace Game.CustomUI
                 Buy();
             }
         }
-        private void OnMouseOver(MouseOverEvent e)
+
+        private void OnMouseEnter(MouseEnterEvent e)
         {
-            Debug.Log("MouseOver");
-            _popupPanel?.Show();
+            Debug.Log("ENTER");
+            _popupPanel.SetScreenPos(this);
+            _popupPanel.Show();
         }
-        private void OnMouseOut(MouseOutEvent e)
+
+        private void OnMouseExit(MouseLeaveEvent e)
         {
-            Debug.Log("MouseOut");
-            _popupPanel?.Hide();
+            Debug.Log("EXIT");
+            _popupPanel.Hide();
         }
         #endregion
 

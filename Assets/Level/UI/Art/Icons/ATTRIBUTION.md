@@ -3,3 +3,4 @@
 <a href="https://www.flaticon.com/free-icons/attack" title="attack icons">Attack icons created by Freepik - Flaticon</a>
 <a href="https://www.flaticon.com/free-icons/crystal" title="crystal icons">Crystal icons created by Freepik - Flaticon</a>
 <a href="https://www.flaticon.com/free-icons/attack" title="attack icons">Attack icons created by Smashicons - Flaticon</a>
+<a href="https://www.flaticon.com/free-icons/chain" title="chain icons">Chain icons created by Freepik - Flaticon</a>

@@ -33,6 +33,10 @@ MonoBehaviour:
     m_Address: Assets/Level/UI/Additional UI Elements/Scripts/UpgradeElement/UpgradeElement.uxml
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: 3444c8295d7a94640b4e955aba016a2a
+    m_Address: Assets/Level/UI/Additional UI Elements/Scripts/PopupPanelCustom/PopupPanelCustom.uxml
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 305b91d93a3e83442ba751e5dc8322f3, type: 2}
   m_SchemaSet:

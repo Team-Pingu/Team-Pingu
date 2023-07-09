@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
+using Unity.VisualScripting;
+using Game.UI;
 
 namespace Game.CustomUI
 {
@@ -66,8 +68,13 @@ namespace Game.CustomUI
         public bool IsSelected { get; private set; } = false;
         public bool IsBought { get; private set; } = false;
         public bool IsLocked { get; private set; } = false;
+        public bool IsSpecializationUpgrade { get; private set; } = false;
+
+        public UpgradeElement PreviousChainElement { get; private set; } = null;
+        public UpgradeElement NextChainElement { get; private set; } = null;
 
         private readonly string VIEW_ASSET_PATH = "Assets/Level/UI/Additional UI Elements/Scripts/UpgradeElement/UpgradeElement.uxml";
+        private readonly float SELL_PENALTY = 0.6f;
 
         private Label _costLabel;
         private VisualElement _image;
@@ -78,6 +85,7 @@ namespace Game.CustomUI
         private VisualElement _tierContainer;
         private Label _tierLabel;
         public UnitCardPanel ParentUnitCardPanel;
+        private PopupPanelCustom _popupPanel;
 
         private UpgradeManager _upgradeManager;
         public Action<UpgradeManager> BuyAction;
@@ -99,6 +107,7 @@ namespace Game.CustomUI
             IsLocked = _lockedOverlay.style.display == DisplayStyle.Flex;
             IsSelected = _backgroundSelected.style.display == DisplayStyle.Flex;
             IsBought = IsSelected;
+            IsSpecializationUpgrade = string.IsNullOrEmpty(Tier);
         }
 
         public UpgradeElement(string name, string description, int cost, Action<UpgradeManager> buyAction = null, Action<UpgradeManager> sellAction = null, string tier = null)
@@ -111,6 +120,18 @@ namespace Game.CustomUI
             SetTier(tier);
             BuyAction = buyAction;
             SellAction = sellAction;
+            IsSpecializationUpgrade = string.IsNullOrEmpty(tier);
+
+            var popupExtraInfo = IsSpecializationUpgrade ? "This is a Specialization, it cannot be sold!" : $"Upgrades can be sold for {SELL_PENALTY * 100}% of their original value.";
+            _popupPanel = new PopupPanelCustom(name, description, this, popupExtraInfo);
+        }
+
+        public void SetChainedElements(UpgradeElement previous, UpgradeElement next)
+        {
+            if (previous == null) Unlock();
+            else Lock();
+            PreviousChainElement = previous;
+            NextChainElement = next;
         }
 
         private void Init()
@@ -133,26 +154,40 @@ namespace Game.CustomUI
             _lockedOverlay = this.Q<VisualElement>("upgrade-element__locked-overlay");
 
             _mainContainer.RegisterCallback<MouseDownEvent>(OnMouseClick);
+            _mainContainer.RegisterCallback<MouseEnterEvent>(OnMouseEnter);
+            _mainContainer.RegisterCallback<MouseLeaveEvent>(OnMouseExit);
 
             _bank = GameObject.Find("Player").GetComponent<Bank>();
             _bank.OnBalanceChanged += currentBalance => IsAffordable(currentBalance);
+            this.CaptureMouse();
         }
 
         #region Events
 
         private void OnMouseClick(MouseDownEvent e)
         {
-            if (e.button == (int)MouseButton.LeftMouse)
+            if (e.button == (int)UnityEngine.UIElements.MouseButton.LeftMouse)
             {
-                this.Select();
-                this.Buy();
+                Buy();
             }
 
-            if (e.button == (int)MouseButton.RightMouse)
+            if (e.button == (int)UnityEngine.UIElements.MouseButton.RightMouse)
             {
-                this.Deselect();
-                this.Sell();
+                Sell();
             }
+        }
+
+        private void OnMouseEnter(MouseEnterEvent e)
+        {
+            Debug.Log("ENTER");
+            _popupPanel.SetScreenPos(this);
+            _popupPanel.Show();
+        }
+
+        private void OnMouseExit(MouseLeaveEvent e)
+        {
+            Debug.Log("EXIT");
+            _popupPanel.Hide();
         }
         #endregion
 
@@ -183,25 +218,31 @@ namespace Game.CustomUI
             _backgroundSelected.style.display = DisplayStyle.None;
         }
 
-        private void Buy()
+        private bool Buy()
         {
-            if (IsLocked) return;
-            if (IsBought) return;
-            if (!IsAffordable(_bank.CurrentBalance)) return;
+            if (IsLocked) return false;
+            if (IsBought) return false;
+            if (!IsAffordable(_bank.CurrentBalance)) return false;
+            Select();
             IsBought = true;
-            // TODO: subtract money!
             BuyAction?.Invoke(_upgradeManager);
             _bank.Withdraw(Cost);
+            NextChainElement?.Unlock();
+            return true;
         }
 
-        private void Sell()
+        private bool Sell()
         {
-            if (IsLocked) return;
-            if (!IsBought) return;
+            if (IsLocked) return false;
+            if (!IsBought) return false;
+            if (IsSpecializationUpgrade) return false;
+            if (NextChainElement != null && NextChainElement.IsBought) return false;
+            Deselect();
             IsBought = false;
-            // TODO: add money to game state!
             SellAction?.Invoke(_upgradeManager);
-            _bank.Deposit(Cost);
+            _bank.Deposit(Mathf.RoundToInt(Cost * SELL_PENALTY));
+            NextChainElement?.Lock();
+            return true;
         }
 
         public void SetTier(string tier)
