@@ -236,6 +236,7 @@ namespace Game.CustomUI
             if (IsLocked) return false;
             if (!IsBought) return false;
             if (IsSpecializationUpgrade) return false;
+            if (NextChainElement != null && NextChainElement.IsBought) return false;
             Deselect();
             IsBought = false;
             SellAction?.Invoke(_upgradeManager);
