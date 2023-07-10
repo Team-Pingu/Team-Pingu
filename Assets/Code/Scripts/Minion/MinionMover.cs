@@ -20,6 +20,8 @@ namespace Code.Scripts
         private Pathfinder _pathfinder;
         private Minion _minion;
 
+        private Vector2Int _startCoordinate;
+
         private void Awake()
         {
             _gridManager = FindObjectOfType<GridManager>();
@@ -41,6 +43,7 @@ namespace Code.Scripts
             _path.Clear();
 
             _path = _pathfinder.GetNewPath().First(); // TODO: hier abändern, dass User Pfad wählen kann
+            _startCoordinate = _path[0].coordinates;
         }
 
         /**
@@ -52,11 +55,12 @@ namespace Code.Scripts
             _path.Clear();
 
             _path = _pathfinder.GetNewPath().First();
+            _startCoordinate = _path[0].coordinates;
         }
 
         private void ReturnToStart()
         {
-            transform.position = _gridManager.GetPositionFromCoordinates(_pathfinder.StartCoordinates);
+            transform.position = _gridManager.GetPositionFromCoordinates(_startCoordinate);
         }
 
         private void FinishPath()

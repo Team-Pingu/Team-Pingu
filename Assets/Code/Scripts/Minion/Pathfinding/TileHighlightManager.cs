@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Code.Scripts.Player;
+using Code.Scripts.Player.Controller;
 using UnityEngine;
 
 namespace Code.Scripts.Pathfinding
@@ -25,12 +25,12 @@ namespace Code.Scripts.Pathfinding
             }
         }
 
-        public void HighlightUsableTiles(PlayerController.Role role = PlayerController.Role.Defender)
+        public void HighlightUsableTiles(PlayerRole role = PlayerRole.Defender)
         {
             Dictionary<Vector2Int, Tile> highlightTiles = role switch
             {
-                PlayerController.Role.Attacker => _attackerTiles,
-                PlayerController.Role.Defender => _defenderTiles,
+                PlayerRole.Attacker => _attackerTiles,
+                PlayerRole.Defender => _defenderTiles,
                 _ => new Dictionary<Vector2Int, Tile>()
             };
 
