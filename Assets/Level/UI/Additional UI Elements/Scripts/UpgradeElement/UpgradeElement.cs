@@ -278,6 +278,13 @@ namespace Game.CustomUI
             IsLocked = false;
             _lockedOverlay.style.display = DisplayStyle.None;
         }
+
+        public void SetBackgroundImage(string path)
+        {
+            var ressourceObject = new GameResource(path, $"upgrade_ui_{Name}", GameResourceType.UI);
+            Texture2D texture = ressourceObject.LoadRessource<Texture2D>();
+            _image.style.backgroundImage = new StyleBackground(texture);
+        }
         #endregion
     }
 }

@@ -1,0 +1,217 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: User Interface Icons
+  m_EditorClassIdentifier: 
+  m_GroupName: User Interface Icons
+  m_Data:
+    m_SerializedData: []
+  m_GUID: d41d6615d11b9284183b2fa941395d2f
+  m_SerializeEntries:
+  - m_GUID: d16bee1e9def29f4d9c502fec01a8b9d
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 1/Icon1.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: c8f929a4fb1c2f64e82b6ad383609afc
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 1/Icon2.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: aaa99629d22b2674797b7d3ddb8338ef
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 1/Icon3.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 6a4d539acc40d35498a26cadaa8320f7
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 1/Icon4.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 2228addd3929bcb4fb89c728936f6004
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 1/Icon5.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 2f962028672ea874daff9630cbbc17e3
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 1/Icon6.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: c9d48fac13fe8f34081e05e94225ea0e
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 1/Icon7.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: f87c73f0d31635b4e96440cdf0af3370
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 1/Icon8.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 2e666a9774a741f4fbc3bce06f726c08
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 1/Icon9.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 1ec9d7bfeada1334baea59dcb625d3b7
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 1/Icon10.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 813b960434b5e1c43a6e39909178ef7d
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 1/Icon11.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: b9977905ced2ced4c9d538b92f32bc8a
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 1/Icon12.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 5eb77ecec7378d14ebded6e242456b1d
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 1/Icon13.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 1be22a7b272361743a069731b15aea1d
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 1/Icon14.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: f39c066d2201ea048b3ef0bc8591b929
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 1/Icon15.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 91acd3e0bc079724e983e5b88b4196e4
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 1/Icon16.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 996b6da0442067849bea81713f31f1b0
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 1/Icon17.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: c883d999051db0e4399ce7add27d0dae
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 1/Icon18.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 54dea71b9f5e42c45b8a887245802312
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 1/Icon19.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 694b65b49a1c8494c820c2931c3fc416
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 1/Icon20.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 8bdbd492cf3602045b19ee342a9aecc9
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 1/Icon21.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 6ee15bcd735f63b4598cac3ece2d0196
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 1/Icon22.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 94ac6eaa1ddbfee4c802ad84d719552c
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 1/Icon23.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 87eb60fbe7f8aaf4ca43f47f0b86fce6
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 1/Icon24.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 29f5fe52773d60146aac60a640f0d86e
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 1/Icon25.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 347ce3f0701bb6842bf09a0454350bf8
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 1/Icon26.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 375feb29a7e5e2444bc965a0cbee5dbc
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 1/Icon27.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: e77f98133bdedee4f971fbe0c55f9ddb
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 1/Icon28.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 870f335604c43ba4b9b18566b8858316
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 1/Icon29.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 361f9ec485d45ac4185048f9042e2f5b
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 1/Icon30.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: ed9b290576bc7eb4ab11709f48491d28
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 1/Icon31.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 3853e23241450ba4095ecc4bf9b828a2
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 1/Icon32.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: bd720f141fe099b4f94285d153272452
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 1/Icon33.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 838e97b3d459c464397db3a2792c1756
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 1/Icon34.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 23126d8485fbd2249ac54da177269f07
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 1/Icon35.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 29856fe82091f6d4fa7b8c6c6b211cf1
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 1/Icon36.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 8c6b64d13364bc5439eec5b8250510ca
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 1/Icon37.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 5ed8a257f7b758b428de7875b5867dff
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 1/Icon38.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 000ba526b64be7c4d960556c711b2edf
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 1/Icon39.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: c46b2643267107645ba501973c3a64ff
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 1/Icon40.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: fd3450bbbb47d69429fd9052138e63c4
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 1/Icon41.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 449b56794c0abf841a77be3428d028db
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 1/Icon42.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: f9800803461a8384b90c12ee572b2c48
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 1/Icon43.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: e07fdc657e5024544b128b61968e6d10
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 1/Icon44.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 593c10967f41bde4bba687761e5d7335
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 1/Icon45.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 6438c1c6d92486b418654c8173e923df
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 1/Icon46.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: bc575b9cb5fa8c54ca3ebcad2eb5ff8b
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 1/Icon47.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 8fcc8e31e9f7ecb4e9afc29951b5f28b
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 1/Icon48.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 305b91d93a3e83442ba751e5dc8322f3, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 6d7cb504192d8b5489ceac3cf241555e, type: 2}
+    - {fileID: 11400000, guid: 819fb08ed5e8c5244bf24f9f7229229c, type: 2}
