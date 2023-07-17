@@ -2305,6 +2305,7 @@ GameObject:
   m_Component:
   - component: {fileID: 783135094}
   - component: {fileID: 783135093}
+  - component: {fileID: 783135095}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -2324,8 +2325,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58efc54f0f6444e59b684f1ace93ce49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  chooseRoleUI: {fileID: 8626924159964230457, guid: 406d2b98953c9584f80d63d6223e0808,
-    type: 3}
+  Role: 0
+  PlayerController: {fileID: 0}
 --- !u!4 &783135094
 Transform:
   m_ObjectHideFlags: 0
@@ -2341,6 +2342,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &783135095
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 783135092}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 2803665423
+  AlwaysReplicateAsRoot: 0
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
 --- !u!1 &789244753
 GameObject:
   m_ObjectHideFlags: 0
@@ -5304,9 +5321,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cc3e2ffd9fc4a7e89ac6b55e0a7fe9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pathfindingAlgorithm: 1
-  startCoordinates: {x: 0, y: 0}
-  destinationCoordinates: {x: 1, y: 7}
+  _coordinatePairs:
+  - startCoordinate: {x: 0, y: 0}
+    destinationCoordinate: {x: 6, y: 1}
+  pathfindingAlgorithm: 0
   highlightPath: 1
 --- !u!1001 &1826368180
 PrefabInstance:

@@ -13,17 +13,16 @@ namespace Code.Scripts.Pathfinding
             DepthFirstSearch
         }
 
+        [SerializeField] private CoordinatePair[] _coordinatePairs;
+        
         [SerializeField] private PathfindingAlgorithm pathfindingAlgorithm = PathfindingAlgorithm.DepthFirstSearch;
-        
-        [SerializeField] private Vector2Int startCoordinates;
-        public Vector2Int StartCoordinates { get { return startCoordinates; } }
-        
-        [SerializeField] private Vector2Int destinationCoordinates;
-        public Vector2Int DestinationCoordinates { get { return destinationCoordinates; } }
 
         private Node _startNode;
         private Node _destinationNode;
         private Node _currentSearchNode;
+        
+        private Vector2Int _startCoordinate;
+        private Vector2Int _destinationCoordinate;
 
         private Queue<Node> _frontierBfs = new Queue<Node>();
         private Stack<Node> _frontierDfs = new Stack<Node>();
@@ -41,13 +40,18 @@ namespace Code.Scripts.Pathfinding
 
         private void Awake()
         {
+            if (_coordinatePairs.Length == 0)
+            {
+                throw new Exception("Add at least one CoordinatePair to the Pathfinding Script!");
+            }
+            
             _gridManager = FindObjectOfType<GridManager>();
 
             if (_gridManager != null)
             {
                 _grid = _gridManager.Grid;
-                _startNode = _grid[startCoordinates];
-                _destinationNode = _grid[destinationCoordinates];
+                // _startNode = _grid[_coordinatePairs[0].startCoordinate];
+                // _destinationNode = _grid[_coordinatePairs[0].destinationCoordinate];
             }
 
             _highlight = FindObjectOfType<HighlightPath>();
@@ -111,13 +115,14 @@ namespace Code.Scripts.Pathfinding
                 Vector2Int coords = path[i].coordinates;
                 Vector3 point = _gridManager.GetTile(coords).transform.position;
                 
-                // shifting the position a little it above the tile, otherwise we get parts of lines disappearing in tiles
+                // shifting the position a little bit above the tile, otherwise we get parts of lines disappearing in tiles
                 point.y += 0.5f;
                 
                 // shifting x and z according to the number of the path to place them next to each other instead of laying them on each other
                 // TODO: remove if we only show one path at once -> would be easier because we don't need to shift the lines
-                point.x += pathIndex;
-                point.z -= pathIndex;
+                // not needed in final map, because there is only certain paths
+                // point.x += pathIndex * 0.2f;
+                // point.z -= pathIndex * 0.2f;
                 
                 points[i] = point;
             }
@@ -131,15 +136,23 @@ namespace Code.Scripts.Pathfinding
             
             _possiblePaths.Clear();
 
-            switch (pathfindingAlgorithm)
+            foreach (CoordinatePair coordinatePair in _coordinatePairs)
             {
-                case PathfindingAlgorithm.BreadthFirstSearch:
-                    BreadthFirstSearch();
-                    break;
-                case PathfindingAlgorithm.DepthFirstSearch:
-                default:
-                    DepthFirstSearch();
-                    break;
+                _startNode = _grid[coordinatePair.startCoordinate];
+                _startCoordinate = coordinatePair.startCoordinate;
+                _destinationNode = _grid[coordinatePair.destinationCoordinate];
+                _destinationCoordinate = coordinatePair.destinationCoordinate;
+                
+                switch (pathfindingAlgorithm)
+                {
+                    case PathfindingAlgorithm.BreadthFirstSearch:
+                        BreadthFirstSearch();
+                        break;
+                    case PathfindingAlgorithm.DepthFirstSearch:
+                    default:
+                        DepthFirstSearch();
+                        break;
+                }
             }
 
             _possiblePaths.Sort((path1, path2) => path1.Count.CompareTo(path2.Count));
@@ -167,6 +180,18 @@ namespace Code.Scripts.Pathfinding
                 Debug.Log(pathString);
                 Debug.Log("----------------------");
             }
+        }
+        
+        private void PrintPath(List<Node> path)
+        {
+            Debug.Log("Path:");
+            String pathString = "";
+            foreach (var node in path)
+            {
+                pathString += node.coordinates + " ";
+            }
+            Debug.Log(pathString);
+            Debug.Log("----------------------");
         }
 
         private void ExploreNeighbours()
@@ -208,7 +233,7 @@ namespace Code.Scripts.Pathfinding
             bool isRunning = true;
 
             _frontierBfs.Enqueue(_startNode);
-            _reached.Add(startCoordinates, _startNode);
+            _reached.Add(_startCoordinate, _startNode);
 
             while (_frontierBfs.Count > 0 && isRunning)
             {
@@ -217,14 +242,14 @@ namespace Code.Scripts.Pathfinding
 
                 ExploreNeighbours();
 
-                if (_currentSearchNode.coordinates == destinationCoordinates)
+                if (_currentSearchNode.coordinates == _destinationCoordinate)
                 {
                     isRunning = false;
                 }
             }
             
             List<Node> path = BuildPath();
-            _possiblePaths.Add(path);
+            _possiblePaths.Add(new List<Node>(path));
         }
 
         private void DepthFirstSearch()
@@ -265,8 +290,9 @@ namespace Code.Scripts.Pathfinding
             currentPath.Add(currentNode);
             currentNode.isExplored = true;
 
-            if (currentNode.coordinates == destinationCoordinates)
+            if (currentNode.coordinates == _destinationCoordinate)
             {
+                // PrintPath(currentPath);
                 // Hinzufügen des aktuellen Pfads zu _possiblePaths, da das Ziel erreicht wurde
                 _possiblePaths.Add(new List<Node>(currentPath));
             }
