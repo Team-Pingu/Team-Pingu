@@ -73,7 +73,9 @@ namespace Game.CustomUI.Seed
             var abilityElements = new List<AbilityElement>();
 
             abilityElements.Add(new AbilityElement("Blackout", "Disable Towers for a short time.", 999));
+            abilityElements[0].SetBackgroundImage("Assets/Level/UI/Art/Icons/Icon Pack 1/Icon19.png");
             abilityElements.Add(new AbilityElement("Other", "Some other Description", 599));
+            abilityElements[1].SetBackgroundImage("Assets/Level/UI/Art/Icons/Icon Pack 1/Icon41.png");
 
             return abilityElements.ToArray();
         }
@@ -121,6 +123,7 @@ namespace Game.CustomUI.Seed
                 um => { um.UpdateMovementSpeedMultiplier(2 / 3f); },
                 "I"
             );
+            r11.SetBackgroundImage("Assets/Level/UI/Art/Icons/Icon Pack 1/Icon25.png");
             var r12 = new UpgradeElement(
                 "Movement Speed 2",
                 "Increased Movement Speed by 75%",
@@ -215,11 +218,13 @@ namespace Game.CustomUI.Seed
                 "Place a dynamite on the Path, which will explode after 5s, dealing area damage to enemy minions",
                 300)
             );
+            abilityElements[0].SetBackgroundImage("Assets/Level/UI/Art/Icons/Icon Pack 1/Icon13.png");
             abilityElements.Add(new AbilityElement(
                 "Shock Field Trap", 
                 "Place a trap on the Path, which will shock the first enemy minions, which slows them down for a short time and deal damage", 
                 155)
             );
+            abilityElements[1].SetBackgroundImage("Assets/Level/UI/Art/Icons/Icon Pack 1/Icon36.png");
 
             return abilityElements.ToArray();
         }
@@ -234,18 +239,21 @@ namespace Game.CustomUI.Seed
                 100,
                 new GameResource("Assets/Level/Prefabs/Towers/BoltThrower.prefab", null, GameResourceType.Minion)
             ));
+            unitCards[0].SetBackgroundImage("Assets/Level/UI/Art/UI Images/bolt_thrower_tower.jpg");
             unitCards.Add(new UnitCard(
                 "Thunder Coil",
                 "Beschreibung hier",
                 250,
                 new GameResource("Assets/Level/Prefabs/Towers/ThunderCoil.prefab", null, GameResourceType.Minion)
             ));
+            unitCards[1].SetBackgroundImage("Assets/Level/UI/Art/UI Images/thunder_coil_tower.jpg");
             unitCards.Add(new UnitCard(
                 "Electric Fence Barricade",
                 "Beschreibung hier",
                 400,
                 new GameResource("Assets/Level/Prefabs/Barricades/ElectricFence.prefab", null, GameResourceType.Minion)
             ));
+            unitCards[2].SetBackgroundImage("Assets/Level/UI/Art/UI Images/electric_fence_barricade.jpg");
 
             return unitCards.ToArray();
         }
@@ -260,6 +268,7 @@ namespace Game.CustomUI.Seed
                 um => { um.UpdateAttackDamageMultiplier(3 / 2f); }, um => { um.UpdateAttackDamageMultiplier(2 / 3f); }, 
                 "I"
             );
+            r11.SetBackgroundImage("Assets/Level/UI/Art/Icons/Icon Pack 1/Icon25.png");
             var r12 = new UpgradeElement(
                 "Damage 2",
                 "Increase Damage Tier 2, increases Damage by 75%",

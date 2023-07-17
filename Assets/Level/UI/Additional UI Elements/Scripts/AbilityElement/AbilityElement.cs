@@ -47,6 +47,7 @@ namespace Game.CustomUI
         private Label _costLabel;
         private VisualElement _mainContainer;
         private PopupPanelCustom _popupPanel;
+        private VisualElement _backgroundContainer;
 
         private Bank _bank;
 
@@ -90,6 +91,7 @@ namespace Game.CustomUI
             _costLabel = this.Q<Label>("ability-element__cost");
             _mainContainer = this.Q<VisualElement>("ability-element-container");
             var _content = this.Q<VisualElement>("ability-element");
+            _backgroundContainer = this.Q<VisualElement>("ability-element__bg");
 
             _mainContainer.RegisterCallback<MouseEnterEvent>(OnMouseEnter);
             _mainContainer.RegisterCallback<MouseLeaveEvent>(OnMouseExit);
@@ -138,6 +140,13 @@ namespace Game.CustomUI
         private void Sell(int amount = 1)
         {
             _bank?.Deposit(Cost * amount);
+        }
+
+        public void SetBackgroundImage(string path)
+        {
+            var ressourceObject = new GameResource(path, $"ability_ui_{Name}", GameResourceType.UI);
+            Texture2D texture = ressourceObject.LoadRessource<Texture2D>();
+            _backgroundContainer.style.backgroundImage = new StyleBackground(texture);
         }
     }
 }

@@ -200,5 +200,12 @@ namespace Game.CustomUI
             if (amount <= 0) return;
             _bank?.Deposit(Cost * amount);
         }
+
+        public void SetBackgroundImage(string path)
+        {
+            var ressourceObject = new GameResource(path, $"unitcard_ui_{Name}", GameResourceType.UI);
+            Texture2D texture = ressourceObject.LoadRessource<Texture2D>();
+            _image.style.backgroundImage = new StyleBackground(texture);
+        }
     }
 }
