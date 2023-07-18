@@ -22,11 +22,13 @@ public class ObjectSpawner : NetworkBehaviour {
 
     [ServerRpc(RequireOwnership = false)]
     public void SpawnAttackerUnitServerRpc(Vector3 position) {
-        _attackerController.PlacePlaceholderUnit(position);
+        GameObject gameObject = _attackerController.PlacePlaceholderUnit(position);
+        gameObject.GetComponent<NetworkObject>().Spawn();
     }
 
     [ServerRpc(RequireOwnership = false)]
     public void SpawnDefenderUnitServerRpc(Vector3 position) {
-        _defenderController.PlacePlaceholderUnit(position);
+        GameObject gameObject = _defenderController.PlacePlaceholderUnit(position);
+        gameObject.GetComponent<NetworkObject>().Spawn();
     }
 }
