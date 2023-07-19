@@ -6,7 +6,7 @@ namespace Code.Scripts.Player.Controller
 {
     public class DefenderPlayerController : PlayerController
     {
-        private Dictionary<String, GameObject> _prefabCollection;
+        private Dictionary<string, GameObject> _prefabCollection;
 
         private void Awake()
         {
