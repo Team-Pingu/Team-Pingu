@@ -1,7 +1,6 @@
-﻿using Unity.VisualScripting;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
-using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace Code.Scripts.Player.Controller
 {
@@ -9,11 +8,12 @@ namespace Code.Scripts.Player.Controller
     {
         private Bank _bank;
 
-        private GameObject[] prefabList;
+        private Dictionary<String, GameObject> _prefabCollection;
 
         private void Awake()
         {
             _bank = GetComponent<Bank>();
+            this._prefabCollection = new Dictionary<string, GameObject>();
             LoadPrefab();
         }
 
@@ -25,22 +25,28 @@ namespace Code.Scripts.Player.Controller
             var autoMinion = new GameResource("Assets/Level/Prefabs/Units/AutoMinion.prefab", "", GameResourceType.AutoMinion);
             var steamPoweredGoliath = new GameResource("Assets/Level/Prefabs/Units/SteamPoweredGoliath.prefab", "", GameResourceType.Minion);
 
-            prefabList = new GameObject[] {aetherShieldBearer.LoadRessource<GameObject>(),
-            clockworkScout.LoadRessource<GameObject>(), 
-            gearheadSapper.LoadRessource<GameObject>(),
-            autoMinion.LoadRessource<GameObject>(),
-            steamPoweredGoliath.LoadRessource<GameObject>(),
-            };
+            this._prefabCollection.Add("aetherShieldBearer", aetherShieldBearer.LoadRessource<GameObject>());
+            this._prefabCollection.Add("clockworkScout", clockworkScout.LoadRessource<GameObject>());
+            this._prefabCollection.Add("gearheadSapper", gearheadSapper.LoadRessource<GameObject>());
+            this._prefabCollection.Add("autoMinion", autoMinion.LoadRessource<GameObject>());
+            this._prefabCollection.Add("steamPoweredGoliath", steamPoweredGoliath.LoadRessource<GameObject>());
+            
         }
         
-        public GameObject[] getPrefabList() {
-            return this.prefabList;
+        public Dictionary<String, GameObject> GetPrefabCollection() {
+            return this._prefabCollection;
         }
 
         override
         public GameObject PlacePlaceholderUnit(Vector3 position)
         {
-            return Instantiate(prefabList[0], position, Quaternion.identity);
+            return Instantiate(this._prefabCollection["aetherShieldBearer"] , position, Quaternion.identity);
+        }
+
+        override
+        public GameObject PlaceUnit(String prefabName, Vector3 position)
+        {
+            return Instantiate(this._prefabCollection[prefabName] , position, Quaternion.identity);
         }
     }
 }

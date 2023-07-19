@@ -66,6 +66,7 @@ namespace Code.Scripts.Player.Controller
         {
             return Instantiate(_placeholderPrefab, position, Quaternion.identity);
         }
+        public abstract GameObject PlaceUnit(String prefabName, Vector3 position);
     }
 }
 

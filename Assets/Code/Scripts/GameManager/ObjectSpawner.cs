@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
 using Code.Scripts.Player.Controller;
+using System;
 
 public class ObjectSpawner : NetworkBehaviour {
     private PlayerController _attackerController;
@@ -10,6 +11,10 @@ public class ObjectSpawner : NetworkBehaviour {
     // Start is called before the first frame update
     void Start()
     {
+        #if !UNITY_EDITOR
+        if(IsClient) Destroy(this);
+        #endif
+
         _attackerController = this.gameObject.AddComponent<AttackerPlayerController>();
         _defenderController = this.gameObject.AddComponent<DefenderPlayerController>();
     }
@@ -21,14 +26,14 @@ public class ObjectSpawner : NetworkBehaviour {
     }
 
     [ServerRpc(RequireOwnership = false)]
-    public void SpawnAttackerUnitServerRpc(Vector3 position) {
-        GameObject gameObject = _attackerController.PlacePlaceholderUnit(position);
+    public void SpawnAttackerUnitServerRpc(String prefabName, Vector3 position) {
+        GameObject gameObject = _attackerController.PlaceUnit(prefabName, position);
         gameObject.GetComponent<NetworkObject>().Spawn();
     }
 
     [ServerRpc(RequireOwnership = false)]
-    public void SpawnDefenderUnitServerRpc(Vector3 position) {
-        GameObject gameObject = _defenderController.PlacePlaceholderUnit(position);
+    public void SpawnDefenderUnitServerRpc(String prefabName, Vector3 position) {
+        GameObject gameObject = _defenderController.PlaceUnit(prefabName, position);
         gameObject.GetComponent<NetworkObject>().Spawn();
     }
 }

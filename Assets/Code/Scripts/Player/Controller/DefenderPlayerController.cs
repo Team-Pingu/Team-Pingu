@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
-using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace Code.Scripts.Player.Controller
 {
@@ -12,12 +8,14 @@ namespace Code.Scripts.Player.Controller
     {
         private Bank _bank;
 
-        private GameObject[] prefabList;
+        private Dictionary<String, GameObject> _prefabCollection;
 
         private void Awake()
         {
             _bank = GetComponent<Bank>();
+            this._prefabCollection = new Dictionary<string, GameObject>();
             LoadPrefab();
+
         }
 
         private void LoadPrefab()
@@ -26,17 +24,24 @@ namespace Code.Scripts.Player.Controller
             var core = new GameResource("Assets/Level/Prefabs/Towers/Core.prefab", "", GameResourceType.Tower);
             var boltThrower = new GameResource("Assets/Level/Prefabs/Towers/BoltThrower.prefab", "", GameResourceType.Tower);
 
-            prefabList = new GameObject[] {thunderCoil.LoadRessource<GameObject>(), core.LoadRessource<GameObject>(), boltThrower.LoadRessource<GameObject>()};
+            this._prefabCollection.Add("thunderCoil", thunderCoil.LoadRessource<GameObject>());
+            this._prefabCollection.Add("core", core.LoadRessource<GameObject>()); 
+            this._prefabCollection.Add("boltThrower", boltThrower.LoadRessource<GameObject>());
         }
 
-        public GameObject[] getPrefabList() {
-            return this.prefabList;
+        public Dictionary<String, GameObject> GetPrefabCollection() {
+            return this._prefabCollection;
         }
 
         override
         public GameObject PlacePlaceholderUnit(Vector3 position)
         {
-            return Instantiate(prefabList[0], position, Quaternion.identity);
+            return Instantiate(this._prefabCollection["thunderCoil"], position, Quaternion.identity);
+        }
+
+        override
+        public GameObject PlaceUnit(String prefabName, Vector3 position) {
+            return Instantiate(this._prefabCollection[prefabName], position, Quaternion.identity);
         }
     }
 }
