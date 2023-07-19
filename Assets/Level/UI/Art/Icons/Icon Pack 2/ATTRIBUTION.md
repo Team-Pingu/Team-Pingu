@@ -1,0 +1,1 @@
+https://pixerelia.itch.io/vas-basic-spells-and-buffs

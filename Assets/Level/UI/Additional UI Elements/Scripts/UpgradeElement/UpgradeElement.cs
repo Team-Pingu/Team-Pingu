@@ -112,10 +112,13 @@ namespace Game.CustomUI
 
         public UpgradeElement(string name, string description, int cost, Action<UpgradeManager> buyAction = null, Action<UpgradeManager> sellAction = null, string tier = null)
         {
-            Init();
-
             Name = name;
             Description = description;
+            Cost = cost;
+            Tier = tier;
+
+            Init();
+
             SetCost(cost);
             SetTier(tier);
             BuyAction = buyAction;
@@ -159,6 +162,7 @@ namespace Game.CustomUI
 
             _bank = GameObject.Find("Player").GetComponent<Bank>();
             _bank.OnBalanceChanged += currentBalance => IsAffordable(currentBalance);
+            IsAffordable(_bank.CurrentBalance);
             this.CaptureMouse();
         }
 

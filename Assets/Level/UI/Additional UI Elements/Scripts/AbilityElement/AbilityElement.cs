@@ -65,11 +65,11 @@ namespace Game.CustomUI
 
         public AbilityElement(string name, string description, int cost)
         {
-            Init();
-
             Name = name;
             Description = description;
             Cost = cost;
+
+            Init();
 
             //_nameLabel.text = name;
             //_descriptionLabel.text = description;
@@ -99,6 +99,7 @@ namespace Game.CustomUI
 
             _bank = GameObject.Find("Player").GetComponent<Bank>();
             _bank.OnBalanceChanged += currentBalance => IsAffordable(currentBalance);
+            IsAffordable(_bank.CurrentBalance);
         }
 
         #region Events
