@@ -55,11 +55,12 @@ namespace Game.CustomUI
 
         public UnitCard(string name, string description, int cost, GameResource gameResource)
         {
-            Init();
-
             Name = name;
             Description = description;
             Cost = cost;
+
+            Init();
+
             _unitGameResource = gameResource;
 
             _nameLabel.text = name;
@@ -89,6 +90,7 @@ namespace Game.CustomUI
 
             _bank = GameObject.Find("Player").GetComponent<Bank>();
             _bank.OnBalanceChanged += currentBalance => IsAffordable(currentBalance);
+            IsAffordable(_bank.CurrentBalance);
         }
 
         #region Events

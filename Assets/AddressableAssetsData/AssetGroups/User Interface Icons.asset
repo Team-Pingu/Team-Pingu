@@ -209,6 +209,198 @@ MonoBehaviour:
     m_Address: Assets/Level/UI/Art/Icons/Icon Pack 1/Icon48.png
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: 51f0c5f665d7a124c9ff4bd8aa1f933f
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 2/Buffs/attack_boost.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 9f179ba8234cc4b46afa14a126faa4b9
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 2/Buffs/attack_speed_boost.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 6af587fdab46e144587464ae7449faac
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 2/Buffs/critical_boost.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: bb72805a50d344a45b38d20a36382f70
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 2/Buffs/defense_boost.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 1885e37f347e2db41b2fada0c7b1f114
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 2/Buffs/element_boost.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 8143adb8f8458f14f8138883003b317f
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 2/Buffs/enemy_spawn_down.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 4bb1707ebc904b548b9ae933cb94daec
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 2/Buffs/exp_boost.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 848bf132c36eda54ab3af15266dd8fc1
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 2/Buffs/ghost_form_(physical_damage_immunity).png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 47c4b210f3dd6f8449f47516f6dcfa61
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 2/Buffs/glow.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 74bb2486475dee74f86c24472bd979f8
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 2/Buffs/knockback_boost.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 297b1e4e19bf028439d18395695fa613
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 2/Buffs/knockback_resistance.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 060c7bff59a6a2543a207443a37ab766
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 2/Buffs/lucky_boost.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 925dfb9b1b32fbf4e81437556cabfbbb
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 2/Buffs/magic_amplification.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: cb1c5bcd00924b54eb11eb0cdec25db2
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 2/Buffs/negative_status_resistance.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 6dd14a872a6156740812ad624433a417
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 2/Buffs/regeneration.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 33cdaff8e532e0949ad78ce2b549ae43
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 2/Buffs/swiftness.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: ae73ca544c1d2594887c7b90cd126563
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 2/Spells/blinding_light_spell.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 951e0ca657225ab4b9d56f9a009c09ba
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 2/Spells/counterspell.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 05bf9509613b51d428c66faa43968ab9
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 2/Spells/divine_protection_spell.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 16053fa6d901a60489150409e7fc5dac
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 2/Spells/fire_spell.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 82486ea2c5fa85845aea57fa91b0bf1c
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 2/Spells/fire_spell_2.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: dbda92051b2229d41887a1b1eb0e476b
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 2/Spells/fortify_spell.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 60738c3c2f511404ababb507fe580d21
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 2/Spells/frenzy_spell_(critical_booster).png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 16e1236e0e9301e42b1045846e44f039
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 2/Spells/healing_spell.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: cb39bb77ab5770d498ef176c58f24ab1
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 2/Spells/ice_spell.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: bc8cd4dc20af101498611824a653fc2a
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 2/Spells/lightning_spell.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 4a3c008211582864390f7575d6248620
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 2/Spells/mana_replenish.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 7087bb9c328435646b6d9af4856a3a3e
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 2/Spells/poison_dagger.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 4d49eb628c6d4da4c8a1efcbaaa62ab4
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 2/Spells/summoning_spell.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: ca5d66493a0a8f2419ef93512b1c2964
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 2/Spells/teleportation_spell.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 1577fa4deba0f9f47918beb9968f6666
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 2/Spells/thorn_vine_spell.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 95c40782c5241e143b6c37e6e7a7207f
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 2/Spells/water_spell.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 356eb5e323fad5043bd7112e76db9832
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 2/Debuffs/attack_down.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: e7ed66e14ff841f4cb4b8b9d17919622
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 2/Debuffs/bleeding.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: d10ad5478f7a3144699b8b12fc83d5af
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 2/Debuffs/blinded.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: fa0566ab2ee041e45805654966296914
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 2/Debuffs/confused.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: cfd349e2a55c0a54da8e6dbf1e8cda3f
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 2/Debuffs/cursed_(disarmed+silenced).png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: fbe94aab6acd7ed429a188f966b8a7fe
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 2/Debuffs/defense_down.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 338cdf8d0de31bd4990000ef69b49be0
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 2/Debuffs/disarmed.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: a907c8f7b7c11a747a8f7fe13d5e6f26
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 2/Debuffs/frozen.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 9158e333306ee44468999a6875925d85
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 2/Debuffs/hungry.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 81e628302e0b8254ab1ae2a4dc416a39
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 2/Debuffs/on_fire_(burning).png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 7346a9f462070094b81c3bcc7d275482
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 2/Debuffs/paralyzed.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 6bc65c147d2c55d45ae63f8a1dd79d9e
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 2/Debuffs/poisoned.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: c52437aac386216409f547c28c3a323f
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 2/Debuffs/silenced.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: aefbae40839815c498f1cd8d5d03cb98
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 2/Debuffs/sleeping.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 1a50aac984bc9844fa10c472c0126f7d
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 2/Debuffs/slowed.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 810f52d27b8089a47bbd0bb0e11c95ee
+    m_Address: Assets/Level/UI/Art/Icons/Icon Pack 2/Debuffs/stunned.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 305b91d93a3e83442ba751e5dc8322f3, type: 2}
   m_SchemaSet:
