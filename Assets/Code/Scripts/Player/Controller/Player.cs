@@ -14,7 +14,7 @@ namespace Code.Scripts.Player.Controller
         Defender
     }
 
-    public class Player : NetworkBehaviour
+    public class Player : MonoBehaviour
     {
         [SerializeField]
         public PlayerRole Role;
@@ -23,10 +23,12 @@ namespace Code.Scripts.Player.Controller
 
         private void Start()
         {  
-            #if !UNITY_EDITOR
-            Role = PlayerRole.Defender;
-            if(NetworkManager.Singleton.LocalClientId == 2) Role = PlayerRole.Attacker;
-            #endif
+            if(NetworkManager.Singleton != null) {
+                Role = PlayerRole.Defender;
+                if(NetworkManager.Singleton.LocalClientId == 2) Role = PlayerRole.Attacker;
+            }
+
+            Debug.Log(Role);
             
             if (Role == PlayerRole.Defender) PlayerController = gameObject.AddComponent<DefenderPlayerController>();
             else PlayerController = gameObject.AddComponent<AttackerPlayerController>();
