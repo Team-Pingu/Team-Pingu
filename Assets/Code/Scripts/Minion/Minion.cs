@@ -8,6 +8,7 @@ namespace Code.Scripts
     {
         [SerializeField] public int goldReward = 25;
         [SerializeField] public int goldPenalty = 25;
+        public int Health;
 
         private AttackerPlayerController _attackerPlayerController;
         private Bank _bank;
@@ -23,6 +24,11 @@ namespace Code.Scripts
             _bank = _attackerPlayerController.GetBank();
         }
 
+        private void Update()
+        {
+            if (Health <= 0) KillSelf();
+        }
+
         public void RewardGold()
         {
             if (_bank == null) return;
@@ -35,6 +41,11 @@ namespace Code.Scripts
             if (_bank == null) return;
             
             _bank.Withdraw(goldPenalty);
+        }
+
+        public void KillSelf()
+        {
+            GameObject.Destroy(gameObject);
         }
     }
 }

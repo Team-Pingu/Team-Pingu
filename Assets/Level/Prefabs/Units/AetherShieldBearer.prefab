@@ -109,7 +109,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4279150638
+    rgba: 4278225181
   m_fontColor: {r: 0.11271467, g: 0.5377358, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -266,6 +266,7 @@ GameObject:
   - component: {fileID: 3451203933149199482}
   - component: {fileID: 7980733730422449389}
   - component: {fileID: -8144273554497361849}
+  - component: {fileID: 760422187254528823}
   m_Layer: 0
   m_Name: AetherShieldBearer
   m_TagString: Untagged
@@ -321,6 +322,21 @@ MonoBehaviour:
   AlwaysReplicateAsRoot: 0
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
+--- !u!114 &760422187254528823
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7521688284601391487}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 619d9d8a66544d298c265ef14e857557, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  goldReward: 25
+  goldPenalty: 25
+  Health: 100
 --- !u!1 &7598061928044001187
 GameObject:
   m_ObjectHideFlags: 0
