@@ -26,8 +26,11 @@ namespace Code.Scripts.Player.Controller
 
         private void Start()
         {  
+            #if !UNITY_EDITOR
             Role = PlayerRole.Defender;
             if(NetworkManager.Singleton.LocalClientId == 2) Role = PlayerRole.Attacker;
+            #endif
+
             activeEntities = new List<string>();
 
             if (Role == PlayerRole.Defender) PlayerController = gameObject.AddComponent<DefenderPlayerController>();
