@@ -12,7 +12,7 @@ namespace Code.Scripts.Player.Controller
     // Hauptklasse für den PlayerController
     public abstract class PlayerController : MonoBehaviour
     {
-        private Bank _bank;
+        protected Bank _bank;
 
         private GameObject _placeholderPrefab;
 
@@ -66,6 +66,7 @@ namespace Code.Scripts.Player.Controller
         {
             return Instantiate(_placeholderPrefab, position, Quaternion.identity);
         }
+        public abstract GameObject PlaceUnit(String prefabName, Vector3 position);
     }
 }
 

@@ -3,6 +3,7 @@ using Code.Scripts.Pathfinding;
 using Code.Scripts.Player.Controller;
 using UnityEngine;
 using Unity.Netcode;
+using System.Collections.Generic;
 
 namespace Code.Scripts
 {
@@ -13,9 +14,11 @@ namespace Code.Scripts
 
         private GridManager _gridManager;
         private Vector2Int _coordinates = new Vector2Int();
+        private GameObject _objectSpawner;
+        private Code.Scripts.Player.Controller.Player _player;
 
-        private DefenderPlayerController _defenderPlayerController;
-        private AttackerPlayerController _attackerPlayerController;
+        // private DefenderPlayerController _defenderPlayerController;
+        // private AttackerPlayerController _attackerPlayerController;
 
         private void Awake()
         {
@@ -24,9 +27,6 @@ namespace Code.Scripts
 
         private void Start()
         {
-            this._defenderPlayerController = FindObjectOfType<DefenderPlayerController>();
-            this._attackerPlayerController = FindObjectOfType<AttackerPlayerController>();
-
             if (_gridManager != null)
             {
                 _coordinates = _gridManager.GetCoordinatesFromPosition(transform.position);
@@ -36,6 +36,9 @@ namespace Code.Scripts
                     _gridManager.BlockNode(_coordinates);
                 }
             }
+
+            this._objectSpawner = GameObject.Find("ObjectSpawner");
+            this._player = GameObject.Find("Player").GetComponent<Code.Scripts.Player.Controller.Player>();
         }
 
         private void OnMouseDown()
@@ -43,49 +46,23 @@ namespace Code.Scripts
             int playerID = (int) NetworkManager.Singleton.LocalClientId;
             if(IsServer || playerID > 2) return;
 
-            GameObject objectSpawner = GameObject.Find("ObjectSpawner");
-            Code.Scripts.Player.Controller.Player player = GameObject.Find("Player").GetComponent<Code.Scripts.Player.Controller.Player>();
+            List<String> activeEntities = this._player.GetActiveEntity();
 
-            if(player.Role == PlayerRole.Attacker) {
-                objectSpawner.GetComponent<ObjectSpawner>().SpawnAttackerUnitServerRpc(this.transform.position);
+            if(_player.Role == PlayerRole.Attacker && isWalkable) {
+                foreach (String prefabName in activeEntities)
+                {
+                    this._objectSpawner.GetComponent<ObjectSpawner>().SpawnAttackerUnitServerRpc(prefabName, this.transform.position);
+                }
+                this._player.ClearActiveEntity();
                 return;
             }
 
-            if(player.Role == PlayerRole.Defender) objectSpawner.GetComponent<ObjectSpawner>().SpawnDefenderUnitServerRpc(this.transform.position);
-        }
-
-        [ServerRpc(RequireOwnership = false)]
-        private void SpawnEntityServerRpc(int playerID) {
-
-            Debug.Log("player ID: " + playerID);
-            Debug.Log("Spawning Entity Server Rpc called");
-
-            GameObject spawnedEntity = null;
-
-            if(playerID == 1 && isPlaceable && _defenderPlayerController != null) {
-                // Instantiate(buildingPrefab, transform.position, Quaternion.identity);
-                // isPlaceable = false;
-                // _gridManager.BlockNode(_coordinates);
-                Debug.Log("Placing defender troop");
-                spawnedEntity = _defenderPlayerController.PlacePlaceholderUnit(transform.position);
-
-                if (spawnedEntity == null) return;
-
+            if(this._player.Role == PlayerRole.Defender && isPlaceable && activeEntities.Count > 0) {
+                this._objectSpawner.GetComponent<ObjectSpawner>().SpawnDefenderUnitServerRpc(activeEntities[0], this.transform.position);
                 isPlaceable = false;
-                _gridManager.BlockNode(_coordinates);
-
-                Debug.Log(spawnedEntity);
-                spawnedEntity.GetComponent<NetworkObject>().Spawn();
-                return;
+                this._gridManager.BlockNode(this._coordinates);
+                this._player.ClearActiveEntity();
             }
-                        
-            if (playerID == 2 && isWalkable && _attackerPlayerController != null)
-            {
-                spawnedEntity = _attackerPlayerController.PlacePlaceholderUnit(transform.position);
-                // nothing for now
-                spawnedEntity.GetComponent<NetworkObject>().Spawn();
-            }
-
         }
     }
 }
