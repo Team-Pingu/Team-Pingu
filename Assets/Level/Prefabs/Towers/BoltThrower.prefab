@@ -675,11 +675,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Health: 50
-  AttackDamage: 10
-  AttackRange: 9999
+  AttackDamage: 40
+  AttackRange: 80
   Weapon: {fileID: 1021625420409767998}
-  CurrencyReward: 50
-  AttackInterval: 3000
+  CurrencyReward: 200
+  AttackInterval: 2000
+  HitParticleSystem: {fileID: 5880797563127281583, guid: f9a5ac77ecdcfd545989f5baee5bf72e,
+    type: 3}
 --- !u!1 &5982574461379782937
 GameObject:
   m_ObjectHideFlags: 0

@@ -15,6 +15,7 @@ namespace Code.Scripts
         public int CurrencyReward = 50;
         public float AttackInterval = 5000; // 5s
         public bool IsAttacking { get; private set; } = false;
+        public GameObject HitParticleSystem;
 
         private DefenderPlayerController _defenderPlayerController;
         private UpgradeManager _upgradeManager;
@@ -69,15 +70,16 @@ namespace Code.Scripts
         public void Attack(Minion target)
         {
             int damage = (int)(AttackDamage * _upgradeManager.AttackDamageMultiplier);
-            int newTargetHealth = target.Health - damage;
-            bool isKillingHit = newTargetHealth <= 0;
+            bool isKillingHit = target.DamageSelf(damage, HitParticleSystem);
 
-            target.Health = newTargetHealth;
-            if (isKillingHit) _killedTargets++;
-
-            print("ATTACK");
+            if (isKillingHit)
+            {
+                _killedTargets++;
+                _bank.Deposit((int)(CurrencyReward * _upgradeManager.MoneyBonusMultiplier));
+            }
 
             _previousAttackTime = Time.time * 1000f;
+            print("ATTACK");
         }
 
         private Minion GetNextAttackTarget()
@@ -103,6 +105,8 @@ namespace Code.Scripts
 
         private void AimWeapon()
         {
+            if (Weapon == null) return;
+
             // if there is no target return out of the method
             if (!_lockedAttackTarget)
             {

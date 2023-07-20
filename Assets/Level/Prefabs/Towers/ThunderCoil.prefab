@@ -260,6 +260,8 @@ GameObject:
   - component: {fileID: 1091081610355386439}
   - component: {fileID: 1695116841944560408}
   - component: {fileID: 7236577891535704680}
+  - component: {fileID: 578066234}
+  - component: {fileID: 578066233}
   m_Layer: 0
   m_Name: ThunderCoil
   m_TagString: Untagged
@@ -276,7 +278,7 @@ Transform:
   m_GameObject: {fileID: 2552372458673446677}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.66, y: 0.66, z: 0.66}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6371568756488617155}
@@ -314,6 +316,52 @@ MonoBehaviour:
   AlwaysReplicateAsRoot: 0
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
+--- !u!114 &578066234
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2552372458673446677}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e96cb6065543e43c4a752faaa1468eb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SyncPositionX: 1
+  SyncPositionY: 1
+  SyncPositionZ: 1
+  SyncRotAngleX: 1
+  SyncRotAngleY: 1
+  SyncRotAngleZ: 1
+  SyncScaleX: 0
+  SyncScaleY: 0
+  SyncScaleZ: 0
+  PositionThreshold: 0.001
+  RotAngleThreshold: 0.01
+  ScaleThreshold: 0.01
+  InLocalSpace: 0
+  Interpolate: 1
+--- !u!114 &578066233
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2552372458673446677}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20e0106f243904548b036d28be735d42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Health: 50
+  AttackDamage: 5
+  AttackRange: 40
+  Weapon: {fileID: 0}
+  CurrencyReward: 200
+  AttackInterval: 600
+  HitParticleSystem: {fileID: 1141330259687333427, guid: 6718dc24203da53468af9ada8fef7d6d,
+    type: 3}
 --- !u!1 &2693514084685765920
 GameObject:
   m_ObjectHideFlags: 0
