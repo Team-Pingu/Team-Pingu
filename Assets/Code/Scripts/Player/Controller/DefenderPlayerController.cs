@@ -6,14 +6,12 @@ namespace Code.Scripts.Player.Controller
 {
     public class DefenderPlayerController : PlayerController
     {
-        private Bank _bank;
-
-        private Dictionary<String, GameObject> _prefabCollection;
+        private Dictionary<string, GameObject> _prefabCollection;
 
         private void Awake()
         {
             _bank = GetComponent<Bank>();
-            this._prefabCollection = new Dictionary<string, GameObject>();
+            _prefabCollection = new Dictionary<string, GameObject>();
             LoadPrefab();
 
         }

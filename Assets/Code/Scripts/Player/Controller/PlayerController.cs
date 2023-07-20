@@ -12,7 +12,7 @@ namespace Code.Scripts.Player.Controller
     // Hauptklasse für den PlayerController
     public abstract class PlayerController : MonoBehaviour
     {
-        private Bank _bank;
+        protected Bank _bank;
 
         private GameObject _placeholderPrefab;
 
