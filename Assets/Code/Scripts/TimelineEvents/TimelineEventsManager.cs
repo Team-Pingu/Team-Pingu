@@ -1,3 +1,4 @@
+using Code.Scripts.Player.Controller;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -16,6 +17,7 @@ namespace Code.Scripts.TimelineEvents
     {
         public TimelineEvent NextTimelineEvent;
         public TimelineEvent CurrentTimelineEvent;
+        public TimelineEvent NextUserInterfaceVisibleEvent;
         public int PhaseExecutionOffset;
     }
 
@@ -31,6 +33,8 @@ namespace Code.Scripts.TimelineEvents
         private UpgradeManager _upgradeManager;
         private int _autoMinionSpawnAmount;
         private TimelinePhase _currentPhase;
+        private PlayerController _playerController;
+        private Bank _bank;
 
         public event Action<TimelineEventChangedEventParams> OnTimelineEventExecuted;
         public event Action<TimelinePhaseChangedPhaseParams> OnTimelinePhaseChanged;
@@ -46,6 +50,9 @@ namespace Code.Scripts.TimelineEvents
             TimelinePhases = TimelineEventsConfig.GetTimelinePhasesInExecutionOrder();
             _upgradeManager = GameObject.Find("UpgradeManager").GetComponent<UpgradeManager>();
             AllPhasesDuration = TimelinePhases.Sum(x => x.Duration);
+
+            _playerController = FindAnyObjectByType<PlayerController>();
+            _bank = _playerController.GetBank();
 
             StartTimelineEvents();
         }
@@ -73,9 +80,13 @@ namespace Code.Scripts.TimelineEvents
                     {
                         Debug.Log($"Executing Event {tle.Name}");
                         ExecuteEvent(tle);
+                        TimelineEvent nextUIVisibleEvent = TimelineEvents.Where(
+                            x => (!x.IsExecuted && x.Name != tle.Name && x.IsVisibleInUI)
+                        ).FirstOrDefault();
                         var eventParams = new TimelineEventChangedEventParams()
                         {
                             NextTimelineEvent = i >= TimelineEvents.Length ? null : TimelineEvents[i],
+                            NextUserInterfaceVisibleEvent = nextUIVisibleEvent,
                             CurrentTimelineEvent = tle,
                             PhaseExecutionOffset = _currentPhase.StartTime
                         };
@@ -179,7 +190,22 @@ namespace Code.Scripts.TimelineEvents
             else if (timelineEvent.Type == TimelineEventType.MoneyBonus)
             {
                 ExecuteMoneyBonusEvent(timelineEvent);
+            } else if (timelineEvent.Type == TimelineEventType.MoneyIncrease)
+            {
+                ExecuteMoneyIncreaseEvent(timelineEvent);
             }
+        }
+
+        private void ExecuteMoneyIncreaseEvent(TimelineEvent timelineEvent)
+        {
+            int increaseAmount;
+            if (!int.TryParse(timelineEvent.CustomAttributeValue, out increaseAmount))
+            {
+                Debug.LogError("Could not parse CustomAttributeValue");
+                return;
+            }
+
+            _bank.Deposit((int)(increaseAmount * _upgradeManager.MoneyBonusMultiplier));
         }
 
         private void ExecuteAutominionSpawnEvent(TimelineEvent timelineEvent)

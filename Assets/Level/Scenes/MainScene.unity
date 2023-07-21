@@ -5547,7 +5547,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58efc54f0f6444e59b684f1ace93ce49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Role: 0
+  Role: 1
   PlayerController: {fileID: 0}
 --- !u!4 &1970347178
 Transform:
