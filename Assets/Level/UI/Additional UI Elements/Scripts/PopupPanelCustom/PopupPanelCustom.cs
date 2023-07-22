@@ -1,15 +1,8 @@
-using Game.CustomUI;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Reflection.Emit;
-using System.Threading.Tasks;
-using UnityEditor;
-using UnityEditor.VersionControl;
 using UnityEngine;
 using UnityEngine.UIElements;
-using static UnityEditor.PlayerSettings;
-using static UnityEngine.Rendering.DebugUI;
 using Label = UnityEngine.UIElements.Label;
 
 namespace Game.CustomUI

@@ -52,7 +52,7 @@ namespace Code.Scripts
             // for now disabling game object
             // gameObject.SetActive(false);
             
-            _minion.RewardGold();
+            //_minion.RewardGold();
             Destroy(gameObject);
         }
 
