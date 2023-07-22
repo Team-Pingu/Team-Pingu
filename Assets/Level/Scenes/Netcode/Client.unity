@@ -384,6 +384,29 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3365955838835545946, guid: 342d64ac5c3a78042960a027487155f8,
+        type: 3}
+      propertyPath: NetworkConfig.Prefabs.NetworkPrefabsLists.Array.size
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3365955838835545946, guid: 342d64ac5c3a78042960a027487155f8,
+        type: 3}
+      propertyPath: NetworkConfig.Prefabs.NetworkPrefabsLists.Array.data[3]
+      value: 
+      objectReference: {fileID: 11400000, guid: 9091a5a08eaeebc40aae8bf559e90c0d,
+        type: 2}
+    - target: {fileID: 3365955838835545946, guid: 342d64ac5c3a78042960a027487155f8,
+        type: 3}
+      propertyPath: NetworkConfig.Prefabs.NetworkPrefabsLists.Array.data[4]
+      value: 
+      objectReference: {fileID: 11400000, guid: 8577e093569326342980af8b83b60610,
+        type: 2}
+    - target: {fileID: 3365955838835545946, guid: 342d64ac5c3a78042960a027487155f8,
+        type: 3}
+      propertyPath: NetworkConfig.Prefabs.NetworkPrefabsLists.Array.data[5]
+      value: 
+      objectReference: {fileID: 11400000, guid: 021b0c764e7728f4aaed6b5ae5aeffd1,
+        type: 2}
     - target: {fileID: 3365955838835545950, guid: 342d64ac5c3a78042960a027487155f8,
         type: 3}
       propertyPath: m_Name

@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: User Interface Images
+  m_EditorClassIdentifier: 
+  m_GroupName: User Interface Images
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 69f30479b97308a4597a51373cb37c19
+  m_SerializeEntries:
+  - m_GUID: 85d5161380c90944a8c2ff63a63f8b32
+    m_Address: Assets/Level/UI/Art/UI Images/bolt_thrower_tower.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 92fd4eb47507f1f40ba104d12f8b1fd4
+    m_Address: Assets/Level/UI/Art/UI Images/electric_fence_barricade.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 34058bb09ab8b664cbbe023cde4a651b
+    m_Address: Assets/Level/UI/Art/UI Images/thunder_coil_tower.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 305b91d93a3e83442ba751e5dc8322f3, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 613b17cd7053d0b4eb2aa9d388162630, type: 2}
+    - {fileID: 11400000, guid: b63fda33a8fc00d4287a5f76eed2cfe4, type: 2}

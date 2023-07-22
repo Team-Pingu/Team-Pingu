@@ -3,6 +3,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using Object = UnityEngine.Object;
+using System.Collections.Generic;
 using Unity.Netcode;
 
 namespace Code.Scripts.Player.Controller
@@ -14,12 +15,14 @@ namespace Code.Scripts.Player.Controller
         Defender
     }
 
-    public class Player : NetworkBehaviour
+    public class Player : MonoBehaviour
     {
         [SerializeField]
         public PlayerRole Role;
         
         public PlayerController PlayerController;
+
+        private List<String> activeEntities;
 
         private void Start()
         {  
@@ -27,13 +30,40 @@ namespace Code.Scripts.Player.Controller
             Role = PlayerRole.Defender;
             if(NetworkManager.Singleton.LocalClientId == 2) Role = PlayerRole.Attacker;
             #endif
-            
+
+            activeEntities = new List<string>();
+
             if (Role == PlayerRole.Defender) PlayerController = gameObject.AddComponent<DefenderPlayerController>();
             else PlayerController = gameObject.AddComponent<AttackerPlayerController>();
+
+            if(Role == PlayerRole.Attacker) {
+                this.AddToActiveEntity("aetherShieldBearer");
+                this.AddToActiveEntity("gearheadSapper");
+            }
+
+            if(Role == PlayerRole.Defender) {
+                this.AddToActiveEntity("boltThrower");
+            }
         }
 
         private void Update()
         {
+        }
+
+        public void AddToActiveEntity(String prefabName) {
+            this.activeEntities.Add(prefabName);
+        }
+
+        public void RemoveFromActiveEntity(String prefabName) {
+            this.activeEntities.Remove(prefabName);
+        }
+
+        public List<String> GetActiveEntity() {
+            return this.activeEntities;
+        }
+
+        public void ClearActiveEntity() {
+            this.activeEntities.Clear();
         }
     }
 }
