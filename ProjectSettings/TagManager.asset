@@ -5,11 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - Path
-<<<<<<< HEAD
   - WorldTiles
-=======
   - Selectable
->>>>>>> feature/highlight_shader
   layers:
   - Default
   - TransparentFX
