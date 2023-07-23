@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Code.Scripts.Pathfinding;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -18,6 +19,8 @@ namespace Code.Scripts
         private GridManager _gridManager;
         private Pathfinder _pathfinder;
         private Minion _minion;
+
+        private Vector2Int _startCoordinate;
 
         private void Awake()
         {
@@ -39,12 +42,25 @@ namespace Code.Scripts
         {
             _path.Clear();
 
-            _path = _pathfinder.GetNewPath();
+            _path = _pathfinder.GetNewPath().First(); // TODO: hier abändern, dass User Pfad wählen kann
+            _startCoordinate = _path[0].coordinates;
+        }
+
+        /**
+         * Gets the list of all paths.
+         * The paths arte sorted by its lengths and first is the shortest.
+         */
+        private void FindShortestPath()
+        {
+            _path.Clear();
+
+            _path = _pathfinder.GetNewPath().First();
+            _startCoordinate = _path[0].coordinates;
         }
 
         private void ReturnToStart()
         {
-            transform.position = _gridManager.GetPositionFromCoordinates(_pathfinder.StartCoordinates);
+            transform.position = _gridManager.GetPositionFromCoordinates(_startCoordinate);
         }
 
         private void FinishPath()
