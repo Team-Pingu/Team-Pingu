@@ -2086,7 +2086,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90f94b188dab43eb9e27fe1752c6997e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gridSize: {x: 8, y: 8}
+  gridSize: {x: 25, y: 26}
   unityGridSize: 10
 --- !u!4 &400788554
 Transform:
@@ -13812,6 +13812,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: WorldTiles
       objectReference: {fileID: 0}
+    - target: {fileID: 7852841643493187694, guid: 9d469f715020b40419cec418638fc1a1,
+        type: 3}
+      propertyPath: m_TagString
+      value: WorldTiles
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9d469f715020b40419cec418638fc1a1, type: 3}
 --- !u!4 &637370558 stripped
@@ -14431,8 +14436,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2cc3e2ffd9fc4a7e89ac6b55e0a7fe9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startCoordinates: {x: 12, y: 0}
-  destinationCoordinates: {x: 11, y: 12}
+  _coordinatePairs:
+  - startCoordinate: {x: 12, y: 0}
+    destinationCoordinate: {x: 11, y: 12}
+  - startCoordinate: {x: 12, y: 25}
+    destinationCoordinate: {x: 13, y: 12}
+  pathfindingAlgorithm: 1
+  highlightPath: 1
 --- !u!4 &989962003
 Transform:
   m_ObjectHideFlags: 0
