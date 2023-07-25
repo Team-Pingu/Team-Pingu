@@ -5299,7 +5299,7 @@ MonoBehaviour:
   - startCoordinate: {x: 0, y: 0}
     destinationCoordinate: {x: 6, y: 1}
   pathfindingAlgorithm: 0
-  highlightPath: 1
+  highlightPath: 0
 --- !u!1001 &1826368180
 PrefabInstance:
   m_ObjectHideFlags: 0

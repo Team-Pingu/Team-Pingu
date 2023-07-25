@@ -10,7 +10,7 @@ namespace Code.Scripts.Pathfinding
         private GridManager _gridManager;
         private Dictionary<Vector2Int, Tile> _attackerTiles = new Dictionary<Vector2Int, Tile>();
         private Dictionary<Vector2Int, Tile> _defenderTiles = new Dictionary<Vector2Int, Tile>();
-        public bool highlightTiles = false;
+        [SerializeField] public bool highlightTiles = false;
         public bool tilesHighlighted = false;
 
         [SerializeField] private Color outlineColor = Color.yellow;
@@ -26,8 +26,8 @@ namespace Code.Scripts.Pathfinding
         {
             if (_gridManager != null)
             {
-                _attackerTiles = _gridManager.AttackerTiles;
-                _defenderTiles = _gridManager.DefenderTiles;
+                // _attackerTiles = _gridManager.AttackerTiles;
+                // _defenderTiles = _gridManager.DefenderTiles;
 
                 CreateOutlineOnTiles();
             }
@@ -42,6 +42,7 @@ namespace Code.Scripts.Pathfinding
                 if (!highlightTiles)
                 {
                     ResetTilesHighlight();
+                    _gridManager.UpdateTiles();
                     tilesHighlighted = false;
                 }
             }
@@ -57,8 +58,8 @@ namespace Code.Scripts.Pathfinding
         {
             Dictionary<Vector2Int, Tile> tilesToHighlight = role switch
             {
-                PlayerRole.Attacker => _attackerTiles,
-                PlayerRole.Defender => _defenderTiles,
+                PlayerRole.Attacker => _gridManager.AttackerTiles,
+                PlayerRole.Defender => _gridManager.DefenderTiles,
                 _ => new Dictionary<Vector2Int, Tile>()
             };
 
@@ -69,7 +70,7 @@ namespace Code.Scripts.Pathfinding
                 // create outline on tile
                 Transform tile = tilePair.Value.transform;
                 
-                if (tile.CompareTag("Selectable"))
+                if (tile.CompareTag("Selectable") && tilePair.Value.isPlaceable)
                 {
                     Outline outline = tile.gameObject.AddComponent<Outline>();
                     outline.enabled = false;
@@ -84,8 +85,8 @@ namespace Code.Scripts.Pathfinding
         {
             Dictionary<Vector2Int, Tile> tilesToHighlight = role switch
             {
-                PlayerRole.Attacker => _attackerTiles,
-                PlayerRole.Defender => _defenderTiles,
+                PlayerRole.Attacker => _gridManager.AttackerTiles,
+                PlayerRole.Defender => _gridManager.DefenderTiles,
                 _ => new Dictionary<Vector2Int, Tile>()
             };
 
@@ -96,7 +97,7 @@ namespace Code.Scripts.Pathfinding
                 // highlight the value (Tile)
                 Transform tile = tilePair.Value.transform;
                 
-                if (tile.CompareTag("Selectable"))
+                if (tile.CompareTag("Selectable") && tilePair.Value.isPlaceable)
                 {
                     Outline outline = tile.gameObject.GetComponent<Outline>();
                     outline.enabled = true;
@@ -111,8 +112,8 @@ namespace Code.Scripts.Pathfinding
         {
             Dictionary<Vector2Int, Tile> tilesToReset = role switch
             {
-                PlayerRole.Attacker => _attackerTiles,
-                PlayerRole.Defender => _defenderTiles,
+                PlayerRole.Attacker => _gridManager.AttackerTiles,
+                PlayerRole.Defender => _gridManager.DefenderTiles,
                 _ => new Dictionary<Vector2Int, Tile>()
             };
 

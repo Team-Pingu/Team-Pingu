@@ -34,7 +34,7 @@ namespace Code.Scripts.Pathfinding
         
         private List<List<Node>> _possiblePaths = new List<List<Node>>();
         
-        [SerializeField] private bool highlightPath = true;
+        [SerializeField] public bool highlightPath = false;
         private HighlightPath _highlight;
         private List<bool> _isPathHighlighted = new List<bool>();
 
