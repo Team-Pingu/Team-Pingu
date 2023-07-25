@@ -1,3 +1,4 @@
+using Code.Scripts.Pathfinding;
 using Code.Scripts.Player.Controller;
 using System.Collections;
 using System.Collections.Generic;
@@ -45,6 +46,7 @@ namespace Game.CustomUI
         public int SelectedUnits = 0;
 
         private Player _player;
+        private GridManager _gridManager;
 
         public override VisualElement contentContainer => _mainContainer;
 
@@ -90,7 +92,8 @@ namespace Game.CustomUI
             _spawnButton.RegisterCallback<ClickEvent>(OnSpawnButtonClicked);
             _abortButton.RegisterCallback<ClickEvent>(OnAbortButtonClicked);
 
-            _player = GameObject.Find("Player").GetComponent<Player>();
+            _player = GameObject.FindFirstObjectByType<Player>();
+            _gridManager = GameObject.FindFirstObjectByType<GridManager>();
         }
 
         #region Events
@@ -188,13 +191,16 @@ namespace Game.CustomUI
         {
             // TODO: spawn selected units on level grid
             var units = GetSelectedUnitCardGameResources();
-            if (_player.Role == PlayerRole.Defender)
-            {
-                _player.PlayerController.PlaceUnits(units, new Vector3(-25, 0, 25));
-            } else
-            {
-                _player.PlayerController.PlaceUnits(units, new Vector3(-15, 0, 5));
-            }
+            _player.SetActiveEntities(units);
+            // TODO: enable tile highlighting via GridManager
+
+            //if (_player.Role == PlayerRole.Defender)
+            //{
+            //    _player.PlayerController.PlaceUnits(units, new Vector3(-25, 0, 25));
+            //} else
+            //{
+            //    _player.PlayerController.PlaceUnits(units, new Vector3(-15, 0, 5));
+            //}
         }
 
         public void AddUnitCard(UnitCard uc, bool inflateAndApplyFix = true)

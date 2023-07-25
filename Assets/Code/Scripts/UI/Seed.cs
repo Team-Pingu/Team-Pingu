@@ -88,25 +88,25 @@ namespace Game.CustomUI.Seed
                 "Aeather Shield Bearer",
                 "(Magical, Defensive)\n Larger units carrying energy shields powered by aether crystals, providing protection from elemental damage to units within a specific radius",
                 150,
-                new GameResource("Assets/Level/Prefabs/Units/AetherShieldBearer.prefab", null, GameResourceType.Minion)
+                new GameResource("Assets/Level/Prefabs/Units/AetherShieldBearer.prefab", "AetherShieldBearer", GameResourceType.Minion)
             ));
             unitCards.Add(new UnitCard(
                 "Clockwork Scout",
                 "(Fast, Low Health)\n Small, nimble clockwork creatures, quickly navigating the battleground but susceptible to damage.",
                 100,
-                new GameResource("Assets/Level/Prefabs/Units/ClockworkScout.prefab", null, GameResourceType.Minion)
+                new GameResource("Assets/Level/Prefabs/Units/ClockworkScout.prefab", "ClockworkScout", GameResourceType.Minion)
             ));
             unitCards.Add(new UnitCard(
                 "Gearhead Sapper",
                 "(Can Destroy Towers)\n Specialized units trained in demolishing enemy defenses, capable of damaging or even destroying towers",
                 250,
-                new GameResource("Assets/Level/Prefabs/Units/GearheadSapper.prefab", null, GameResourceType.Minion)
+                new GameResource("Assets/Level/Prefabs/Units/GearheadSapper.prefab", "GearheadSapper", GameResourceType.Minion)
             ));
             unitCards.Add(new UnitCard(
                 "Steam Powered Goliath",
                 "(Slow, High Health)\n Massive, slow-moving units, difficult to take down but slower to navigate the map",
                 200,
-                new GameResource("Assets/Level/Prefabs/Units/SteamPoweredGoliath.prefab", null, GameResourceType.Minion)
+                new GameResource("Assets/Level/Prefabs/Units/SteamPoweredGoliath.prefab", "SteamPoweredGoliath", GameResourceType.Minion)
             ));
 
             return unitCards.ToArray();
@@ -244,21 +244,21 @@ namespace Game.CustomUI.Seed
                 "Bolt Thrower",
                 "(Fast Attack Speed)\n Rapid-fire tower launching bolts at enemies. Effective against fast, low-health units.",
                 200,
-                new GameResource("Assets/Level/Prefabs/Towers/BoltThrower.prefab", null, GameResourceType.Minion)
+                new GameResource("Assets/Level/Prefabs/Towers/BoltThrower.prefab", "BoltThrower", GameResourceType.Minion)
             ));
             unitCards[0].SetBackgroundImage("Assets/Level/UI/Art/UI Images/bolt_thrower_tower.jpg");
             unitCards.Add(new UnitCard(
                 "Thunder Coil",
                 "(Elemental, AOE Damage)\n Unleashes powerful electric charges that deal area damage. Ideal for dealing with clusters of enemies.",
                 300,
-                new GameResource("Assets/Level/Prefabs/Towers/ThunderCoil.prefab", null, GameResourceType.Minion)
+                new GameResource("Assets/Level/Prefabs/Towers/ThunderCoil.prefab", "ThunderCoil", GameResourceType.Minion)
             ));
             unitCards[1].SetBackgroundImage("Assets/Level/UI/Art/UI Images/thunder_coil_tower.jpg");
             unitCards.Add(new UnitCard(
                 "Electric Fence Barricade",
                 "(Deals Continuous Damage)\n Deals continuous damage to any enemy that touches it, great for slowing down and whittling away enemy health.",
                 250,
-                new GameResource("Assets/Level/Prefabs/Barricades/ElectricFence.prefab", null, GameResourceType.Minion)
+                new GameResource("Assets/Level/Prefabs/Barricades/ElectricFence.prefab", "ElectricFence", GameResourceType.Minion)
             ));
             unitCards[2].SetBackgroundImage("Assets/Level/UI/Art/UI Images/electric_fence_barricade.jpg");
 
