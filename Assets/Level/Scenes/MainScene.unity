@@ -2067,6 +2067,8 @@ GameObject:
   m_Component:
   - component: {fileID: 400788554}
   - component: {fileID: 400788553}
+  - component: {fileID: 400788556}
+  - component: {fileID: 400788555}
   m_Layer: 0
   m_Name: GridManager
   m_TagString: Untagged
@@ -2103,6 +2105,35 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &400788555
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 400788552}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 802915a2c6954c958d4ab9870cf08205, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &400788556
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 400788552}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d66f5f4f7864af59f19b962b640c004, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pathColors:
+  - {r: 0, g: 0.6911516, b: 1, a: 1}
+  - {r: 0, g: 1, b: 0.27430224, a: 1}
+  - {r: 1, g: 0.6538996, b: 0, a: 1}
+  - {r: 0.7539234, g: 0, b: 1, a: 1}
 --- !u!1 &402312345
 GameObject:
   m_ObjectHideFlags: 0
@@ -14970,7 +15001,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58efc54f0f6444e59b684f1ace93ce49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Role: 0
+  Role: 1
   PlayerController: {fileID: 0}
 --- !u!4 &1970347178
 Transform:
