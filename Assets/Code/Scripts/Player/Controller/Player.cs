@@ -5,6 +5,8 @@ using UnityEngine.UI;
 using Object = UnityEngine.Object;
 using System.Collections.Generic;
 using Unity.Netcode;
+using UnityEngine.UIElements;
+using static UnityEngine.UI.CanvasScaler;
 
 namespace Code.Scripts.Player.Controller
 {
@@ -37,12 +39,12 @@ namespace Code.Scripts.Player.Controller
             else PlayerController = gameObject.AddComponent<AttackerPlayerController>();
 
             if(Role == PlayerRole.Attacker) {
-                this.AddToActiveEntity("aetherShieldBearer");
-                this.AddToActiveEntity("gearheadSapper");
+                this.AddToActiveEntity("AetherShieldBearer");
+                this.AddToActiveEntity("GearheadSapper");
             }
 
             if(Role == PlayerRole.Defender) {
-                this.AddToActiveEntity("boltThrower");
+                this.AddToActiveEntity("BoltThrower");
             }
         }
 
@@ -56,6 +58,20 @@ namespace Code.Scripts.Player.Controller
 
         public void RemoveFromActiveEntity(String prefabName) {
             this.activeEntities.Remove(prefabName);
+        }
+
+        public void SetActiveEntities(Dictionary<GameResource, int> entityAmountPairs)
+        {
+            this.activeEntities.Clear();
+            foreach (KeyValuePair<GameResource, int> entity in entityAmountPairs)
+            {
+                string prefabName = entity.Key.ResourceID;
+                int prefabAmount = entity.Value;
+                for (int i = 0; i < prefabAmount; i++)
+                {
+                    AddToActiveEntity(prefabName);
+                }
+            }
         }
 
         public List<String> GetActiveEntity() {
