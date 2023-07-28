@@ -2428,16 +2428,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: BlackoutAbility
       objectReference: {fileID: 0}
-    - target: {fileID: 5925422886905914086, guid: 963d5d014447d884786577da25253802,
-        type: 3}
-      propertyPath: Range
-      value: 40
-      objectReference: {fileID: 0}
-    - target: {fileID: 5925422886905914086, guid: 963d5d014447d884786577da25253802,
-        type: 3}
-      propertyPath: Duration
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 9175728240248898965, guid: 963d5d014447d884786577da25253802,
         type: 3}
       propertyPath: m_RootOrder
@@ -15319,6 +15309,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5239502025217441471, guid: 3aa7ad90549f95b4691979f86e4420b0,
+        type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 3774405498
       objectReference: {fileID: 0}
     - target: {fileID: 7521688284601391487, guid: 3aa7ad90549f95b4691979f86e4420b0,
         type: 3}

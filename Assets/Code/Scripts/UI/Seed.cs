@@ -72,7 +72,15 @@ namespace Game.CustomUI.Seed
         {
             var abilityElements = new List<AbilityElement>();
 
-            abilityElements.Add(new AbilityElement("Blackout", "Disable Towers for a short time.", 1200));
+            abilityElements.Add(new AbilityElement(
+                "Blackout", 
+                "Disable Towers for a short time.", 
+                1200,
+                new GameResource(
+                    "Assets/Level/Prefabs/Abilities/BlackoutAbility.prefab", 
+                    "BlackoutAbility", 
+                    GameResourceType.Undefined)
+                ));
             abilityElements[0].SetBackgroundImage("Assets/Level/UI/Art/Icons/Icon Pack 1/Icon19.png");
             abilityElements.Add(new AbilityElement("Other", "Some other Description", 999));
             abilityElements[1].SetBackgroundImage("Assets/Level/UI/Art/Icons/Icon Pack 1/Icon41.png");

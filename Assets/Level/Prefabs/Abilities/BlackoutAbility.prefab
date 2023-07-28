@@ -143,10 +143,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eed059c41c452634a842b84d900aaf9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Range: 10
-  Duration: 5
+  Range: 40
+  Duration: 2
   PreSelection: {fileID: 6943089123512221651}
   AbilityContent: {fileID: 2972667131820262366}
+  PreSelectColor: {r: 1, g: 0, b: 0, a: 1}
 --- !u!1 &2972667131820262366
 GameObject:
   m_ObjectHideFlags: 0
