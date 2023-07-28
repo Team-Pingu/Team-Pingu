@@ -11,6 +11,7 @@ namespace Code.Scripts.TimelineEvents
     {
         AutominionSpawn,
         MoneyBonus,
+        MoneyIncrease,
     }
 
     public enum TimelinePhaseType
@@ -51,6 +52,7 @@ namespace Code.Scripts.TimelineEvents
             MaxExecutionAmount = original.MaxExecutionAmount;
             CustomAttributeValue = original.CustomAttributeValue;
             ExecutionTime = original.ExecutionTime;
+            IsVisibleInUI = original.IsVisibleInUI;
         }
 
         public string Name;
@@ -63,6 +65,7 @@ namespace Code.Scripts.TimelineEvents
         public string CustomAttributeValue;
         [Tooltip("Time of exection in seconds. When Event is repeatable, this is the initial execution time.")]
         public int ExecutionTime = 0;
+        public bool IsVisibleInUI = true;
 
         public bool IsExecuted { get; private set; } = false;
         public void SetExecuted(bool executed = true)

@@ -42,11 +42,6 @@ namespace Code.Scripts
             _bank.Deposit((int)(CurrencyReward * _upgradeManager.MoneyBonusMultiplier));
         }
 
-        private void Update()
-        {
-            if (Health <= 0) KillSelf();
-        }
-
         public void FixedUpdate()
         {
             if (!CanAttack) return;

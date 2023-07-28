@@ -92,68 +92,6 @@ public class UIController : MonoBehaviour
         InitSeed();
     }
 
-    #region Events
-    private void OnTimerChanged(int currentTimerInSeconds)
-    {
-        //_timerPhaseTimerLabel.text = GetFormattedSecondsRunning(_timelineEventsManager.AllPhasesDuration - _timelineEventsManager.Timer);
-
-        if (_timerEventTimerLabel?.userData != null && _timerEventTimerLabel.userData.GetType() == typeof(int) && (int)_timerEventTimerLabel.userData >= 0)
-        {
-            int eventTimerSecondsLeft = (int)_timerEventTimerLabel.userData - currentTimerInSeconds;
-            if (eventTimerSecondsLeft > 5 || eventTimerSecondsLeft <= 0)
-            {
-                _timerEventTimerLabel.parent.style.display = DisplayStyle.None;
-            }
-            else
-            {
-                _timerEventTimerLabel.parent.style.display = DisplayStyle.Flex;
-                _timerEventTimerLabel.text = eventTimerSecondsLeft.ToString();
-            }
-        }
-
-        if (_timerPhaseTimerLabel?.userData != null && _timerPhaseTimerLabel.userData.GetType() == typeof(int) && (int)_timerPhaseTimerLabel.userData >= 0)
-        {
-            int phaseTimerSecondsLeft = (int)_timerPhaseTimerLabel.userData - currentTimerInSeconds;
-            _timerPhaseTimerLabel.text = GetFormattedSecondsRunning(phaseTimerSecondsLeft);
-        }
-
-        float percentage = (_timelineEventsManager.Timer / (float)_timelineEventsManager.AllPhasesDuration) * 100;
-        _timelineTimer.style.width = new StyleLength(new Length(percentage, LengthUnit.Percent));
-    }
-
-    private void OnTimelineEventExecuted(TimelineEventChangedEventParams args)
-    {
-        if (args.NextTimelineEvent == null)
-        {
-            _timerEventLabel.parent.style.display = DisplayStyle.None;
-        } else
-        {
-            _timerEventLabel.parent.style.display = DisplayStyle.Flex;
-            _timerEventLabel.text = args.NextTimelineEvent.Name;
-            _timerEventTimerLabel.userData = args.NextTimelineEvent.ExecutionTime + args.PhaseExecutionOffset;
-        }
-    }
-
-    private void OnTimelinePhaseChanged(TimelinePhaseChangedPhaseParams args)
-    {
-        if (args.CurrentTimelinePhase == null)
-        {
-            _timerPhaseLabel.parent.style.display = DisplayStyle.None;
-        }
-        else
-        {
-            _timerPhaseLabel.parent.style.display = DisplayStyle.Flex;
-            _timerPhaseLabel.text = args.CurrentTimelinePhase.Name;
-            _timerPhaseTimerLabel.userData = args.CurrentTimelinePhase.StartTime + args.CurrentTimelinePhase.Duration;
-        }
-    }
-
-    private void OnTimelineEnded()
-    {
-
-    }
-    #endregion
-
     void InitTimelineElements()
     {
         _timelineContainer = _root.Q("timeline");
@@ -166,6 +104,8 @@ public class UIController : MonoBehaviour
         int matchPhaseDuration = _timelineEventsManager.TimelineEventsConfig.MatchPhaseDuration;
         foreach (TimelineEvent e in _timelineEventsManager.TimelineEvents)
         {
+            if (!e.IsVisibleInUI) continue;
+
             VisualElement eventElement = new VisualElement();
             eventElement.AddToClassList("timeline-event-template");
             float percentage = (e.ExecutionTime / (float)matchPhaseDuration) * 100;
@@ -220,6 +160,67 @@ public class UIController : MonoBehaviour
     }
 
     #region Events
+    private void OnTimerChanged(int currentTimerInSeconds)
+    {
+        //_timerPhaseTimerLabel.text = GetFormattedSecondsRunning(_timelineEventsManager.AllPhasesDuration - _timelineEventsManager.Timer);
+
+        if (_timerEventTimerLabel?.userData != null && _timerEventTimerLabel.userData.GetType() == typeof(int) && (int)_timerEventTimerLabel.userData >= 0)
+        {
+            int eventTimerSecondsLeft = (int)_timerEventTimerLabel.userData - currentTimerInSeconds;
+            if (eventTimerSecondsLeft > 5 || eventTimerSecondsLeft <= 0)
+            {
+                _timerEventTimerLabel.parent.style.display = DisplayStyle.None;
+            }
+            else
+            {
+                _timerEventTimerLabel.parent.style.display = DisplayStyle.Flex;
+                _timerEventTimerLabel.text = eventTimerSecondsLeft.ToString();
+            }
+        }
+
+        if (_timerPhaseTimerLabel?.userData != null && _timerPhaseTimerLabel.userData.GetType() == typeof(int) && (int)_timerPhaseTimerLabel.userData >= 0)
+        {
+            int phaseTimerSecondsLeft = (int)_timerPhaseTimerLabel.userData - currentTimerInSeconds;
+            _timerPhaseTimerLabel.text = GetFormattedSecondsRunning(phaseTimerSecondsLeft);
+        }
+
+        float percentage = (_timelineEventsManager.Timer / (float)_timelineEventsManager.AllPhasesDuration) * 100;
+        _timelineTimer.style.width = new StyleLength(new Length(percentage, LengthUnit.Percent));
+    }
+
+    private void OnTimelineEventExecuted(TimelineEventChangedEventParams args)
+    {
+        if (args.NextUserInterfaceVisibleEvent == null)
+        {
+            _timerEventLabel.parent.style.display = DisplayStyle.None;
+        }
+        else
+        {
+            _timerEventLabel.parent.style.display = DisplayStyle.Flex;
+            _timerEventLabel.text = args.NextUserInterfaceVisibleEvent.Name;
+            _timerEventTimerLabel.userData = args.NextUserInterfaceVisibleEvent.ExecutionTime + args.PhaseExecutionOffset;
+        }
+    }
+
+    private void OnTimelinePhaseChanged(TimelinePhaseChangedPhaseParams args)
+    {
+        if (args.CurrentTimelinePhase == null)
+        {
+            _timerPhaseLabel.parent.style.display = DisplayStyle.None;
+        }
+        else
+        {
+            _timerPhaseLabel.parent.style.display = DisplayStyle.Flex;
+            _timerPhaseLabel.text = args.CurrentTimelinePhase.Name;
+            _timerPhaseTimerLabel.userData = args.CurrentTimelinePhase.StartTime + args.CurrentTimelinePhase.Duration;
+        }
+    }
+
+    private void OnTimelineEnded()
+    {
+
+    }
+
     private void OnUpgradeMenuOpenClick(ClickEvent e, VisualElement vs)
     {
         Debug.Log("Open");
