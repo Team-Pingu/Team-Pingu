@@ -18,13 +18,13 @@ namespace Code.Scripts.Player.Controller
 
         private void LoadPrefab()
         {
-            var thunderCoil = new GameResource("Assets/Level/Prefabs/Towers/ThunderCoil.prefab", "", GameResourceType.Tower);
-            var core = new GameResource("Assets/Level/Prefabs/Towers/Core.prefab", "", GameResourceType.Tower);
-            var boltThrower = new GameResource("Assets/Level/Prefabs/Towers/BoltThrower.prefab", "", GameResourceType.Tower);
+            var thunderCoil = new GameResource("Assets/Level/Prefabs/Towers/ThunderCoil.prefab", "ThunderCoil", GameResourceType.Tower);
+            var core = new GameResource("Assets/Level/Prefabs/Towers/Core.prefab", "Core", GameResourceType.Tower);
+            var boltThrower = new GameResource("Assets/Level/Prefabs/Towers/BoltThrower.prefab", "BoltThrower", GameResourceType.Tower);
 
-            this._prefabCollection.Add("thunderCoil", thunderCoil.LoadRessource<GameObject>());
-            this._prefabCollection.Add("core", core.LoadRessource<GameObject>()); 
-            this._prefabCollection.Add("boltThrower", boltThrower.LoadRessource<GameObject>());
+            this._prefabCollection.Add(thunderCoil.ResourceID, thunderCoil.LoadRessource<GameObject>());
+            this._prefabCollection.Add(core.ResourceID, core.LoadRessource<GameObject>()); 
+            this._prefabCollection.Add(boltThrower.ResourceID, boltThrower.LoadRessource<GameObject>());
         }
 
         public Dictionary<String, GameObject> GetPrefabCollection() {
@@ -34,7 +34,7 @@ namespace Code.Scripts.Player.Controller
         override
         public GameObject PlacePlaceholderUnit(Vector3 position)
         {
-            return Instantiate(this._prefabCollection["thunderCoil"], position, Quaternion.identity);
+            return Instantiate(this._prefabCollection["ThunderCoil"], position, Quaternion.identity);
         }
 
         override

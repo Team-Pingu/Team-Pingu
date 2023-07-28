@@ -43,10 +43,13 @@ namespace Code.Scripts
 
         private void OnMouseDown()
         {
+            #if !UNITY_EDITOR
             int playerID = (int) NetworkManager.Singleton.LocalClientId;
             if(IsServer || playerID > 2) return;
+            #endif
 
             List<String> activeEntities = this._player.GetActiveEntity();
+            if (activeEntities == null || activeEntities.Count == 0) return;
 
             if(_player.Role == PlayerRole.Attacker && isWalkable) {
                 foreach (String prefabName in activeEntities)
