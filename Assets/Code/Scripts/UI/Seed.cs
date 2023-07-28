@@ -72,7 +72,15 @@ namespace Game.CustomUI.Seed
         {
             var abilityElements = new List<AbilityElement>();
 
-            abilityElements.Add(new AbilityElement("Blackout", "Disable Towers for a short time.", 1200));
+            abilityElements.Add(new AbilityElement(
+                "Blackout", 
+                "Disable Towers for a short time.", 
+                1200,
+                new GameResource(
+                    "Assets/Level/Prefabs/Abilities/BlackoutAbility.prefab", 
+                    "BlackoutAbility", 
+                    GameResourceType.Undefined)
+                ));
             abilityElements[0].SetBackgroundImage("Assets/Level/UI/Art/Icons/Icon Pack 1/Icon19.png");
             abilityElements.Add(new AbilityElement("Other", "Some other Description", 999));
             abilityElements[1].SetBackgroundImage("Assets/Level/UI/Art/Icons/Icon Pack 1/Icon41.png");
@@ -223,7 +231,8 @@ namespace Game.CustomUI.Seed
             abilityElements.Add(new AbilityElement(
                 "Dynamite Explosion", 
                 "Place a dynamite on the Path, which will explode after 5s, dealing area damage to enemy minions",
-                1600)
+                1600,
+                new GameResource("Assets/Level/Prefabs/Abilities/DynamiteAbility.prefab", "DynamiteAbility", GameResourceType.Undefined))
             );
             abilityElements[0].SetBackgroundImage("Assets/Level/UI/Art/Icons/Icon Pack 1/Icon13.png");
             abilityElements.Add(new AbilityElement(
