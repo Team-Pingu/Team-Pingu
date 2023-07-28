@@ -15232,7 +15232,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa6880caa4c0afe48956808876b864a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingBalance: 9999
+  startingBalance: 400
   _currentBalance: 0
 --- !u!114 &1970347177
 MonoBehaviour:

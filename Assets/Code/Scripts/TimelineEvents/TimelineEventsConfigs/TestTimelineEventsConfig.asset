@@ -44,7 +44,7 @@ MonoBehaviour:
     IsRepeated: 1
     RepeatInterval: 5
     MaxExecutionAmount: 0
-    CustomAttributeValue: 50
+    CustomAttributeValue: 15
     ExecutionTime: 2
     IsVisibleInUI: 0
   InitialAutoMinionSpawnAmount: 4
