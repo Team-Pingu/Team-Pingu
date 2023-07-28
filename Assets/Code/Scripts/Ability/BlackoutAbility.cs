@@ -126,6 +126,7 @@ public class BlackoutAbility : MonoBehaviour, IAbility
 
     private void ColorGameObject(GameObject go, Color color)
     {
+        go = go.transform.Find("Mesh")?.gameObject ?? go;
         var renderers = go.GetComponentsInChildren<Renderer>();
         foreach (var renderer in renderers)
         {
