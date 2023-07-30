@@ -362,11 +362,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 619d9d8a66544d298c265ef14e857557, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  goldReward: 25
-  goldPenalty: 25
   Health: 100
-  HitParticleSystem: {fileID: 5880797563127281583, guid: f9a5ac77ecdcfd545989f5baee5bf72e,
-    type: 3}
+  AttackDamage: 50
+  AttackInterval: 5000
   DeathParticleSystem: {fileID: 5642766282230003982, guid: 6797bea905fc07d439e25d7a8c7feb81,
     type: 3}
 --- !u!1 &7598061928044001187
