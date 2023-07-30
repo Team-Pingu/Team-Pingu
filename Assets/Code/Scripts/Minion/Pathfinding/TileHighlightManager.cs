@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Code.Scripts.Player.Controller;
+using System;
 using System.Collections.Generic;
-using Code.Scripts.Player.Controller;
 using UnityEngine;
 
 namespace Code.Scripts.Pathfinding
@@ -8,12 +8,18 @@ namespace Code.Scripts.Pathfinding
     public class TileHighlightManager : MonoBehaviour
     {
         private GridManager _gridManager;
+        private Player.Controller.Player _player;
         private Dictionary<Vector2Int, Tile> _attackerTiles = new Dictionary<Vector2Int, Tile>();
         private Dictionary<Vector2Int, Tile> _defenderTiles = new Dictionary<Vector2Int, Tile>();
+        private List<Tile> _pathStartTiles;
+        private Pathfinder _pathfinder;
+
 
         private void Awake()
         {
             _gridManager = FindObjectOfType<GridManager>();
+            _player = FindObjectOfType<Player.Controller.Player>();
+            _pathfinder = FindObjectOfType<Pathfinder>();
         }
 
         private void Start()
@@ -23,23 +29,61 @@ namespace Code.Scripts.Pathfinding
                 _attackerTiles = _gridManager.AttackerTiles;
                 _defenderTiles = _gridManager.DefenderTiles;
             }
+
+            _pathStartTiles = _pathfinder.GetAllPathsStartTiles();
         }
 
-        public void HighlightUsableTiles(PlayerRole role = PlayerRole.Defender)
+        public void MarkTiles()
         {
-            Dictionary<Vector2Int, Tile> highlightTiles = role switch
+            if (_player.Role == PlayerRole.Attacker)
             {
-                PlayerRole.Attacker => _attackerTiles,
-                PlayerRole.Defender => _defenderTiles,
-                _ => new Dictionary<Vector2Int, Tile>()
-            };
+                MarkAttackerPlacableTiles();
+            }
 
-            if (highlightTiles.Count == 0) return;
-            
-            // do the highlighting here
-            foreach (KeyValuePair<Vector2Int, Tile> tile in highlightTiles)
+            if (_player.Role == PlayerRole.Defender)
             {
-                // highlight the value (Tile)
+                MarkDefenderPlacableTiles();
+            }
+        }
+
+        public void MarkAttackerPlacableTiles()
+        {
+            //foreach (var tile in _attackerTiles.Values)
+            //{
+            //    // TODO: check if first tile of path
+            //    tile.MarkTile();
+            //    tile.SetIsSelectable(true);
+            //}
+            foreach (var tile in _pathStartTiles)
+            {
+                tile.MarkTile();
+                tile.SetIsSelectable(true);
+            }
+        }
+
+        public void MarkDefenderPlacableTiles()
+        {
+            foreach (var tile in _defenderTiles.Values)
+            {
+                if (!tile.isPlaceable) continue;
+                tile.MarkTile();
+                tile.SetIsSelectable(true);
+            }
+        }
+
+        public void ResetMarkTiles()
+        {
+            foreach (var tile in _attackerTiles.Values)
+            {
+                tile.UnmarkTile();
+                tile.SetIsSelectable(false);
+                tile.DisableOutline();
+            }
+            foreach (var tile in _defenderTiles.Values)
+            {
+                tile.UnmarkTile();
+                tile.SetIsSelectable(false);
+                tile.DisableOutline();
             }
         }
     }

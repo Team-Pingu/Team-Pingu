@@ -34,7 +34,7 @@ namespace Code.Scripts.Pathfinding
         
         private List<List<Node>> _possiblePaths = new List<List<Node>>();
         
-        [SerializeField] private bool highlightPath = true;
+        [SerializeField] public bool highlightPath = false;
         private HighlightPath _highlight;
         private List<bool> _isPathHighlighted = new List<bool>();
 
@@ -104,6 +104,16 @@ namespace Code.Scripts.Pathfinding
                     _isPathHighlighted[index] = false;
                 }
             }
+        }
+
+        public List<Tile> GetAllPathsStartTiles()
+        {
+            List<Tile> tiles = new List<Tile>();
+            foreach(var l in _possiblePaths)
+            {
+                tiles.Add(_gridManager.GetTile(l.FirstOrDefault().coordinates));
+            }
+            return tiles;
         }
 
         private Vector3[] GetPointsOfPath(int pathIndex, List<Node> path)

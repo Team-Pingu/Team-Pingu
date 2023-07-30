@@ -81,6 +81,8 @@ namespace Code.Scripts.Pathfinding
         private void GetTiles()
         {
             _tiles.Clear();
+            _attackerTiles.Clear();
+            _defenderTiles.Clear();
 
             GameObject pathParent = GameObject.FindGameObjectWithTag("Path");
 
@@ -109,6 +111,11 @@ namespace Code.Scripts.Pathfinding
                     _defenderTiles.Add(GetCoordinatesFromPosition(position), tile);
                 }
             }
+        }
+
+        public void UpdateTiles()
+        {
+            GetTiles();
         }
 
         public Tile GetTile(Vector2Int tileCoordinates)
