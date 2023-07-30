@@ -46,7 +46,7 @@ namespace Game.CustomUI
         public int SelectedUnits = 0;
 
         private Player _player;
-        private GridManager _gridManager;
+        private TileHighlightManager _tileHighlightManager;
 
         public override VisualElement contentContainer => _mainContainer;
 
@@ -93,7 +93,7 @@ namespace Game.CustomUI
             _abortButton.RegisterCallback<ClickEvent>(OnAbortButtonClicked);
 
             _player = GameObject.FindFirstObjectByType<Player>();
-            _gridManager = GameObject.FindFirstObjectByType<GridManager>();
+            _tileHighlightManager = GameObject.FindFirstObjectByType<TileHighlightManager>();
         }
 
         #region Events
@@ -193,6 +193,7 @@ namespace Game.CustomUI
             var units = GetSelectedUnitCardGameResources();
             _player.SetActiveEntities(units);
             // TODO: enable tile highlighting via GridManager
+            _tileHighlightManager.MarkTiles();
 
             //if (_player.Role == PlayerRole.Defender)
             //{

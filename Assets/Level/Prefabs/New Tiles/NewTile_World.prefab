@@ -72,6 +72,16 @@ PrefabInstance:
       propertyPath: m_LocalScale.y
       value: 0.57
       objectReference: {fileID: 0}
+    - target: {fileID: 3123678098298918074, guid: 396eacc4a7492f24896eeb3e091eebfb,
+        type: 3}
+      propertyPath: HightlightObjectScale
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3769772997658060545, guid: 396eacc4a7492f24896eeb3e091eebfb,
+        type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 951099334
+      objectReference: {fileID: 0}
     - target: {fileID: 4612684110565752818, guid: 396eacc4a7492f24896eeb3e091eebfb,
         type: 3}
       propertyPath: m_Name

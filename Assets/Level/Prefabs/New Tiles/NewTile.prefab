@@ -63,6 +63,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isPlaceable: 1
   isWalkable: 0
+  IsSelectable: 1
+  IsOutlined: 0
+  HighlightObject: {fileID: 3866812106589131399, guid: 7c0f605c798a78348b5cb39edb1fe26a,
+    type: 3}
 --- !u!114 &3769772997658060545
 MonoBehaviour:
   m_ObjectHideFlags: 0

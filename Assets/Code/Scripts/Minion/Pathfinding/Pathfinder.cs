@@ -106,6 +106,16 @@ namespace Code.Scripts.Pathfinding
             }
         }
 
+        public List<Tile> GetAllPathsStartTiles()
+        {
+            List<Tile> tiles = new List<Tile>();
+            foreach(var l in _possiblePaths)
+            {
+                tiles.Add(_gridManager.GetTile(l.FirstOrDefault().coordinates));
+            }
+            return tiles;
+        }
+
         private Vector3[] GetPointsOfPath(int pathIndex, List<Node> path)
         {
             Vector3[] points = new Vector3[path.Count];
