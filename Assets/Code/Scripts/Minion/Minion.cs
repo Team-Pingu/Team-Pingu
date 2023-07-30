@@ -8,6 +8,8 @@ namespace Code.Scripts
     public class Minion : MonoBehaviour
     {
         public int Health;
+        public int AttackDamage = 50;
+        public float AttackInterval = 1000;
         private MicroBar _healthBar;
         //public GameObject HitParticleSystem;
         public GameObject DeathParticleSystem;
@@ -16,6 +18,8 @@ namespace Code.Scripts
         private AttackerPlayerController _attackerPlayerController;
         private Bank _bank;
         private UpgradeManager _upgradeManager;
+        private CoreTower _coreTower;
+        private float _previousAttackTime = 0;
 
         private void Awake()
         {
@@ -30,6 +34,34 @@ namespace Code.Scripts
             _healthBar?.Initialize(Health);
 
             _collider = GetComponent<Collider>();
+            _coreTower = FindObjectOfType<CoreTower>();
+            if (_coreTower == null) Debug.LogError("Minion cannot find Core Tower on Map");
+        }
+
+        private void FixedUpdate()
+        {
+            bool canAttackCoreTower = _collider.bounds.Intersects(_coreTower.GetComponent<Collider>().bounds);
+            
+            if (canAttackCoreTower)
+            {
+                // TODO: stop moving
+                if (Time.time * 1000f - _previousAttackTime > AttackInterval)
+                {
+                    Attack();
+                }
+
+            } else
+            {
+                // TODO: move
+            }
+        }
+
+        public void Attack()
+        {
+            int damage = (int)(AttackDamage * _upgradeManager.AttackDamageMultiplier);
+            bool isKillingHit = _coreTower.DamageSelf(damage);
+
+            _previousAttackTime = Time.time * 1000f;
         }
 
         public void KillSelf()
