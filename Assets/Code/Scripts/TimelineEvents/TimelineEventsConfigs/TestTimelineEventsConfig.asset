@@ -22,6 +22,7 @@ MonoBehaviour:
     MaxExecutionAmount: 0
     CustomAttributeValue: 2
     ExecutionTime: 15
+    IsVisibleInUI: 1
   - Name: Money Bonus 2x
     Type: 1
     IsRepeated: 0
@@ -29,6 +30,7 @@ MonoBehaviour:
     MaxExecutionAmount: 0
     CustomAttributeValue: 2
     ExecutionTime: 22
+    IsVisibleInUI: 1
   - Name: Money Bonus 4x
     Type: 1
     IsRepeated: 0
@@ -36,4 +38,13 @@ MonoBehaviour:
     MaxExecutionAmount: 0
     CustomAttributeValue: 4
     ExecutionTime: 90
+    IsVisibleInUI: 1
+  - Name: More Money :)
+    Type: 2
+    IsRepeated: 1
+    RepeatInterval: 5
+    MaxExecutionAmount: 0
+    CustomAttributeValue: 15
+    ExecutionTime: 2
+    IsVisibleInUI: 0
   InitialAutoMinionSpawnAmount: 4

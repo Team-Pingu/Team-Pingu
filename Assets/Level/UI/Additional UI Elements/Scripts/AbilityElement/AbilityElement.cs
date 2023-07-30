@@ -3,6 +3,7 @@ using Game.CustomUI;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using Unity.VisualScripting.FullSerializer;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -48,6 +49,7 @@ namespace Game.CustomUI
         private VisualElement _mainContainer;
         private PopupPanelCustom _popupPanel;
         private VisualElement _backgroundContainer;
+        private GameResource _spawnResource = null;
 
         private Bank _bank;
 
@@ -63,11 +65,12 @@ namespace Game.CustomUI
             _costLabel.text = "300";
         }
 
-        public AbilityElement(string name, string description, int cost)
+        public AbilityElement(string name, string description, int cost, GameResource spawnResource = null)
         {
             Name = name;
             Description = description;
             Cost = cost;
+            _spawnResource = spawnResource;
 
             Init();
 
@@ -97,7 +100,8 @@ namespace Game.CustomUI
             _mainContainer.RegisterCallback<MouseLeaveEvent>(OnMouseExit);
             _mainContainer.RegisterCallback<ClickEvent>(MouseClick);
 
-            _bank = GameObject.Find("Player").GetComponent<Bank>();
+            //_bank = GameObject.Find("Player").GetComponent<Bank>();
+            _bank = GameObject.FindFirstObjectByType<Bank>();
             _bank.OnBalanceChanged += currentBalance => IsAffordable(currentBalance);
             IsAffordable(_bank.CurrentBalance);
         }
@@ -105,10 +109,10 @@ namespace Game.CustomUI
         #region Events
         private void MouseClick(ClickEvent e)
         {
-            Debug.Log("ClickEvent");
             if (IsAffordable(_bank.CurrentBalance))
             {
-                Buy();
+                //Buy();
+                Spawn();
             }
         }
 
@@ -148,6 +152,22 @@ namespace Game.CustomUI
             var ressourceObject = new GameResource(path, $"ability_ui_{Name}", GameResourceType.UI);
             Texture2D texture = ressourceObject.LoadRessource<Texture2D>();
             _backgroundContainer.style.backgroundImage = new StyleBackground(texture);
+        }
+
+        private void Spawn()
+        {
+            GameObject go = _spawnResource?.LoadRessource<GameObject>();
+            if (go != null)
+            {
+                var spawnedGo = GameObject.Instantiate(go);
+                IAbility abilityComponent = spawnedGo.GetComponent(typeof(IAbility)) as IAbility;
+                if (abilityComponent != null)
+                {
+                    abilityComponent.OnAbilityApplied += () => {
+                        Buy();
+                    };
+                }
+            }
         }
     }
 }

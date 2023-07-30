@@ -9,6 +9,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using Unity.VisualScripting;
 using Game.UI;
+using Code.Scripts.Player.Controller;
 
 namespace Game.CustomUI
 {
@@ -160,7 +161,8 @@ namespace Game.CustomUI
             _mainContainer.RegisterCallback<MouseEnterEvent>(OnMouseEnter);
             _mainContainer.RegisterCallback<MouseLeaveEvent>(OnMouseExit);
 
-            _bank = GameObject.Find("Player").GetComponent<Bank>();
+            //_bank = GameObject.Find("Player").GetComponent<Bank>();
+            _bank = GameObject.FindFirstObjectByType<Bank>();
             _bank.OnBalanceChanged += currentBalance => IsAffordable(currentBalance);
             IsAffordable(_bank.CurrentBalance);
             this.CaptureMouse();

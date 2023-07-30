@@ -17,17 +17,17 @@ namespace Code.Scripts.Player.Controller
 
         private void LoadPrefab()
         {
-            var aetherShieldBearer = new GameResource("Assets/Level/Prefabs/Units/AetherShieldBearer.prefab", "", GameResourceType.Minion);
-            var clockworkScout = new GameResource("Assets/Level/Prefabs/Units/ClockworkScout.prefab", "", GameResourceType.Minion);
-            var gearheadSapper = new GameResource("Assets/Level/Prefabs/Units/GearheadSapper.prefab", "", GameResourceType.Minion);
-            var autoMinion = new GameResource("Assets/Level/Prefabs/Units/AutoMinion.prefab", "", GameResourceType.AutoMinion);
-            var steamPoweredGoliath = new GameResource("Assets/Level/Prefabs/Units/SteamPoweredGoliath.prefab", "", GameResourceType.Minion);
+            var aetherShieldBearer = new GameResource("Assets/Level/Prefabs/Units/AetherShieldBearer.prefab", "AetherShieldBearer", GameResourceType.Minion);
+            var clockworkScout = new GameResource("Assets/Level/Prefabs/Units/ClockworkScout.prefab", "ClockworkScout", GameResourceType.Minion);
+            var gearheadSapper = new GameResource("Assets/Level/Prefabs/Units/GearheadSapper.prefab", "GearheadSapper", GameResourceType.Minion);
+            var autoMinion = new GameResource("Assets/Level/Prefabs/Units/AutoMinion.prefab", "AutoMinion", GameResourceType.AutoMinion);
+            var steamPoweredGoliath = new GameResource("Assets/Level/Prefabs/Units/SteamPoweredGoliath.prefab", "SteamPoweredGoliath", GameResourceType.Minion);
 
-            this._prefabCollection.Add("aetherShieldBearer", aetherShieldBearer.LoadRessource<GameObject>());
-            this._prefabCollection.Add("clockworkScout", clockworkScout.LoadRessource<GameObject>());
-            this._prefabCollection.Add("gearheadSapper", gearheadSapper.LoadRessource<GameObject>());
-            this._prefabCollection.Add("autoMinion", autoMinion.LoadRessource<GameObject>());
-            this._prefabCollection.Add("steamPoweredGoliath", steamPoweredGoliath.LoadRessource<GameObject>());
+            this._prefabCollection.Add(aetherShieldBearer.ResourceID, aetherShieldBearer.LoadRessource<GameObject>());
+            this._prefabCollection.Add(clockworkScout.ResourceID, clockworkScout.LoadRessource<GameObject>());
+            this._prefabCollection.Add(gearheadSapper.ResourceID, gearheadSapper.LoadRessource<GameObject>());
+            this._prefabCollection.Add(autoMinion.ResourceID, autoMinion.LoadRessource<GameObject>());
+            this._prefabCollection.Add(steamPoweredGoliath.ResourceID, steamPoweredGoliath.LoadRessource<GameObject>());
             
         }
         
@@ -38,7 +38,7 @@ namespace Code.Scripts.Player.Controller
         override
         public GameObject PlacePlaceholderUnit(Vector3 position)
         {
-            return Instantiate(this._prefabCollection["aetherShieldBearer"] , position, Quaternion.identity);
+            return Instantiate(this._prefabCollection["AetherShieldBearer"] , position, Quaternion.identity);
         }
 
         override

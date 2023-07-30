@@ -88,7 +88,8 @@ namespace Game.CustomUI
 
             _mainContainer.RegisterCallback<MouseDownEvent>(OnMouseClick);
 
-            _bank = GameObject.Find("Player").GetComponent<Bank>();
+            //_bank = GameObject.Find("Player").GetComponent<Bank>();
+            _bank = GameObject.FindFirstObjectByType<Bank>();
             _bank.OnBalanceChanged += currentBalance => IsAffordable(currentBalance);
             IsAffordable(_bank.CurrentBalance);
         }

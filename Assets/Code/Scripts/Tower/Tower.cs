@@ -15,6 +15,7 @@ namespace Code.Scripts
         public int CurrencyReward = 50;
         public float AttackInterval = 5000; // 5s
         public bool IsAttacking { get; private set; } = false;
+        public bool CanAttack { get; private set; } = true;
         public GameObject HitParticleSystem;
 
         private DefenderPlayerController _defenderPlayerController;
@@ -41,13 +42,10 @@ namespace Code.Scripts
             _bank.Deposit((int)(CurrencyReward * _upgradeManager.MoneyBonusMultiplier));
         }
 
-        private void Update()
-        {
-            if (Health <= 0) KillSelf();
-        }
-
         public void FixedUpdate()
         {
+            if (!CanAttack) return;
+
             // TODO: Getters for all values multiplied with the upgrademanager!!!
             if (_lockedAttackTarget == null || _lockedAttackTarget.Health <= 0)
             {
@@ -55,15 +53,16 @@ namespace Code.Scripts
             }
             else
             {
-                AimWeapon();
-                if (Time.time * 1000f - _previousAttackTime > AttackInterval)
-                {
-                    Attack(_lockedAttackTarget);
-                }
+                
+                    AimWeapon();
+                    if (Time.time * 1000f - _previousAttackTime > AttackInterval)
+                    {
+                        Attack(_lockedAttackTarget);
+                    }
 
-                float targetDistance = Vector3.Distance(transform.position, _lockedAttackTarget.transform.position);
-                // release too far away target
-                if (targetDistance > AttackRange) _lockedAttackTarget = null;
+                    float targetDistance = Vector3.Distance(transform.position, _lockedAttackTarget.transform.position);
+                    // release too far away target
+                    if (targetDistance > AttackRange) _lockedAttackTarget = null;
             }
         }
 
@@ -141,6 +140,11 @@ namespace Code.Scripts
         public void KillSelf()
         {
             GameObject.Destroy(gameObject);
+        }
+
+        public void EnableAttack(bool canAttack)
+        {
+            CanAttack = canAttack;
         }
     }
 }
