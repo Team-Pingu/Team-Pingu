@@ -44,7 +44,6 @@ namespace Code.Scripts.Player.Controller
         override
         public GameObject PlaceUnit(String prefabName, Vector3 position)
         {
-            Debug.Log("Attacker Controller spawning " + prefabName);
             return Instantiate(this._prefabCollection[prefabName] , position, Quaternion.identity);
         }
     }

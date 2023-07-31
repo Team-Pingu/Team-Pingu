@@ -26,10 +26,10 @@ namespace Code.Scripts.Player.Controller
 
         private void Start()
         {  
-            // #if !UNITY_EDITOR
+            #if !UNITY_EDITOR
             Role = PlayerRole.Attacker;
-            // if(NetworkManager.Singleton.LocalClientId == 2) Role = PlayerRole.Attacker;
-            // #endif
+            if(NetworkManager.Singleton.LocalClientId == 2) Role = PlayerRole.Attacker;
+            #endif
 
             activeEntities = new List<string>();
 
@@ -37,12 +37,12 @@ namespace Code.Scripts.Player.Controller
             else PlayerController = gameObject.AddComponent<AttackerPlayerController>();
 
             if(Role == PlayerRole.Attacker) {
-                this.AddToActiveEntity("aetherShieldBearer");
-                this.AddToActiveEntity("gearheadSapper");
+                this.AddToActiveEntity("AetherShieldBearer");
+                this.AddToActiveEntity("GearheadSapper");
             }
 
             if(Role == PlayerRole.Defender) {
-                this.AddToActiveEntity("boltThrower");
+                this.AddToActiveEntity("BoltThrower");
             }
         }
 
