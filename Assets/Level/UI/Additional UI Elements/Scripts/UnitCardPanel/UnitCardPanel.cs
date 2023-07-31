@@ -191,17 +191,16 @@ namespace Game.CustomUI
         {
             // TODO: spawn selected units on level grid
             var units = GetSelectedUnitCardGameResources();
-            _player.SetActiveEntities(units);
             // TODO: enable tile highlighting via GridManager
             _tileHighlightManager.MarkTiles();
 
-            //if (_player.Role == PlayerRole.Defender)
-            //{
-            //    _player.PlayerController.PlaceUnits(units, new Vector3(-25, 0, 25));
-            //} else
-            //{
-            //    _player.PlayerController.PlaceUnits(units, new Vector3(-15, 0, 5));
-            //}
+            if (_player.Role == PlayerRole.Defender)
+            {
+               _player.PlayerController.PlaceUnits(units, new Vector3(-25, 0, 25));
+            } else
+            {
+               _player.PlayerController.PlaceUnits(units, new Vector3(-15, 0, 5));
+            }
         }
 
         public void AddUnitCard(UnitCard uc, bool inflateAndApplyFix = true)

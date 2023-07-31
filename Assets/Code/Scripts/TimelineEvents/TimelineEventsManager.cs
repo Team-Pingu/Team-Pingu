@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Unity.Netcode;
 
 namespace Code.Scripts.TimelineEvents
 {
@@ -43,6 +44,8 @@ namespace Code.Scripts.TimelineEvents
         public int AllPhasesDuration { get; private set; }
         public int Timer { get; private set; } = 0;
 
+        private Boolean isTimelineRunning = false;
+
         void Start()
         {
             _autoMinionSpawnAmount = TimelineEventsConfig.InitialAutoMinionSpawnAmount;
@@ -54,11 +57,23 @@ namespace Code.Scripts.TimelineEvents
             _playerController = FindAnyObjectByType<PlayerController>();
             _bank = _playerController.GetBank();
 
+            #if UNITY_EDITOR
             StartTimelineEvents();
+            #endif
         }
 
         private void Update()
         {
+            if(NetworkManager.Singleton.IsClient) return;
+            #if !UNITY_EDITOR
+            if(!isTimelineRunning) {
+                if(NetworkManager.Singleton.ConnectedClients.Count >= 2) {
+                    StartTimelineEvents();
+                    isTimelineRunning = true;
+                }
+            }
+            #endif
+
             Timer = GetSecondsRunning();
             EvaluateTimelinePhases();
             EvaluateTimelineEvents();

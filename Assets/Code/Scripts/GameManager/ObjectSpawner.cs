@@ -11,10 +11,6 @@ public class ObjectSpawner : NetworkBehaviour {
     // Start is called before the first frame update
     void Start()
     {
-        #if !UNITY_EDITOR
-        if(IsClient) Destroy(this);
-        #endif
-
         _attackerController = this.gameObject.AddComponent<AttackerPlayerController>();
         _defenderController = this.gameObject.AddComponent<DefenderPlayerController>();
     }
@@ -27,13 +23,21 @@ public class ObjectSpawner : NetworkBehaviour {
 
     [ServerRpc(RequireOwnership = false)]
     public void SpawnAttackerUnitServerRpc(String prefabName, Vector3 position) {
+        Debug.Log("ServerRPC called");
         GameObject gameObject = _attackerController.PlaceUnit(prefabName, position);
         gameObject.GetComponent<NetworkObject>().Spawn();
+        Debug.Log("Attacker Object spawned");
     }
 
     [ServerRpc(RequireOwnership = false)]
     public void SpawnDefenderUnitServerRpc(String prefabName, Vector3 position) {
         GameObject gameObject = _defenderController.PlaceUnit(prefabName, position);
         gameObject.GetComponent<NetworkObject>().Spawn();
+        Debug.Log("Defender Object spawned");
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    public void TestServerRpc(String test) {
+        Debug.Log("Test server rpc");
     }
 }

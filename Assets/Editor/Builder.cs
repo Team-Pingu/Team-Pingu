@@ -10,7 +10,7 @@ public class Builder
         string[] scenes = {"Assets/Level/Scenes/Netcode/Server.unity", "Assets/Level/Scenes/MainScene.unity"};
         BuildPlayerOptions buildPlayerOptions = new BuildPlayerOptions{
             scenes = scenes,
-            locationPathName = "Build/Windows/Server/TeamPingu.exe",
+            locationPathName = "Build/Windows/Server/TeamPinguServer.exe",
             target = BuildTarget.StandaloneWindows64,
             subtarget = (int) StandaloneBuildSubtarget.Player,
             options = BuildOptions.None
@@ -25,7 +25,7 @@ public class Builder
         string[] scenes = {"Assets/Level/Scenes/Netcode/Client.unity", "Assets/Level/Scenes/MainScene.unity"};
         BuildPlayerOptions buildPlayerOptions = new BuildPlayerOptions{
             scenes = scenes,
-            locationPathName = "Build/Windows/Client/TeamPingu.exe",
+            locationPathName = "Build/Windows/Client/TeamPinguClient.exe",
             target = BuildTarget.StandaloneWindows64,
             subtarget = (int) StandaloneBuildSubtarget.Player,
             options = BuildOptions.None

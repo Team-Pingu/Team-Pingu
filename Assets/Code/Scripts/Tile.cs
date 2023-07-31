@@ -78,17 +78,24 @@ namespace Code.Scripts
         {
             if (!IsSelectable) return;
 
-            #if !UNITY_EDITOR
+            Debug.Log("Clicked on tile");
+            this._objectSpawner.GetComponent<ObjectSpawner>().TestServerRpc("Test");
+
+            // #if !UNITY_EDITOR
             int playerID = (int) NetworkManager.Singleton.LocalClientId;
             if(IsServer || playerID > 2) return;
-            #endif
+            // #endif
 
             List<String> activeEntities = this._player.GetActiveEntity();
+            Debug.Log("is null " + (activeEntities == null));
+            Debug.Log("is count zero " + (activeEntities.Count == 0));
             if (activeEntities == null || activeEntities.Count == 0) return;
 
+            Debug.Log(_player.Role);
             if(_player.Role == PlayerRole.Attacker && isWalkable) {
                 foreach (String prefabName in activeEntities)
                 {
+                    Debug.Log("spawning " + prefabName);
                     this._objectSpawner.GetComponent<ObjectSpawner>().SpawnAttackerUnitServerRpc(prefabName, this.transform.position);
                 }
                 this._player.ClearActiveEntity();
