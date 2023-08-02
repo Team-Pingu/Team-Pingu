@@ -66,10 +66,7 @@ namespace Code.Scripts
         private void FinishPath()
         {
             // for now disabling game object
-            // gameObject.SetActive(false);
-            
-            //_minion.RewardGold();
-            Destroy(gameObject);
+            //Destroy(gameObject);
         }
 
         IEnumerator FollowPath()

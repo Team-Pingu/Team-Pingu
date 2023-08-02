@@ -66,6 +66,12 @@ namespace Code.Scripts
 
         public void KillSelf()
         {
+            if (DeathParticleSystem != null)
+                GameObject.Instantiate(
+                    DeathParticleSystem,
+                    new Vector3(transform.position.x, transform.position.y, transform.position.z),
+                    Quaternion.identity
+                );
             GameObject.Destroy(gameObject);
         }
 
@@ -83,12 +89,6 @@ namespace Code.Scripts
             if (Health <= 0)
             {
                 KillSelf();
-                if (DeathParticleSystem != null)
-                    GameObject.Instantiate(
-                        DeathParticleSystem,
-                        new Vector3(transform.position.x, transform.position.y, transform.position.z),
-                        Quaternion.identity
-                    );
                 return true;
             }
             return false;
