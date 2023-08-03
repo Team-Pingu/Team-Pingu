@@ -21,10 +21,12 @@ namespace Code.Scripts.Player.Controller
             var thunderCoil = new GameResource("Assets/Level/Prefabs/Towers/ThunderCoil.prefab", "ThunderCoil", GameResourceType.Tower);
             var core = new GameResource("Assets/Level/Prefabs/Towers/Core.prefab", "Core", GameResourceType.Tower);
             var boltThrower = new GameResource("Assets/Level/Prefabs/Towers/BoltThrower.prefab", "BoltThrower", GameResourceType.Tower);
+            var electricFence = new GameResource("Assets/Level/Prefabs/Barricades/ElectricFence.prefab", "ElectricFence", GameResourceType.Barricade);
 
             this._prefabCollection.Add(thunderCoil.ResourceID, thunderCoil.LoadRessource<GameObject>());
             this._prefabCollection.Add(core.ResourceID, core.LoadRessource<GameObject>()); 
             this._prefabCollection.Add(boltThrower.ResourceID, boltThrower.LoadRessource<GameObject>());
+            this._prefabCollection.Add(electricFence.ResourceID, electricFence.LoadRessource<GameObject>());
         }
 
         public Dictionary<String, GameObject> GetPrefabCollection() {

@@ -38,14 +38,14 @@ namespace Code.Scripts.Player.Controller
             if (Role == PlayerRole.Defender) PlayerController = gameObject.AddComponent<DefenderPlayerController>();
             else PlayerController = gameObject.AddComponent<AttackerPlayerController>();
 
-            if(Role == PlayerRole.Attacker) {
-                this.AddToActiveEntity("AetherShieldBearer");
-                this.AddToActiveEntity("GearheadSapper");
-            }
+            // if(Role == PlayerRole.Attacker) {
+            //     this.AddToActiveEntity("AetherShieldBearer");
+            //     this.AddToActiveEntity("GearheadSapper");
+            // }
 
-            if(Role == PlayerRole.Defender) {
-                this.AddToActiveEntity("BoltThrower");
-            }
+            // if(Role == PlayerRole.Defender) {
+            //     this.AddToActiveEntity("BoltThrower");
+            // }
         }
 
         private void Update()

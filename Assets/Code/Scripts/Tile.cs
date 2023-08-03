@@ -76,12 +76,29 @@ namespace Code.Scripts
 
         private void OnMouseDown()
         {
+            if(NetworkManager.Singleton == null) {
+                List<String> activeEntitiesLocal = this._player.GetActiveEntity();
+                if(_player.Role == PlayerRole.Attacker && activeEntitiesLocal != null && activeEntitiesLocal.Count > 0) {
+                    foreach (String prefabName in activeEntitiesLocal) GameObject.Find("Player").GetComponent<AttackerPlayerController>().PlaceUnit(prefabName, this.transform.position);
+                    this._player.ClearActiveEntity();
+                    _tileHighlightManager.ResetMarkTiles();
+                    return;
+                }
+
+                if(_player.Role == PlayerRole.Defender && activeEntitiesLocal != null && activeEntitiesLocal.Count == 1) {
+                    GameObject.Find("Player").GetComponent<DefenderPlayerController>().PlaceUnit(activeEntitiesLocal[0], this.transform.position);
+                    this._player.ClearActiveEntity();
+                    _tileHighlightManager.ResetMarkTiles();
+                    this.isPlaceable = false;
+                    this._gridManager.BlockNode(this._coordinates);
+                    return;
+                }
+            }
+
             if (!IsSelectable) return;
 
-            #if !UNITY_EDITOR
             int playerID = (int) NetworkManager.Singleton.LocalClientId;
             if(IsServer || playerID > 2) return;
-            #endif
 
             List<String> activeEntities = this._player.GetActiveEntity();
             if (activeEntities == null || activeEntities.Count == 0) return;
