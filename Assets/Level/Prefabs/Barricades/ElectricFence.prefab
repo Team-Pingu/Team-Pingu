@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7802038383705879240}
   - component: {fileID: 5619311724802361308}
-  - component: {fileID: -5393605584606082043}
+  - component: {fileID: -3770911047162130354}
   m_Layer: 0
   m_Name: ElectricFence
   m_TagString: Untagged
@@ -50,7 +50,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 10, y: 7.02, z: 10}
   m_Center: {x: 0, y: 3.5, z: 0}
---- !u!114 &-5393605584606082043
+--- !u!114 &-3770911047162130354
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
