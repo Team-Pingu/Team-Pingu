@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Unity.Netcode;
 
 namespace Code.Scripts.TimelineEvents
 {
@@ -21,7 +22,7 @@ namespace Code.Scripts.TimelineEvents
         public int PhaseExecutionOffset;
     }
 
-    public class TimelineEventsManager : MonoBehaviour
+    public class TimelineEventsManager : NetworkBehaviour
     {
         [SerializeField]
         public TimelineEventsScriptableObject TimelineEventsConfig;
@@ -29,7 +30,7 @@ namespace Code.Scripts.TimelineEvents
         public TimelineEvent[] TimelineEvents { get; private set; }
         public TimelinePhase[] TimelinePhases { get; private set; }
 
-        private float _startTime = 0;
+        private NetworkVariable<float> _startTime = new NetworkVariable<float>(0);
         private UpgradeManager _upgradeManager;
         private int _autoMinionSpawnAmount;
         private TimelinePhase _currentPhase;
@@ -43,6 +44,8 @@ namespace Code.Scripts.TimelineEvents
         public int AllPhasesDuration { get; private set; }
         public int Timer { get; private set; } = 0;
 
+        private Boolean isTimelineRunning = false;
+
         void Start()
         {
             _autoMinionSpawnAmount = TimelineEventsConfig.InitialAutoMinionSpawnAmount;
@@ -54,11 +57,24 @@ namespace Code.Scripts.TimelineEvents
             _playerController = FindAnyObjectByType<PlayerController>();
             _bank = _playerController.GetBank();
 
-            StartTimelineEvents();
+            if((NetworkManager.Singleton == null)) {
+                StartTimelineEvents();
+                isTimelineRunning = true;
+            }
         }
 
         private void Update()
         {
+            if(NetworkManager.Singleton != null) {
+                if(NetworkManager.Singleton.IsClient) return;
+                if(!isTimelineRunning) {
+                    if(NetworkManager.Singleton.ConnectedClients.Count >= 2) {
+                        StartTimelineEvents();
+                        isTimelineRunning = true;
+                    }
+                }
+            }
+
             Timer = GetSecondsRunning();
             EvaluateTimelinePhases();
             EvaluateTimelineEvents();
@@ -140,13 +156,13 @@ namespace Code.Scripts.TimelineEvents
 
         public void StartTimelineEvents()
         {
-            _startTime = Time.realtimeSinceStartup;
+            _startTime.Value = Time.realtimeSinceStartup;
             TimerRunning = true;
         }
 
         public void StopTimelineEvents()
         {
-            _startTime = 0;
+            _startTime.Value = 0;
             ResetTimelineEvents();
             ResetTimelinePhases();
             TimerRunning = false;
@@ -174,7 +190,7 @@ namespace Code.Scripts.TimelineEvents
         private int GetSecondsRunning()
         {
             if (!TimerRunning) return 0;
-            int seconds = (int)(Time.realtimeSinceStartup - _startTime);
+            int seconds = (int)(Time.realtimeSinceStartup - _startTime.Value);
             //int seconds = (int)(_startTime + Time.deltaTime);
             OnTimerChanged?.Invoke(seconds);
             return seconds;

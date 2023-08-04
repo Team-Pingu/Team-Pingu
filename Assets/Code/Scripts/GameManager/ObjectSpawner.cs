@@ -11,10 +11,6 @@ public class ObjectSpawner : NetworkBehaviour {
     // Start is called before the first frame update
     void Start()
     {
-        #if !UNITY_EDITOR
-        if(IsClient) Destroy(this);
-        #endif
-
         _attackerController = this.gameObject.AddComponent<AttackerPlayerController>();
         _defenderController = this.gameObject.AddComponent<DefenderPlayerController>();
     }
