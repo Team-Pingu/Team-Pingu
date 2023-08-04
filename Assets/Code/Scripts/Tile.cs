@@ -104,9 +104,13 @@ namespace Code.Scripts
             if (activeEntities == null || activeEntities.Count == 0) return;
 
             if(_player.Role == PlayerRole.Attacker && isWalkable) {
+                // define or calculate delay for the minions
+                float followPathDelay = -0.5f; // starting with -0.5f here that the first unit has 0 delay
                 foreach (String prefabName in activeEntities)
                 {
-                    this._objectSpawner.GetComponent<ObjectSpawner>().SpawnAttackerUnitServerRpc(prefabName, this.transform.position);
+                    // TODO: calculate the delay here if needed
+                    followPathDelay += 0.5f; // adding 0.5f seconds for every unit
+                    this._objectSpawner.GetComponent<ObjectSpawner>().SpawnAttackerUnitServerRpc(prefabName, this.transform.position, followPathDelay);
                 }
                 this._player.ClearActiveEntity();
                 _tileHighlightManager.ResetMarkTiles();

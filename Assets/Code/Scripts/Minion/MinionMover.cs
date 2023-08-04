@@ -14,6 +14,7 @@ namespace Code.Scripts
     public class MinionMover : NetworkBehaviour
     {
         [SerializeField][Range(0f, 5f)] private float speed = 1f;
+        [SerializeField] [Range(0f, 10f)] private float delay = 0f;
 
         private List<Node> _path = new List<Node>();
         private GridManager _gridManager;
@@ -33,17 +34,57 @@ namespace Code.Scripts
             if(IsClient) return;
 
             FindPath();
-            ReturnToStart();
-            StartCoroutine(FollowPath()); 
+            //StartFollowing(); // todo: remove when the way on Object Spawner works
             _minion = GetComponent<Minion>();
+        }
+
+        public void StartFollowing()
+        {
+            StartCoroutine(FollowPath());
+            ReturnToStart();
+        }
+
+        public void SetDelay(float delay)
+        {
+            this.delay = delay;
         }
 
         private void FindPath()
         {
             _path.Clear();
+            
+            // get all paths
+            var allPaths = _pathfinder.GetNewPath();
 
-            _path = _pathfinder.GetNewPath().First(); // TODO: hier abändern, dass User Pfad wählen kann
-            _startCoordinate = _path[0].coordinates;
+            foreach(Tile tile in _pathfinder.GetAllPathsStartTiles())
+            {
+                var tileCoordinate = tile.transform.position;
+                var thisCoordinate = transform.position;
+                if (_startCoordinate == null || _startCoordinate == Vector2.zero)
+                {
+                    _startCoordinate = _gridManager.GetCoordinatesFromPosition(tileCoordinate);
+                    continue;
+                }
+                if (Vector3.Distance(tileCoordinate, thisCoordinate) < Vector3.Distance(_gridManager.GetPositionFromCoordinates(_startCoordinate), thisCoordinate))
+                {
+                    _startCoordinate = _gridManager.GetCoordinatesFromPosition(tileCoordinate);
+                }
+            }
+
+            // find the path that belongs to the start position
+            foreach(var path in allPaths)
+            {
+                if (path.FirstOrDefault().coordinates == _startCoordinate)
+                {
+                    _path = path;
+                    break;
+                }
+            }
+
+            if (_path.Count == 0)
+            {
+                Debug.LogError("Could not find the corresponding path to the chosen coordinates.");
+            }
         }
 
         /**
@@ -71,6 +112,8 @@ namespace Code.Scripts
 
         IEnumerator FollowPath()
         {
+            yield return new WaitForSeconds(delay);
+            
             for(int i = 0; i < _path.Count; i++)
             {
                 Vector3 startPosition = transform.position;
