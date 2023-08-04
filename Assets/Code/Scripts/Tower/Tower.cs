@@ -78,7 +78,7 @@ namespace Code.Scripts
             }
 
             _previousAttackTime = Time.time * 1000f;
-            print("ATTACK");
+            // print("ATTACK");
         }
 
         private Minion GetNextAttackTarget()
