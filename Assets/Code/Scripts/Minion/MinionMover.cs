@@ -13,12 +13,14 @@ namespace Code.Scripts
     [RequireComponent(typeof(Minion))]
     public class MinionMover : NetworkBehaviour
     {
-        [SerializeField][Range(0f, 5f)] private float speed = 1f;
+        [SerializeField][Range(0f, 5f)] private float initialSpeed = 1f;
+        public float speed;
 
         private List<Node> _path = new List<Node>();
         private GridManager _gridManager;
         private Pathfinder _pathfinder;
         private Minion _minion;
+        private UpgradeManager _upgradeManager;
 
         private Vector2Int _startCoordinate;
 
@@ -26,6 +28,8 @@ namespace Code.Scripts
         {
             _gridManager = FindObjectOfType<GridManager>();
             _pathfinder = FindObjectOfType<Pathfinder>();
+            _upgradeManager = FindObjectOfType<UpgradeManager>();
+            speed = initialSpeed;
         }
 
         private void Start()
@@ -84,13 +88,23 @@ namespace Code.Scripts
 
                 while (travelPercent < 1f)
                 {
-                    travelPercent += Time.deltaTime * speed;
+                    travelPercent += Time.deltaTime * speed * _upgradeManager.MovementSpeedMultiplier;
                     transform.position = Vector3.Lerp(startPosition, endPosition, travelPercent);
                     yield return new WaitForEndOfFrame();
                 }
             }
             
             FinishPath();
+        }
+
+        public void DecreaseSpeed(float multiplier)
+        {
+            speed *= multiplier;
+        }
+
+        public void ResetSpeed()
+        {
+            speed = initialSpeed;
         }
     }
 }

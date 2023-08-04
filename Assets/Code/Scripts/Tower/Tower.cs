@@ -68,13 +68,15 @@ namespace Code.Scripts
 
         public void Attack(Minion target)
         {
+            if (target == null) return;
+
             int damage = (int)(AttackDamage * _upgradeManager.AttackDamageMultiplier);
             bool isKillingHit = target.DamageSelf(damage, HitParticleSystem);
 
             if (isKillingHit)
             {
                 _killedTargets++;
-                _bank.Deposit((int)(CurrencyReward * _upgradeManager.MoneyBonusMultiplier));
+                RewardGold();
             }
 
             _previousAttackTime = Time.time * 1000f;

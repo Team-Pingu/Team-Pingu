@@ -19,6 +19,7 @@ namespace Code.Scripts
         private Bank _bank;
         private UpgradeManager _upgradeManager;
         private CoreTower _coreTower;
+        private Collider _coreTowerCollider;
         private float _previousAttackTime = 0;
 
         private void Awake()
@@ -30,17 +31,19 @@ namespace Code.Scripts
 
             _bank = _attackerPlayerController.GetBank();
 
+            Health = (int)(Health * _upgradeManager.HealthMultiplier);
             _healthBar = transform.GetComponentInChildren<MicroBar>();
             _healthBar?.Initialize(Health);
 
             _collider = GetComponent<Collider>();
             _coreTower = FindObjectOfType<CoreTower>();
             if (_coreTower == null) Debug.LogError("Minion cannot find Core Tower on Map");
+            _coreTowerCollider = _coreTower.GetComponent<Collider>();
         }
 
         private void FixedUpdate()
         {
-            bool canAttackCoreTower = _collider.bounds.Intersects(_coreTower.GetComponent<Collider>().bounds);
+            bool canAttackCoreTower = _collider.bounds.Intersects(_coreTowerCollider.bounds);
             
             if (canAttackCoreTower)
             {

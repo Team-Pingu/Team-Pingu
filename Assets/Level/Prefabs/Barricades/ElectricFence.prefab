@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7802038383705879240}
   - component: {fileID: 5619311724802361308}
   - component: {fileID: -3770911047162130354}
+  - component: {fileID: 7129387125431895396}
   m_Layer: 0
   m_Name: ElectricFence
   m_TagString: Untagged
@@ -66,6 +67,24 @@ MonoBehaviour:
   AlwaysReplicateAsRoot: 0
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
+--- !u!114 &7129387125431895396
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1548177470612298643}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30d8a47b9622f1748aff25637879b8ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Health: 1
+  AttackDamage: 5
+  CurrencyReward: 20
+  AttackInterval: 1000
+  HitParticleSystem: {fileID: 8771972552311404799, guid: bbf9e36a48d6c5648a13889afab076fd,
+    type: 3}
 --- !u!1 &1957624704045729080
 GameObject:
   m_ObjectHideFlags: 0
