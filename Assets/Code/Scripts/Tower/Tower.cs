@@ -97,6 +97,8 @@ namespace Code.Scripts
 
             foreach (Minion minion in minions)
             {
+                if (minion.IsInvincible) continue;
+
                 float targetDistance = Vector3.Distance(transform.position, minion.transform.position);
 
                 if (targetDistance < maxDistance && targetDistance <= AttackRange)

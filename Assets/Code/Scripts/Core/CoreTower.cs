@@ -9,6 +9,8 @@ public class CoreTower : MonoBehaviour
 {
     public int Health;
     private MicroBar _healthBar;
+    public GameObject DeathParticleSystem;
+    public float DeathParticleSystemScale = 1f;
     public GameObject HitParticleSystem;
     public float HitParticleSystemScale = 1f;
     private Collider _collider;
@@ -24,8 +26,22 @@ public class CoreTower : MonoBehaviour
     public void KillSelf()
     {
         //GameObject.Destroy(gameObject);
-        Time.timeScale = 0;
+        Time.timeScale = 0.05f;
         // TODO: END GAME
+        if (DeathParticleSystem != null)
+        {
+            var go = GameObject.Instantiate(
+                DeathParticleSystem,
+                new Vector3(transform.position.x, transform.position.y + _collider.bounds.size.y, transform.position.z),
+                Quaternion.identity
+            );
+            go.transform.localScale = new Vector3(DeathParticleSystemScale, DeathParticleSystemScale, DeathParticleSystemScale);
+        }
+
+        foreach(var minion in FindObjectsByType<Minion>(FindObjectsSortMode.None))
+        {
+            minion.DamageSelf(9999, DeathParticleSystem);
+        }
     }
 
     public bool DamageSelf(int damage)
