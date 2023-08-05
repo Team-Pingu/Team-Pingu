@@ -190,6 +190,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3631365063870282290, guid: 28c6a444559aacd42b5e33929f734ad4,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5838269367844347371, guid: 28c6a444559aacd42b5e33929f734ad4,
         type: 3}
       propertyPath: GlobalObjectIdHash
@@ -219,6 +224,11 @@ PrefabInstance:
         type: 3}
       propertyPath: GlobalObjectIdHash
       value: 1889644825
+      objectReference: {fileID: 0}
+    - target: {fileID: 695586144098236634, guid: f2f94c07db058f946bfd91f93df57625,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3451203933149199482, guid: f2f94c07db058f946bfd91f93df57625,
         type: 3}
@@ -2135,6 +2145,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: ClockworkScout (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 7966424136063340526, guid: 04d0d8f204c74114bb67c81291c29bb3,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 04d0d8f204c74114bb67c81291c29bb3, type: 3}
 --- !u!4 &309035411 stripped
@@ -2175,7 +2190,7 @@ MonoBehaviour:
   _speedMove: 0.5
   _speedZoom: 15
   _smoothing: 5
-  _rangeMove: {x: 80, y: 80}
+  _rangeMove: {x: 110, y: 110}
   _rangeZoom: {x: 5, y: 80}
 --- !u!4 &316886368
 Transform:
@@ -14115,6 +14130,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5002711535646023640, guid: 367a3e69aa916eb4c98847f786a6d504,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7521688284601391487, guid: 367a3e69aa916eb4c98847f786a6d504,
         type: 3}
       propertyPath: m_Name
@@ -14245,6 +14265,11 @@ PrefabInstance:
     - target: {fileID: 3451203933149199482, guid: 5df57afdea0620146a2ef3490fced41c,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3822274441742959498, guid: 5df57afdea0620146a2ef3490fced41c,
+        type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7521688284601391487, guid: 5df57afdea0620146a2ef3490fced41c,
@@ -14916,6 +14941,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5002711535646023640, guid: 367a3e69aa916eb4c98847f786a6d504,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7521688284601391487, guid: 367a3e69aa916eb4c98847f786a6d504,
         type: 3}
       propertyPath: m_Name
@@ -15041,6 +15071,11 @@ PrefabInstance:
         type: 3}
       propertyPath: GlobalObjectIdHash
       value: 3504573661
+      objectReference: {fileID: 0}
+    - target: {fileID: 695586144098236634, guid: f2f94c07db058f946bfd91f93df57625,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3451203933149199482, guid: f2f94c07db058f946bfd91f93df57625,
         type: 3}
@@ -15393,6 +15428,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ClockworkScout
+      objectReference: {fileID: 0}
+    - target: {fileID: 7966424136063340526, guid: 04d0d8f204c74114bb67c81291c29bb3,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 04d0d8f204c74114bb67c81291c29bb3, type: 3}
@@ -15799,6 +15839,11 @@ PrefabInstance:
     - target: {fileID: 3451203933149199482, guid: 28c6a444559aacd42b5e33929f734ad4,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3631365063870282290, guid: 28c6a444559aacd42b5e33929f734ad4,
+        type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5838269367844347371, guid: 28c6a444559aacd42b5e33929f734ad4,

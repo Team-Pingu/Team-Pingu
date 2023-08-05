@@ -7,6 +7,7 @@ namespace Code.Scripts
 {
     public class Minion : MonoBehaviour
     {
+        public bool IsInvincible = false;
         public int Health;
         public int AttackDamage = 50;
         public float AttackInterval = 1000;
@@ -66,11 +67,19 @@ namespace Code.Scripts
 
         public void KillSelf()
         {
+            if (DeathParticleSystem != null)
+                GameObject.Instantiate(
+                    DeathParticleSystem,
+                    new Vector3(transform.position.x, transform.position.y, transform.position.z),
+                    Quaternion.identity
+                );
             GameObject.Destroy(gameObject);
         }
 
         public bool DamageSelf(int damage, GameObject hitParticle = null)
         {
+            if (IsInvincible) return false;
+
             Health -= damage;
             _healthBar?.UpdateHealthBar(Health);
             if (hitParticle != null)
@@ -83,12 +92,6 @@ namespace Code.Scripts
             if (Health <= 0)
             {
                 KillSelf();
-                if (DeathParticleSystem != null)
-                    GameObject.Instantiate(
-                        DeathParticleSystem,
-                        new Vector3(transform.position.x, transform.position.y, transform.position.z),
-                        Quaternion.identity
-                    );
                 return true;
             }
             return false;
