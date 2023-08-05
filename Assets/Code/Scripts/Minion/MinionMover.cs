@@ -147,7 +147,7 @@ namespace Code.Scripts
 
         public void DecreaseSpeed(float multiplier)
         {
-            speed *= multiplier;
+            speed = initialSpeed * multiplier;
         }
 
         public void ResetSpeed()

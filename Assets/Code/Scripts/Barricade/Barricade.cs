@@ -3,6 +3,7 @@ using Code.Scripts;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class Barricade : MonoBehaviour
 {
@@ -59,8 +60,8 @@ public class Barricade : MonoBehaviour
         {
             if (target == null) continue;
             // TODO: Slow down enemies
-            //MinionMover minionMover = target.GetComponent<MinionMover>();
-            //minionMover.DecreaseSpeed(speedDecrease);
+            MinionMover minionMover = target.GetComponent<MinionMover>();
+            if (minionMover != null) minionMover.DecreaseSpeed(speedDecrease);
 
             bool isKillingHit = target.DamageSelf(damage, HitParticleSystem);
             if (isKillingHit)
@@ -89,6 +90,11 @@ public class Barricade : MonoBehaviour
             if (minionCollider.bounds.Intersects(_collider.bounds))
             {
                 minionsInRange.Add(minion);
+            } else
+            {
+                // TODO: Slow down enemies
+                MinionMover minionMover = minion.GetComponent<MinionMover>();
+                if (minionMover != null) minionMover.ResetSpeed();
             }
         }
 
