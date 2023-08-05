@@ -238,7 +238,8 @@ namespace Game.CustomUI.Seed
             abilityElements.Add(new AbilityElement(
                 "Shock Field Trap", 
                 "Place a trap along the path, which slows minions entering down for a short time and deals damage", 
-                1200)
+                1200,
+                new GameResource("Assets/Level/Prefabs/Abilities/ShockFieldTrapAbility.prefab", "ShockFieldTrapAbility", GameResourceType.Undefined))
             );
             abilityElements[1].SetBackgroundImage("Assets/Level/UI/Art/Icons/Icon Pack 1/Icon36.png");
 
