@@ -96,7 +96,7 @@ namespace Code.Scripts.Pathfinding
                 bool isSameTile = false;
                 foreach (var pathTile in _pathStartTiles)
                 {
-                    if (pathTile.gameObject.GetInstanceID() == tile.GetInstanceID())
+                    if (GameObject.ReferenceEquals(pathTile, tile))
                     {
                         isSameTile = true;
                         break;
