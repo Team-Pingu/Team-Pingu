@@ -13,13 +13,15 @@ namespace Code.Scripts
     [RequireComponent(typeof(Minion))]
     public class MinionMover : NetworkBehaviour
     {
+        [SerializeField][Range(0f, 5f)] private float initialSpeed = 1f;
         [SerializeField][Range(0f, 5f)] private float speed = 1f;
-        [SerializeField] [Range(0f, 10f)] private float delay = 0f;
+        [SerializeField][Range(0f, 10f)] private float delay = 0f;
 
         private List<Node> _path = new List<Node>();
         private GridManager _gridManager;
         private Pathfinder _pathfinder;
         private Minion _minion;
+        private UpgradeManager _upgradeManager;
 
         private Vector2Int _startCoordinate;
 
@@ -27,11 +29,13 @@ namespace Code.Scripts
         {
             _gridManager = FindObjectOfType<GridManager>();
             _pathfinder = FindObjectOfType<Pathfinder>();
+            _upgradeManager = FindObjectOfType<UpgradeManager>();
+            speed = initialSpeed;
         }
 
         private void Start()
         {
-            if(IsClient) return;
+            if (IsClient) return;
 
             FindPath();
             ReturnToStart();
@@ -42,7 +46,8 @@ namespace Code.Scripts
         public void StartFollowing()
         {
             StartCoroutine(FollowPath(
-                () => {
+                () =>
+                {
                     _minion = GetComponent<Minion>();
                     _minion.IsInvincible = false;
                 }
@@ -57,11 +62,11 @@ namespace Code.Scripts
         private void FindPath()
         {
             _path.Clear();
-            
+
             // get all paths
             var allPaths = _pathfinder.GetNewPath();
 
-            foreach(Tile tile in _pathfinder.GetAllPathsStartTiles())
+            foreach (Tile tile in _pathfinder.GetAllPathsStartTiles())
             {
                 var tileCoordinate = tile.transform.position;
                 var thisCoordinate = transform.position;
@@ -77,7 +82,7 @@ namespace Code.Scripts
             }
 
             // find the path that belongs to the start position
-            foreach(var path in allPaths)
+            foreach (var path in allPaths)
             {
                 if (path.FirstOrDefault().coordinates == _startCoordinate)
                 {
@@ -126,18 +131,28 @@ namespace Code.Scripts
                 Vector3 startPosition = transform.position;
                 Vector3 endPosition = _gridManager.GetPositionFromCoordinates(_path[i].coordinates);
                 float travelPercent = 0f;
-                
+
                 transform.LookAt(endPosition);
 
                 while (travelPercent < 1f)
                 {
-                    travelPercent += Time.deltaTime * speed;
+                    travelPercent += Time.deltaTime * speed * _upgradeManager.MovementSpeedMultiplier;
                     transform.position = Vector3.Lerp(startPosition, endPosition, travelPercent);
                     yield return new WaitForEndOfFrame();
                 }
             }
-            
+
             FinishPath();
+        }
+
+        public void DecreaseSpeed(float multiplier)
+        {
+            speed = initialSpeed * multiplier;
+        }
+
+        public void ResetSpeed()
+        {
+            speed = initialSpeed;
         }
     }
 }

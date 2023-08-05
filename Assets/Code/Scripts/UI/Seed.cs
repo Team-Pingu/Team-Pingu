@@ -267,7 +267,7 @@ namespace Game.CustomUI.Seed
                 "Electric Fence Barricade",
                 "(Deals Continuous Damage)\n Deals continuous damage to any enemy that touches it, great for slowing down and whittling away enemy health.",
                 250,
-                new GameResource("Assets/Level/Prefabs/Barricades/ElectricFence.prefab", "ElectricFence", GameResourceType.Minion)
+                new GameResource("Assets/Level/Prefabs/Barricades/ElectricFence.prefab", "ElectricFence", GameResourceType.Barricade)
             ));
             unitCards[2].SetBackgroundImage("Assets/Level/UI/Art/UI Images/electric_fence_barricade.jpg");
 

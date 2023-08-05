@@ -189,19 +189,12 @@ namespace Game.CustomUI
 
         public void SpawnSelectedUnits()
         {
-            // TODO: spawn selected units on level grid
             var units = GetSelectedUnitCardGameResources();
             _player.SetActiveEntities(units);
-            // TODO: enable tile highlighting via GridManager
-            _tileHighlightManager.MarkTiles();
 
-            //if (_player.Role == PlayerRole.Defender)
-            //{
-            //    _player.PlayerController.PlaceUnits(units, new Vector3(-25, 0, 25));
-            //} else
-            //{
-            //    _player.PlayerController.PlaceUnits(units, new Vector3(-15, 0, 5));
-            //}
+            MarkTilesType? markTilesType = units.Keys.FirstOrDefault()?.ResourceType == GameResourceType.Barricade ? MarkTilesType.AllPathTilesExceptStartTiles : null;
+
+            _tileHighlightManager.MarkTiles(markTilesType);
         }
 
         public void AddUnitCard(UnitCard uc, bool inflateAndApplyFix = true)
