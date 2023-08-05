@@ -12,16 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbb0ae8540e880847a5a91d45d6f1db3, type: 3}
   m_Name: TestTimelineEventsConfig
   m_EditorClassIdentifier: 
-  PreperationPhaseDuration: 15
+  PreperationPhaseDuration: 5
   MatchPhaseDuration: 120
   MatchEvents:
   - Name: Autominion Spawn Incoming!
     Type: 0
     IsRepeated: 1
-    RepeatInterval: 20
+    RepeatInterval: 12
     MaxExecutionAmount: 0
-    CustomAttributeValue: 2
-    ExecutionTime: 15
+    CustomAttributeValue: 4
+    ExecutionTime: 2
     IsVisibleInUI: 1
   - Name: Money Bonus 2x
     Type: 1

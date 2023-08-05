@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Unity.Netcode;
+using Code.Scripts.Pathfinding;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 namespace Code.Scripts.TimelineEvents
 {
@@ -35,6 +37,7 @@ namespace Code.Scripts.TimelineEvents
         private int _autoMinionSpawnAmount;
         private TimelinePhase _currentPhase;
         private PlayerController _playerController;
+        private Player.Controller.Player _player;
         private Bank _bank;
 
         public event Action<TimelineEventChangedEventParams> OnTimelineEventExecuted;
@@ -54,10 +57,12 @@ namespace Code.Scripts.TimelineEvents
             _upgradeManager = GameObject.Find("UpgradeManager").GetComponent<UpgradeManager>();
             AllPhasesDuration = TimelinePhases.Sum(x => x.Duration);
 
+            _player = FindObjectOfType<Player.Controller.Player>();
             _playerController = FindAnyObjectByType<PlayerController>();
             _bank = _playerController.GetBank();
 
-            if((NetworkManager.Singleton == null)) {
+            if ((NetworkManager.Singleton == null))
+            {
                 StartTimelineEvents();
                 isTimelineRunning = true;
             }
@@ -65,10 +70,13 @@ namespace Code.Scripts.TimelineEvents
 
         private void Update()
         {
-            if(NetworkManager.Singleton != null) {
-                if(NetworkManager.Singleton.IsClient) return;
-                if(!isTimelineRunning) {
-                    if(NetworkManager.Singleton.ConnectedClients.Count >= 2) {
+            if (NetworkManager.Singleton != null)
+            {
+                if (NetworkManager.Singleton.IsClient) return;
+                if (!isTimelineRunning)
+                {
+                    if (NetworkManager.Singleton.ConnectedClients.Count >= 2)
+                    {
                         StartTimelineEvents();
                         isTimelineRunning = true;
                     }
@@ -206,7 +214,8 @@ namespace Code.Scripts.TimelineEvents
             else if (timelineEvent.Type == TimelineEventType.MoneyBonus)
             {
                 ExecuteMoneyBonusEvent(timelineEvent);
-            } else if (timelineEvent.Type == TimelineEventType.MoneyIncrease)
+            }
+            else if (timelineEvent.Type == TimelineEventType.MoneyIncrease)
             {
                 ExecuteMoneyIncreaseEvent(timelineEvent);
             }
@@ -226,6 +235,8 @@ namespace Code.Scripts.TimelineEvents
 
         private void ExecuteAutominionSpawnEvent(TimelineEvent timelineEvent)
         {
+            if (_player.Role != PlayerRole.Attacker) return;
+
             int minionAmount;
             if (!int.TryParse(timelineEvent.CustomAttributeValue, out minionAmount))
             {
@@ -233,8 +244,19 @@ namespace Code.Scripts.TimelineEvents
                 return;
             }
 
-            // TODO: Spawn minions
+            // Spawn minions
             Debug.Log($"Spawning {_autoMinionSpawnAmount} Autominions");
+            var tiles = FindObjectOfType<Pathfinder>()?.GetAllPathsStartTiles();
+            if (tiles == null) Debug.LogError("Path start tiles cannot be found!");
+            else
+            {
+                var autoMinionDict = new Dictionary<string, int> { { "AutoMinion", _autoMinionSpawnAmount } };
+                foreach (var tile in tiles)
+                {
+                    _player.SetActiveEntities(autoMinionDict);
+                    tile.SpawnActiveEntities();
+                }
+            }
 
             if (timelineEvent.IsRepeated)
             {

@@ -74,6 +74,20 @@ namespace Code.Scripts.Player.Controller
             }
         }
 
+        public void SetActiveEntities(Dictionary<string, int> entityAmountPairs)
+        {
+            this.activeEntities.Clear();
+            foreach (KeyValuePair<string, int> entity in entityAmountPairs)
+            {
+                string prefabName = entity.Key;
+                int prefabAmount = entity.Value;
+                for (int i = 0; i < prefabAmount; i++)
+                {
+                    AddToActiveEntity(prefabName);
+                }
+            }
+        }
+
         public List<String> GetActiveEntity() {
             return this.activeEntities;
         }

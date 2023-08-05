@@ -83,7 +83,7 @@ public class Barricade : MonoBehaviour
         {
             // pre check to save calculation power
             float targetDistance = Vector3.Distance(transform.position, minion.transform.position);
-            if (targetDistance > 10) continue;
+            if (targetDistance > 15) continue;
 
             Collider minionCollider = minion.GetComponent<Collider>();
             if (minionCollider == null) continue;
