@@ -75,10 +75,8 @@ namespace Code.Scripts
             DisableOutline();
         }
 
-        private void OnMouseDown()
+        public void SpawnActiveEntities()
         {
-            if (!IsSelectable) return;
-
             if (NetworkManager.Singleton == null)
             {
                 List<String> activeEntitiesLocal = this._player.GetActiveEntity();
@@ -107,7 +105,8 @@ namespace Code.Scripts
                     this._gridManager.BlockNode(this._coordinates);
                     return;
                 }
-            }else
+            }
+            else
             {
                 int playerID = (int)NetworkManager.Singleton.LocalClientId;
                 if (IsServer || playerID > 2) return;
@@ -139,6 +138,13 @@ namespace Code.Scripts
                     return;
                 }
             }
+        }
+
+        private void OnMouseDown()
+        {
+            if (!IsSelectable) return;
+
+            SpawnActiveEntities();
         }
 
         public void EnableOutline()
