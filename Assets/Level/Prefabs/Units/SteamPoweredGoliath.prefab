@@ -268,6 +268,7 @@ GameObject:
   - component: {fileID: 5838269367844347371}
   - component: {fileID: 5392895664210378022}
   - component: {fileID: -9015350214147269613}
+  - component: {fileID: 3631365063870282290}
   m_Layer: 0
   m_Name: SteamPoweredGoliath
   m_TagString: Untagged
@@ -367,6 +368,19 @@ MonoBehaviour:
   AttackInterval: 5000
   DeathParticleSystem: {fileID: 5642766282230003982, guid: 6797bea905fc07d439e25d7a8c7feb81,
     type: 3}
+--- !u!114 &3631365063870282290
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7521688284601391487}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7edc4e58586476295faa367c8196bdf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 0.5
 --- !u!1 &7598061928044001187
 GameObject:
   m_ObjectHideFlags: 0

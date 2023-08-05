@@ -268,6 +268,7 @@ GameObject:
   - component: {fileID: -8144273554497361849}
   - component: {fileID: 2096782595874849546}
   - component: {fileID: 760422187254528823}
+  - component: {fileID: 695586144098236634}
   m_Layer: 0
   m_Name: AetherShieldBearer
   m_TagString: Untagged
@@ -367,6 +368,19 @@ MonoBehaviour:
   AttackInterval: 1000
   DeathParticleSystem: {fileID: 5642766282230003982, guid: 6797bea905fc07d439e25d7a8c7feb81,
     type: 3}
+--- !u!114 &695586144098236634
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7521688284601391487}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7edc4e58586476295faa367c8196bdf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 0.5
 --- !u!1 &7598061928044001187
 GameObject:
   m_ObjectHideFlags: 0

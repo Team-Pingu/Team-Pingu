@@ -5,6 +5,14 @@ using UnityEngine;
 
 namespace Code.Scripts.Pathfinding
 {
+    public enum MarkTilesType
+    {
+        AllPathTilesExceptStartTiles,
+        AllPathTiles,
+        AllWorldTilesExceptPathTiles,
+        PathStartTiles,
+    }
+
     public class TileHighlightManager : MonoBehaviour
     {
         private GridManager _gridManager;
@@ -33,27 +41,37 @@ namespace Code.Scripts.Pathfinding
             _pathStartTiles = _pathfinder.GetAllPathsStartTiles();
         }
 
-        public void MarkTiles()
+        public void MarkTiles(MarkTilesType? markTilesType = null)
         {
-            if (_player.Role == PlayerRole.Attacker)
+            if (markTilesType == null)
             {
-                MarkAttackerPlacableTiles();
+                if (_player.Role == PlayerRole.Defender)
+                {
+                    markTilesType = MarkTilesType.AllWorldTilesExceptPathTiles;
+                } else
+                {
+                    markTilesType = MarkTilesType.PathStartTiles;
+                }
             }
 
-            if (_player.Role == PlayerRole.Defender)
+            if (markTilesType == MarkTilesType.PathStartTiles)
             {
-                MarkDefenderPlacableTiles();
+                MarkPathStartTiles();
+            } else if(markTilesType == MarkTilesType.AllPathTiles)
+            {
+                MarkAllPathTiles();
+            } else if(markTilesType == MarkTilesType.AllPathTilesExceptStartTiles)
+            {
+                MarkAllPathTilesExceptStartTiles();
+            }
+            else if (markTilesType == MarkTilesType.AllWorldTilesExceptPathTiles)
+            {
+                MarkAllWorldTilesExceptPathTiles();
             }
         }
 
-        public void MarkAttackerPlacableTiles()
+        public void MarkPathStartTiles()
         {
-            //foreach (var tile in _attackerTiles.Values)
-            //{
-            //    // TODO: check if first tile of path
-            //    tile.MarkTile();
-            //    tile.SetIsSelectable(true);
-            //}
             foreach (var tile in _pathStartTiles)
             {
                 tile.MarkTile();
@@ -61,7 +79,37 @@ namespace Code.Scripts.Pathfinding
             }
         }
 
-        public void MarkDefenderPlacableTiles()
+        public void MarkAllPathTiles()
+        {
+            foreach (var tile in _attackerTiles.Values)
+            {
+                // TODO: check if first tile of path
+                tile.MarkTile();
+                tile.SetIsSelectable(true);
+            }
+        }
+
+        public void MarkAllPathTilesExceptStartTiles()
+        {
+            foreach (var tile in _attackerTiles.Values)
+            {
+                bool isSameTile = false;
+                foreach (var pathTile in _pathStartTiles)
+                {
+                    if (GameObject.ReferenceEquals(pathTile, tile))
+                    {
+                        isSameTile = true;
+                        break;
+                    }
+                }
+                if (isSameTile) continue;
+
+                tile.MarkTile();
+                tile.SetIsSelectable(true);
+            }
+        }
+
+        public void MarkAllWorldTilesExceptPathTiles()
         {
             foreach (var tile in _defenderTiles.Values)
             {

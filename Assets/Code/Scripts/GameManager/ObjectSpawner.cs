@@ -4,6 +4,7 @@ using UnityEngine;
 using Unity.Netcode;
 using Code.Scripts.Player.Controller;
 using System;
+using Code.Scripts;
 
 public class ObjectSpawner : NetworkBehaviour {
     private PlayerController _attackerController;
@@ -22,11 +23,11 @@ public class ObjectSpawner : NetworkBehaviour {
     }
 
     [ServerRpc(RequireOwnership = false)]
-    public void SpawnAttackerUnitServerRpc(String prefabName, Vector3 position) {
-        Debug.Log("ServerRPC called");
+    public void SpawnAttackerUnitServerRpc(String prefabName, Vector3 position, float followPathDelay) {
         GameObject gameObject = _attackerController.PlaceUnit(prefabName, position);
         gameObject.GetComponent<NetworkObject>().Spawn();
-        Debug.Log("Attacker Object spawned");
+        gameObject.GetComponent<MinionMover>().SetDelay(followPathDelay);
+        gameObject.GetComponent<MinionMover>().StartFollowing();
     }
 
     [ServerRpc(RequireOwnership = false)]

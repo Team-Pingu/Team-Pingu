@@ -304,7 +304,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 15, y: 10, z: 15}
+  m_Size: {x: 21, y: 10, z: 21}
   m_Center: {x: 0, y: 4.98, z: 0}
 --- !u!114 &5239502025217441471
 MonoBehaviour:
@@ -335,6 +335,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Health: 500
+  DeathParticleSystem: {fileID: 725748389856807714, guid: 4bda94453d2ca7444a0fff05b2d425f5,
+    type: 3}
+  DeathParticleSystemScale: 16
   HitParticleSystem: {fileID: 8771972552311404799, guid: bbf9e36a48d6c5648a13889afab076fd,
     type: 3}
   HitParticleSystemScale: 4

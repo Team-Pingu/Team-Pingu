@@ -7,6 +7,7 @@ namespace Code.Scripts
 {
     public class Minion : MonoBehaviour
     {
+        public bool IsInvincible = false;
         public int Health;
         public int AttackDamage = 50;
         public float AttackInterval = 1000;
@@ -19,6 +20,7 @@ namespace Code.Scripts
         private Bank _bank;
         private UpgradeManager _upgradeManager;
         private CoreTower _coreTower;
+        private Collider _coreTowerCollider;
         private float _previousAttackTime = 0;
 
         private void Awake()
@@ -30,17 +32,19 @@ namespace Code.Scripts
 
             _bank = _attackerPlayerController.GetBank();
 
+            Health = (int)(Health * _upgradeManager.HealthMultiplier);
             _healthBar = transform.GetComponentInChildren<MicroBar>();
             _healthBar?.Initialize(Health);
 
             _collider = GetComponent<Collider>();
             _coreTower = FindObjectOfType<CoreTower>();
             if (_coreTower == null) Debug.LogError("Minion cannot find Core Tower on Map");
+            _coreTowerCollider = _coreTower.GetComponent<Collider>();
         }
 
         private void FixedUpdate()
         {
-            bool canAttackCoreTower = _collider.bounds.Intersects(_coreTower.GetComponent<Collider>().bounds);
+            bool canAttackCoreTower = _collider.bounds.Intersects(_coreTowerCollider.bounds);
             
             if (canAttackCoreTower)
             {
@@ -66,11 +70,19 @@ namespace Code.Scripts
 
         public void KillSelf()
         {
+            if (DeathParticleSystem != null)
+                GameObject.Instantiate(
+                    DeathParticleSystem,
+                    new Vector3(transform.position.x, transform.position.y, transform.position.z),
+                    Quaternion.identity
+                );
             GameObject.Destroy(gameObject);
         }
 
         public bool DamageSelf(int damage, GameObject hitParticle = null)
         {
+            if (IsInvincible) return false;
+
             Health -= damage;
             _healthBar?.UpdateHealthBar(Health);
             if (hitParticle != null)
@@ -83,12 +95,6 @@ namespace Code.Scripts
             if (Health <= 0)
             {
                 KillSelf();
-                if (DeathParticleSystem != null)
-                    GameObject.Instantiate(
-                        DeathParticleSystem,
-                        new Vector3(transform.position.x, transform.position.y, transform.position.z),
-                        Quaternion.identity
-                    );
                 return true;
             }
             return false;

@@ -58,16 +58,40 @@ namespace Code.Scripts.Player.Controller
             this.activeEntities.Remove(prefabName);
         }
 
+        public void SetActiveEntities(Dictionary<GameResource, int> entityAmountPairs)
+        {
+            this.activeEntities.Clear();
+            foreach (KeyValuePair<GameResource, int> entity in entityAmountPairs)
+            {
+                string prefabName = entity.Key.ResourceID;
+                int prefabAmount = entity.Value;
+                for (int i = 0; i < prefabAmount; i++)
+                {
+                    AddToActiveEntity(prefabName);
+                }
+            }
+        }
+
+        public void SetActiveEntities(Dictionary<string, int> entityAmountPairs)
+        {
+            this.activeEntities.Clear();
+            foreach (KeyValuePair<string, int> entity in entityAmountPairs)
+            {
+                string prefabName = entity.Key;
+                int prefabAmount = entity.Value;
+                for (int i = 0; i < prefabAmount; i++)
+                {
+                    AddToActiveEntity(prefabName);
+                }
+            }
+        }
+
         public List<String> GetActiveEntity() {
             return this.activeEntities;
         }
 
         public void ClearActiveEntity() {
             this.activeEntities.Clear();
-        }
-
-        public void selectCard() {
-            
         }
     }
 }
