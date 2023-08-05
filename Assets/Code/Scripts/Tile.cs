@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using Unity.Burst.CompilerServices;
 using UnityEngine.EventSystems;
 using Unity.VisualScripting;
+using UnityEngine.UIElements;
 
 namespace Code.Scripts
 {
@@ -43,7 +44,7 @@ namespace Code.Scripts
             if (_gridManager != null)
             {
                 _coordinates = _gridManager.GetCoordinatesFromPosition(transform.position);
-                
+
                 if (!isPlaceable && !isWalkable)
                 {
                     _gridManager.BlockNode(_coordinates);
@@ -76,16 +77,29 @@ namespace Code.Scripts
 
         private void OnMouseDown()
         {
-            if(NetworkManager.Singleton == null) {
+            if (!IsSelectable) return;
+
+            if (NetworkManager.Singleton == null)
+            {
                 List<String> activeEntitiesLocal = this._player.GetActiveEntity();
-                if(_player.Role == PlayerRole.Attacker && activeEntitiesLocal != null && activeEntitiesLocal.Count > 0) {
-                    foreach (String prefabName in activeEntitiesLocal) GameObject.Find("Player").GetComponent<AttackerPlayerController>().PlaceUnit(prefabName, this.transform.position);
+                if (_player.Role == PlayerRole.Attacker && activeEntitiesLocal != null && activeEntitiesLocal.Count > 0)
+                {
+                    float followPathDelay = 0;
+                    foreach (String prefabName in activeEntitiesLocal)
+                    {
+                        GameObject gameObject = FindObjectOfType<AttackerPlayerController>().PlaceUnit(prefabName, this.transform.position);
+                        var minionMover = gameObject.GetComponent<MinionMover>();
+                        minionMover.SetDelay(followPathDelay);
+                        minionMover.StartFollowing();
+                        followPathDelay += 0.5f; // adding 0.5f seconds for every unit
+                    }
                     this._player.ClearActiveEntity();
                     _tileHighlightManager.ResetMarkTiles();
                     return;
                 }
 
-                if(_player.Role == PlayerRole.Defender && activeEntitiesLocal != null && activeEntitiesLocal.Count == 1) {
+                if (_player.Role == PlayerRole.Defender && activeEntitiesLocal != null && activeEntitiesLocal.Count == 1)
+                {
                     GameObject.Find("Player").GetComponent<DefenderPlayerController>().PlaceUnit(activeEntitiesLocal[0], this.transform.position);
                     this._player.ClearActiveEntity();
                     _tileHighlightManager.ResetMarkTiles();
@@ -93,37 +107,37 @@ namespace Code.Scripts
                     this._gridManager.BlockNode(this._coordinates);
                     return;
                 }
-            }
+            }else
+            {
+                int playerID = (int)NetworkManager.Singleton.LocalClientId;
+                if (IsServer || playerID > 2) return;
 
-            if (!IsSelectable) return;
+                List<String> activeEntities = this._player.GetActiveEntity();
+                if (activeEntities == null || activeEntities.Count == 0) return;
 
-            int playerID = (int) NetworkManager.Singleton.LocalClientId;
-            if(IsServer || playerID > 2) return;
-
-            List<String> activeEntities = this._player.GetActiveEntity();
-            if (activeEntities == null || activeEntities.Count == 0) return;
-
-            if(_player.Role == PlayerRole.Attacker && isWalkable) {
-                // define or calculate delay for the minions
-                float followPathDelay = -0.5f; // starting with -0.5f here that the first unit has 0 delay
-                foreach (String prefabName in activeEntities)
+                if (_player.Role == PlayerRole.Attacker && isWalkable)
                 {
-                    // TODO: calculate the delay here if needed
-                    followPathDelay += 0.5f; // adding 0.5f seconds for every unit
-                    this._objectSpawner.GetComponent<ObjectSpawner>().SpawnAttackerUnitServerRpc(prefabName, this.transform.position, followPathDelay);
+                    // define or calculate delay for the minions
+                    float followPathDelay = 0;
+                    foreach (String prefabName in activeEntities)
+                    {
+                        this._objectSpawner.GetComponent<ObjectSpawner>().SpawnAttackerUnitServerRpc(prefabName, this.transform.position, followPathDelay);
+                        followPathDelay += 0.5f; // adding 0.5f seconds for every unit
+                    }
+                    this._player.ClearActiveEntity();
+                    _tileHighlightManager.ResetMarkTiles();
+                    return;
                 }
-                this._player.ClearActiveEntity();
-                _tileHighlightManager.ResetMarkTiles();
-                return;
-            }
 
-            if(this._player.Role == PlayerRole.Defender && isPlaceable && activeEntities.Count > 0) {
-                this._objectSpawner.GetComponent<ObjectSpawner>().SpawnDefenderUnitServerRpc(activeEntities[0], this.transform.position);
-                isPlaceable = false;
-                this._gridManager.BlockNode(this._coordinates);
-                this._player.ClearActiveEntity();
-                _tileHighlightManager.ResetMarkTiles();
-                return;
+                if (this._player.Role == PlayerRole.Defender && isPlaceable && activeEntities.Count > 0)
+                {
+                    this._objectSpawner.GetComponent<ObjectSpawner>().SpawnDefenderUnitServerRpc(activeEntities[0], this.transform.position);
+                    isPlaceable = false;
+                    this._gridManager.BlockNode(this._coordinates);
+                    this._player.ClearActiveEntity();
+                    _tileHighlightManager.ResetMarkTiles();
+                    return;
+                }
             }
         }
 

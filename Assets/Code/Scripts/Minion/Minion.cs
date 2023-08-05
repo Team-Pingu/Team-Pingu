@@ -7,6 +7,7 @@ namespace Code.Scripts
 {
     public class Minion : MonoBehaviour
     {
+        public bool IsInvincible = false;
         public int Health;
         public int AttackDamage = 50;
         public float AttackInterval = 1000;
@@ -77,6 +78,8 @@ namespace Code.Scripts
 
         public bool DamageSelf(int damage, GameObject hitParticle = null)
         {
+            if (IsInvincible) return false;
+
             Health -= damage;
             _healthBar?.UpdateHealthBar(Health);
             if (hitParticle != null)

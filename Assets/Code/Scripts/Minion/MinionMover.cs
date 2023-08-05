@@ -34,14 +34,19 @@ namespace Code.Scripts
             if(IsClient) return;
 
             FindPath();
-            //StartFollowing(); // todo: remove when the way on Object Spawner works
+            ReturnToStart();
             _minion = GetComponent<Minion>();
+            _minion.IsInvincible = true;
         }
 
         public void StartFollowing()
         {
-            StartCoroutine(FollowPath());
-            ReturnToStart();
+            StartCoroutine(FollowPath(
+                () => {
+                    _minion = GetComponent<Minion>();
+                    _minion.IsInvincible = false;
+                }
+            ));
         }
 
         public void SetDelay(float delay)
@@ -110,11 +115,13 @@ namespace Code.Scripts
             //Destroy(gameObject);
         }
 
-        IEnumerator FollowPath()
+        IEnumerator FollowPath(Action OnStartMoving = null)
         {
             yield return new WaitForSeconds(delay);
-            
-            for(int i = 0; i < _path.Count; i++)
+
+            OnStartMoving?.Invoke();
+
+            for (int i = 0; i < _path.Count; i++)
             {
                 Vector3 startPosition = transform.position;
                 Vector3 endPosition = _gridManager.GetPositionFromCoordinates(_path[i].coordinates);
