@@ -14,6 +14,9 @@ public class CoreTower : MonoBehaviour
     public GameObject HitParticleSystem;
     public float HitParticleSystemScale = 1f;
     private Collider _collider;
+    public GameObject RotationPart;
+    public Vector3 RotationPartRotation = new Vector3(1, 0, 0);
+    private int _initialHealth;
 
     private void Awake()
     {
@@ -21,6 +24,15 @@ public class CoreTower : MonoBehaviour
         _healthBar?.Initialize(Health);
 
         _collider = GetComponent<Collider>();
+
+        _initialHealth = Health;
+    }
+
+    private void Update()
+    {
+        if (RotationPart == null) return;
+        float rotationMultiplier = Health <= 0.25 * _initialHealth ? 10 : 1;
+        RotationPart.transform.Rotate(RotationPartRotation * rotationMultiplier);
     }
 
     public void KillSelf()
