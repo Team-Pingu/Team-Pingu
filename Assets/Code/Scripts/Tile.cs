@@ -105,39 +105,41 @@ namespace Code.Scripts
                     this._gridManager.BlockNode(this._coordinates);
                     return;
                 }
+                
+                return;
             }
-            else
+            
+            
+            int playerID = (int)NetworkManager.Singleton.LocalClientId;
+            if (IsServer || playerID > 2) return;
+
+            List<String> activeEntities = this._player.GetActiveEntity();
+            if (activeEntities == null || activeEntities.Count == 0) return;
+
+            if (_player.Role == PlayerRole.Attacker && isWalkable)
             {
-                int playerID = (int)NetworkManager.Singleton.LocalClientId;
-                if (IsServer || playerID > 2) return;
-
-                List<String> activeEntities = this._player.GetActiveEntity();
-                if (activeEntities == null || activeEntities.Count == 0) return;
-
-                if (_player.Role == PlayerRole.Attacker && isWalkable)
+                // define or calculate delay for the minions
+                float followPathDelay = 0;
+                foreach (String prefabName in activeEntities)
                 {
-                    // define or calculate delay for the minions
-                    float followPathDelay = 0;
-                    foreach (String prefabName in activeEntities)
-                    {
-                        this._objectSpawner.GetComponent<ObjectSpawner>().SpawnAttackerUnitServerRpc(prefabName, this.transform.position, followPathDelay);
-                        followPathDelay += 0.5f; // adding 0.5f seconds for every unit
-                    }
-                    this._player.ClearActiveEntity();
-                    _tileHighlightManager.ResetMarkTiles();
-                    return;
+                    this._objectSpawner.GetComponent<ObjectSpawner>().SpawnAttackerUnitServerRpc(prefabName, this.transform.position, followPathDelay);
+                    followPathDelay += 0.5f; // adding 0.5f seconds for every unit
                 }
-
-                if (this._player.Role == PlayerRole.Defender && isPlaceable && activeEntities.Count > 0)
-                {
-                    this._objectSpawner.GetComponent<ObjectSpawner>().SpawnDefenderUnitServerRpc(activeEntities[0], this.transform.position);
-                    isPlaceable = false;
-                    this._gridManager.BlockNode(this._coordinates);
-                    this._player.ClearActiveEntity();
-                    _tileHighlightManager.ResetMarkTiles();
-                    return;
-                }
+                this._player.ClearActiveEntity();
+                _tileHighlightManager.ResetMarkTiles();
+                return;
             }
+
+            if (this._player.Role == PlayerRole.Defender && isPlaceable && activeEntities.Count > 0)
+            {
+                this._objectSpawner.GetComponent<ObjectSpawner>().SpawnDefenderUnitServerRpc(activeEntities[0], this.transform.position);
+                isPlaceable = false;
+                this._gridManager.BlockNode(this._coordinates);
+                this._player.ClearActiveEntity();
+                _tileHighlightManager.ResetMarkTiles();
+                return;
+            }
+            
         }
 
         private void OnMouseDown()
