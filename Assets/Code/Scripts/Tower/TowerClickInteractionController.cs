@@ -59,15 +59,26 @@ public class TowerClickInteractionController : MonoBehaviour
         Menu.SetActive(IsMenuOpen);
     }
 
-    private void OnMouseUp()
+    private void EnableMenuVisibility()
     {
-        ToggleMenuVisibility();
+        IsMenuOpen = true;
+        Menu.SetActive(IsMenuOpen);
     }
 
-    //private void OnMouseExit()
+    //private void OnMouseUp()
     //{
-    //    DisableMenuVisibility();
+    //    ToggleMenuVisibility();
     //}
+
+    private void OnMouseEnter()
+    {
+        EnableMenuVisibility();
+    }
+
+    private void OnMouseExit()
+    {
+        DisableMenuVisibility();
+    }
 
     private void UpdateElements()
     {
