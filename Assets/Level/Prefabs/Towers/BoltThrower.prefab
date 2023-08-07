@@ -857,11 +857,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20e0106f243904548b036d28be735d42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Health: 50
-  AttackDamage: 40
-  AttackRange: 80
+  Health: 1
+  AttackDamage: 15
+  AttackRange: 55
   Weapon: {fileID: 1021625420409767998}
-  CurrencyReward: 200
+  CurrencyReward: 1
   AttackInterval: 2000
   HitParticleSystem: {fileID: 5880797563127281583, guid: f9a5ac77ecdcfd545989f5baee5bf72e,
     type: 3}

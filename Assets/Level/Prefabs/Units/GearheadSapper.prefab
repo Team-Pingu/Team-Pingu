@@ -363,9 +363,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 619d9d8a66544d298c265ef14e857557, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Health: 100
-  AttackDamage: 50
-  AttackInterval: 5000
+  IsInvincible: 0
+  Health: 75
+  AttackDamage: 20
+  AttackInterval: 1000
   DeathParticleSystem: {fileID: 5642766282230003982, guid: 6797bea905fc07d439e25d7a8c7feb81,
     type: 3}
 --- !u!114 &3822274441742959498
@@ -380,7 +381,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7edc4e58586476295faa367c8196bdf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialSpeed: 0.75
   speed: 0.5
+  delay: 0
 --- !u!1 &7598061928044001187
 GameObject:
   m_ObjectHideFlags: 0

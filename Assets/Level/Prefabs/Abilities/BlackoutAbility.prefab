@@ -144,7 +144,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Range: 40
-  Duration: 2
+  Duration: 4
   PreSelection: {fileID: 6943089123512221651}
   AbilityContent: {fileID: 2972667131820262366}
   PreSelectColor: {r: 1, g: 0, b: 0, a: 1}

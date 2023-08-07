@@ -2383,7 +2383,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28178c1276083db4c9c6518e1c66e4b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TimelineEventsConfig: {fileID: 11400000, guid: 08e72099ffd8e814b9fa86322df79fa4,
+  TimelineEventsConfig: {fileID: 11400000, guid: fb162107883608e43885a8f054ff28da,
     type: 2}
 --- !u!4 &494059738
 Transform:
@@ -15350,7 +15350,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa6880caa4c0afe48956808876b864a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingBalance: 9999
+  startingBalance: 1000
   _currentBalance: 0
 --- !u!114 &1970347177
 MonoBehaviour:
@@ -15698,6 +15698,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3931073704164270141, guid: 3aa7ad90549f95b4691979f86e4420b0,
+        type: 3}
+      propertyPath: Health
+      value: 1000
       objectReference: {fileID: 0}
     - target: {fileID: 3931073704164270141, guid: 3aa7ad90549f95b4691979f86e4420b0,
         type: 3}

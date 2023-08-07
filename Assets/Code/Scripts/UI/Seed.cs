@@ -82,8 +82,8 @@ namespace Game.CustomUI.Seed
                     GameResourceType.Undefined)
                 ));
             abilityElements[0].SetBackgroundImage("Assets/Level/UI/Art/Icons/Icon Pack 1/Icon19.png");
-            abilityElements.Add(new AbilityElement("Other", "Some other Description", 999));
-            abilityElements[1].SetBackgroundImage("Assets/Level/UI/Art/Icons/Icon Pack 1/Icon41.png");
+            //abilityElements.Add(new AbilityElement("Other", "Some other Description", 999));
+            //abilityElements[1].SetBackgroundImage("Assets/Level/UI/Art/Icons/Icon Pack 1/Icon41.png");
 
             return abilityElements.ToArray();
         }
@@ -238,7 +238,7 @@ namespace Game.CustomUI.Seed
             abilityElements.Add(new AbilityElement(
                 "Shock Field Trap", 
                 "Place a trap along the path, which slows minions entering down for a short time and deals damage", 
-                1200,
+                1400,
                 new GameResource("Assets/Level/Prefabs/Abilities/ShockFieldTrapAbility.prefab", "ShockFieldTrapAbility", GameResourceType.Undefined))
             );
             abilityElements[1].SetBackgroundImage("Assets/Level/UI/Art/Icons/Icon Pack 1/Icon36.png");
