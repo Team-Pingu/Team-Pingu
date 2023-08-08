@@ -6,7 +6,7 @@ using System.Linq;
 using UnityEngine;
 using Unity.Netcode;
 using Code.Scripts.Pathfinding;
-using static UnityEditor.Experimental.GraphView.GraphView;
+// using static UnityEditor.Experimental.GraphView.GraphView;
 
 namespace Code.Scripts.TimelineEvents
 {
@@ -32,7 +32,7 @@ namespace Code.Scripts.TimelineEvents
         public TimelineEvent[] TimelineEvents { get; private set; }
         public TimelinePhase[] TimelinePhases { get; private set; }
 
-        private NetworkVariable<float> _startTime = new NetworkVariable<float>(0);
+        private float _startTime = 0;
         private UpgradeManager _upgradeManager;
         private int _autoMinionSpawnAmount;
         private TimelinePhase _currentPhase;
@@ -47,8 +47,6 @@ namespace Code.Scripts.TimelineEvents
         public int AllPhasesDuration { get; private set; }
         public int Timer { get; private set; } = 0;
 
-        private Boolean isTimelineRunning = false;
-
         void Start()
         {
             _autoMinionSpawnAmount = TimelineEventsConfig.InitialAutoMinionSpawnAmount;
@@ -61,10 +59,17 @@ namespace Code.Scripts.TimelineEvents
             _playerController = FindAnyObjectByType<PlayerController>();
             _bank = _playerController.GetBank();
 
-            if ((NetworkManager.Singleton == null))
+            if (NetworkManager.Singleton == null)
             {
                 StartTimelineEvents();
-                isTimelineRunning = true;
+            }
+        }
+        
+        public override void OnNetworkSpawn() {
+            if(NetworkManager.Singleton.IsClient) {
+                Debug.Log("client timeline manager");
+                this.GetStartTimeServerRpc();
+                TimerRunning = true;
             }
         }
 
@@ -72,18 +77,14 @@ namespace Code.Scripts.TimelineEvents
         {
             if (NetworkManager.Singleton != null)
             {
-                if (NetworkManager.Singleton.IsClient) return;
-                if (!isTimelineRunning)
+                if(NetworkManager.Singleton.IsServer && NetworkManager.Singleton.ConnectedClients.Count >= 2 && !TimerRunning)
                 {
-                    if (NetworkManager.Singleton.ConnectedClients.Count >= 2)
-                    {
-                        StartTimelineEvents();
-                        isTimelineRunning = true;
-                    }
+                    StartTimelineEvents();
                 }
             }
-
+            
             Timer = GetSecondsRunning();
+            Debug.Log(_startTime + " " + Timer);
             EvaluateTimelinePhases();
             EvaluateTimelineEvents();
         }
@@ -164,13 +165,13 @@ namespace Code.Scripts.TimelineEvents
 
         public void StartTimelineEvents()
         {
-            _startTime.Value = Time.realtimeSinceStartup;
+            _startTime = Time.realtimeSinceStartup;
             TimerRunning = true;
         }
 
         public void StopTimelineEvents()
         {
-            _startTime.Value = 0;
+            _startTime = 0;
             ResetTimelineEvents();
             ResetTimelinePhases();
             TimerRunning = false;
@@ -198,7 +199,7 @@ namespace Code.Scripts.TimelineEvents
         private int GetSecondsRunning()
         {
             if (!TimerRunning) return 0;
-            int seconds = (int)(Time.realtimeSinceStartup - _startTime.Value);
+            int seconds = (int)(Time.realtimeSinceStartup - _startTime);
             //int seconds = (int)(_startTime + Time.deltaTime);
             OnTimerChanged?.Invoke(seconds);
             return seconds;
@@ -285,5 +286,16 @@ namespace Code.Scripts.TimelineEvents
             _upgradeManager.UpdateMoneyBonusMultiplier(moneyBonusValue);
             Debug.Log($"Increased Money Bonus to {_upgradeManager.MoneyBonusMultiplier}");
         }
+
+        [ServerRpc(RequireOwnership = false)]
+        public void GetStartTimeServerRpc() {
+            ShareStartTimeClientRpc(this._startTime);
+        } 
+
+        [ClientRpc]
+        public void ShareStartTimeClientRpc(float startTime) {
+            this._startTime = startTime;
+        }
     }
+
 }
