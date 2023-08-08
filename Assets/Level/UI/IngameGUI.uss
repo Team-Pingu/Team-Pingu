@@ -14,7 +14,7 @@
     padding-top: 0;
     padding-bottom: 0;
     flex-grow: 0;
-    background-image: url('project://database/Assets/Level/UI/Art/UI%20Parts/self.png?fileID=2800000&guid=b2fb9016d3294f94daccb161dafa15c9&type=3#self');
+    background-image: url('project://database/Assets/Level/UI/Art/UI%20Parts/v1/self.png?fileID=2800000&guid=b2fb9016d3294f94daccb161dafa15c9&type=3#self');
     -unity-background-scale-mode: stretch-to-fill;
 }
 
@@ -71,4 +71,20 @@
     border-right-color: rgb(255, 184, 66);
     border-top-color: rgb(255, 184, 66);
     border-bottom-color: rgb(255, 184, 66);
+}
+
+.timeline-event-template {
+    position: absolute;
+    height: 100%;
+    width: 1%;
+    background-color: rgb(0, 0, 0);
+    margin-left: 5%;
+}
+
+.timeline-event-template--autominion {
+    background-color: rgb(173, 0, 0);
+}
+
+.timeline-event-template--moneybonus {
+    background-color: rgb(255, 192, 0);
 }

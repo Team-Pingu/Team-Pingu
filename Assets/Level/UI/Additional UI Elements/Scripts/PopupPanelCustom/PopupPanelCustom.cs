@@ -1,10 +1,9 @@
-using Game.CustomUI;
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
-using static UnityEngine.Rendering.DebugUI;
+using Label = UnityEngine.UIElements.Label;
 
 namespace Game.CustomUI
 {
@@ -26,14 +25,16 @@ namespace Game.CustomUI
 
         public string Title;
         public string Description;
+        public string ExtraInfo;
         public Vector2 Position;
         public PopupPositionAnchor PopupPositionAnchor;
 
         private readonly float CONTAINER_PADDING = 10f;
-        private readonly string VIEW_ASSET_PATH = "Assets\\Level\\UI\\Additional UI Elements\\Scripts\\PopupPanelCustom\\PopupPanelCustom.uxml";
+        private readonly string VIEW_ASSET_PATH = "Assets/Level/UI/Additional UI Elements/Scripts/PopupPanelCustom/PopupPanelCustom.uxml";
 
         private Label _titleLabel;
         private Label _descriptionLabel;
+        private Label _extraInfoLabel;
         private VisualElement _mainContainer;
         private VisualElement _popup;
         private VisualElement _root;
@@ -46,7 +47,7 @@ namespace Game.CustomUI
 
             Title = _titleLabel.text;
             Description = _descriptionLabel.text;
-            if (_mainContainer.style.left.keyword == StyleKeyword.Auto && _mainContainer.style.top.keyword == StyleKeyword.Auto)
+            /*if (_mainContainer.style.left.keyword == StyleKeyword.Auto && _mainContainer.style.top.keyword == StyleKeyword.Auto)
             {
                 PopupPositionAnchor = PopupPositionAnchor.TopLeft;
                 Position = new Vector2(_mainContainer.style.left.value.value, _mainContainer.style.top.value.value);
@@ -65,115 +66,114 @@ namespace Game.CustomUI
             {
                 PopupPositionAnchor = PopupPositionAnchor.BottomLeft;
                 Position = new Vector2(_mainContainer.style.left.value.value, _mainContainer.style.bottom.value.value);
-            }
+            }*/
         }
 
-        public PopupPanelCustom(string title, string description, VisualElement parent, PopupPositionAnchor popupPositionAnchor)
+        public PopupPanelCustom(string title, string description, VisualElement target, string extraInfo = null, PopupPositionAnchor popupPositionAnchor = PopupPositionAnchor.TopLeft)
         {
             Init();
 
             Title = title;
             Description = description;
-            Position = PositionFromVisualElement(parent);
+            ExtraInfo = extraInfo;
+            Position = PositionFromVisualElement(target);
 
             _titleLabel.text = title;
             _descriptionLabel.text = description;
+            _extraInfoLabel.text = extraInfo;
 
-            this.style.position = UnityEngine.UIElements.Position.Absolute;
-
-            if (popupPositionAnchor == PopupPositionAnchor.TopLeft)
-            {
-                this.style.top = new StyleLength(Position.y);
-                this.style.left = new StyleLength(Position.x);
-                this.style.right = new StyleLength(StyleKeyword.Auto);
-                this.style.bottom = new StyleLength(StyleKeyword.Auto);
-
-                _mainContainer.style.paddingLeft = new StyleLength(CONTAINER_PADDING);
-                _mainContainer.style.paddingTop = new StyleLength(CONTAINER_PADDING);
-            }
-            else if (popupPositionAnchor == PopupPositionAnchor.TopRight)
-            {
-                this.style.top = new StyleLength(Position.y);
-                this.style.left = new StyleLength(StyleKeyword.Auto);
-                this.style.right = new StyleLength(Position.x);
-                this.style.bottom = new StyleLength(StyleKeyword.Auto);
-
-                _mainContainer.style.paddingRight = new StyleLength(CONTAINER_PADDING);
-                _mainContainer.style.paddingTop = new StyleLength(CONTAINER_PADDING);
-            }
-            else if (popupPositionAnchor == PopupPositionAnchor.BottomLeft)
-            {
-                this.style.top = new StyleLength(StyleKeyword.Auto);
-                this.style.left = new StyleLength(Position.x);
-                this.style.right = new StyleLength(StyleKeyword.Auto);
-                this.style.bottom = new StyleLength(Position.y);
-
-                _mainContainer.style.paddingLeft = new StyleLength(CONTAINER_PADDING);
-                _mainContainer.style.paddingBottom = new StyleLength(CONTAINER_PADDING);
-            }
-            else
-            {
-                this.style.top = new StyleLength(StyleKeyword.Auto);
-                this.style.left = new StyleLength(StyleKeyword.Auto);
-                this.style.right = new StyleLength(Position.x);
-                this.style.bottom = new StyleLength(Position.y);
-
-                _mainContainer.style.paddingRight = new StyleLength(CONTAINER_PADDING);
-                _mainContainer.style.paddingBottom = new StyleLength(CONTAINER_PADDING);
-            }
+            //Task.Delay(2000).ContinueWith(t =>
+            //{
+            //    SetScreenPos(target);
+            //    Debug.Log("TESTT");
+            //});
         }
 
-        private Vector3 PositionFromVisualElement(VisualElement visualElement)
+        private Vector2 PositionFromVisualElement(VisualElement visualElement)
         {
-            return visualElement.transform.position;
-            //// Get the RectTransform of the VisualElement
-            //RectTransform rectTransform = (RectTransform)visualElement.transform;
-
-            //// Get the position of the VisualElement in world space
-            //Vector3 worldPosition = rectTransform.TransformPoint(new Vector3(rectTransform.rect.center.x, rectTransform.rect.center.y, 0));
-
-            //// Get the screen coordinates of the VisualElement
-            //Vector3 screenPosition = Camera.main.WorldToScreenPoint(worldPosition);
-
-            //return screenPosition;
+            Rect _worldBound = visualElement.worldBound;
+            return new Vector2(_worldBound.position.x + _worldBound.width, _worldBound.position.y + _worldBound.height * 0.5f);
         }
 
-        private VisualElement GetRootParentElement()
+        public void SetScreenPos(VisualElement visualElement)
         {
-            VisualElement parent = this;
-            while (parent != null)
-            {
-                parent = parent.parent;
-            }
-            return parent;
+            var pos = PositionFromVisualElement(visualElement);
+            style.marginLeft = CONTAINER_PADDING;
+            style.marginTop = -this.worldBound.height * 0.5f;
+            style.left = new StyleLength(pos.x);
+            style.top = new StyleLength(pos.y);
+            style.right = new StyleLength(StyleKeyword.Auto);
+            style.bottom = new StyleLength(StyleKeyword.Auto);
         }
 
         private void Init()
         {
             // load view and set values to view
-            #if UNITY_EDITOR
-                VisualTreeAsset viewAsset = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(VIEW_ASSET_PATH);
-                viewAsset.CloneTree(this);
-            #endif
+            VisualTreeAsset viewAsset;
+            var __viewAssetResource = new GameResource(VIEW_ASSET_PATH, null, GameResourceType.UI);
+            viewAsset = __viewAssetResource.LoadRessource<VisualTreeAsset>();
+            viewAsset.CloneTree(this);
 
+            _root = GameObject.Find("UIDocument")?.GetComponent<UIDocument>()?.rootVisualElement;
             _titleLabel = this.Q<Label>("c-popup__title");
             _descriptionLabel = this.Q<Label>("c-popup__description");
+            _extraInfoLabel = this.Q<Label>("c-popup__extra-info");
             _popup = this.Q<VisualElement>("c-popup");
             _mainContainer = this.Q<VisualElement>("c-popup-container");
+            _root?.Add(this);
 
-            _root = GetRootParentElement();
+            pickingMode = PickingMode.Ignore;
+            style.visibility = Visibility.Hidden;
+            style.opacity = 0f;
+            style.position = UnityEngine.UIElements.Position.Absolute;
         }
+
+        public long FadeTime = 10;
+        public long Delay = 0;
+        private IVisualElementScheduledItem task;
 
         public void Hide()
         {
-            this.style.display = DisplayStyle.None;
+            if (FadeTime > 0.0f && resolvedStyle.visibility != Visibility.Hidden)
+            {
+                task?.Pause();
+                task = schedule
+                    .Execute(() =>
+                    {
+                        var o = Mathf.Clamp01(resolvedStyle.opacity - 0.1f);
+                        style.opacity = o;
+                        if (o <= 0.0f) style.visibility = Visibility.Hidden;
+                    })
+                    .Every(FadeTime) // ms						
+                    .Until(() => resolvedStyle.opacity <= 0.0f);
+            }
+            else
+            {
+                style.visibility = Visibility.Hidden;
+                style.opacity = 0f;
+            }
         }
 
         public void Show()
         {
-            this.style.display = DisplayStyle.Flex;
+            if (FadeTime > 0.0f)
+            {
+                task?.Pause();
+                style.visibility = Visibility.Visible;
+                style.opacity = 0f;
+                task = schedule
+                    .Execute(() => style.opacity = Mathf.Clamp01(resolvedStyle.opacity + 0.1f))
+                    .Every(FadeTime) // ms	
+                    .Until(() => resolvedStyle.opacity >= 1.0f)
+                    .StartingIn(Delay);
+            }
+            else
+            {
+                style.visibility = Visibility.Visible;
+                style.opacity = 1f;
+            }
         }
 
-        public bool IsActive() => this.style.display == DisplayStyle.Flex;
+        public bool IsActive() => style.visibility == Visibility.Visible;
     }
 }

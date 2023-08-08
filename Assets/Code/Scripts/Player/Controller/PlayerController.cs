@@ -7,29 +7,25 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
-namespace Code.Scripts.Player
+namespace Code.Scripts.Player.Controller
 {
     // Hauptklasse für den PlayerController
     public abstract class PlayerController : MonoBehaviour
     {
-        private Bank _bank;
+        protected Bank _bank;
 
         private GameObject _placeholderPrefab;
 
         private void Awake()
         {
+            _bank = GetComponent<Bank>();
             LoadPrefab();
         }
 
         private void LoadPrefab()
         {
-            var resource = new GameResource("Assets/Level/Prefabs/Towers/ThunderCoil.prefab", "", GameResourceType.AutoMinion);
+            var resource = new GameResource("Assets/Level/Prefabs/Towers/ThunderCoil.prefab", "ThunderCoil", GameResourceType.Minion);
             _placeholderPrefab = resource.LoadRessource<GameObject>();
-        }
-
-        private void Start()
-        {
-            _bank = GetComponent<Bank>();
         }
 
         public Bank GetBank()
@@ -70,6 +66,7 @@ namespace Code.Scripts.Player
         {
             return Instantiate(_placeholderPrefab, position, Quaternion.identity);
         }
+        public abstract GameObject PlaceUnit(String prefabName, Vector3 position);
     }
 }
 

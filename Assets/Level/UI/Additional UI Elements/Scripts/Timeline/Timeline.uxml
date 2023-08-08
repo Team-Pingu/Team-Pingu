@@ -1,0 +1,14 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Level/UI/IngameGUI.uss?fileID=7433441132597879392&amp;guid=9873672f868fedf459dd52f613355363&amp;type=3#IngameGUI" />
+    <ui:VisualElement name="timeline" style="flex-grow: 1; background-color: rgb(91, 91, 91); overflow: hidden; border-left-width: 1px; border-right-width: 1px; border-top-width: 1px; border-bottom-width: 1px; border-left-color: rgb(120, 120, 120); border-right-color: rgb(120, 120, 120); border-top-color: rgb(120, 120, 120); border-bottom-color: rgb(120, 120, 120);">
+        <ui:VisualElement name="timeline__phases" style="flex-grow: 0; position: absolute; left: 0; top: 0; right: 0; bottom: 0; justify-content: flex-start; flex-direction: row; align-items: center;">
+            <ui:VisualElement name="timeline__phases__preparation" style="height: 100%; width: 20%; background-color: rgb(82, 82, 82);" />
+            <ui:VisualElement name="timeline__phases__match" style="height: 100%; width: 20%; flex-grow: 1; background-color: rgb(176, 193, 221);">
+                <ui:VisualElement name="timeline__phases__match__events" style="flex-grow: 1; left: 0; top: 0; right: 0; bottom: 0; position: absolute;">
+                    <ui:VisualElement name="timeline-event-template" class="timeline-event-template" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:VisualElement name="timeline-timer" style="position: absolute; height: 100%; width: 1%; background-color: rgb(120, 120, 120); border-left-color: rgb(0, 0, 0); border-right-color: rgb(0, 0, 0); border-top-color: rgb(0, 0, 0); border-bottom-color: rgb(0, 0, 0);" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

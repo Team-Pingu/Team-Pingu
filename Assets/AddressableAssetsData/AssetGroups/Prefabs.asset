@@ -53,6 +53,18 @@ MonoBehaviour:
     m_Address: Assets/Level/Prefabs/Barricades/ElectricFence.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: 963d5d014447d884786577da25253802
+    m_Address: Assets/Level/Prefabs/Abilities/BlackoutAbility.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 1fcb6dd5b6cf201428447e59611e0559
+    m_Address: Assets/Level/Prefabs/Abilities/DynamiteAbility.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 362b02ddbdb40ea4b85754aad8bc8a49
+    m_Address: Assets/Level/Prefabs/Abilities/ShockFieldTrapAbility.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 305b91d93a3e83442ba751e5dc8322f3, type: 2}
   m_SchemaSet:

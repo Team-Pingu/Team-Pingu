@@ -16,6 +16,13 @@ namespace Code.Scripts.Pathfinding
         public Dictionary<Vector2Int, Node> Grid { get { return _grid; } }
 
         private Dictionary<Vector2Int, Tile> _tiles = new Dictionary<Vector2Int, Tile>();
+        
+        private Dictionary<Vector2Int, Tile> _attackerTiles = new Dictionary<Vector2Int, Tile>();
+        private Dictionary<Vector2Int, Tile> _defenderTiles = new Dictionary<Vector2Int, Tile>();
+        
+        public Dictionary<Vector2Int, Tile> Tiles { get { return _tiles; } }
+        public Dictionary<Vector2Int, Tile> AttackerTiles { get { return _attackerTiles; } }
+        public Dictionary<Vector2Int, Tile> DefenderTiles { get { return _defenderTiles; } }
 
         private void Awake()
         {
@@ -74,18 +81,46 @@ namespace Code.Scripts.Pathfinding
         private void GetTiles()
         {
             _tiles.Clear();
+            _attackerTiles.Clear();
+            _defenderTiles.Clear();
 
-            GameObject parent = GameObject.FindGameObjectWithTag("Path");
+            GameObject pathParent = GameObject.FindGameObjectWithTag("Path");
 
-            foreach (Transform child in parent.transform)
+            foreach (Transform child in pathParent.transform)
             {
                 Tile tile = child.GetComponent<Tile>();
 
                 if (tile != null)
                 {
-                    _tiles.Add(GetCoordinatesFromPosition(tile.transform.position), tile);
+                    Vector3 position = tile.transform.position;
+                    _tiles.Add(GetCoordinatesFromPosition(position), tile);
+                    _attackerTiles.Add(GetCoordinatesFromPosition(position), tile);
                 }
             }
+            
+            GameObject worldTilesParent = GameObject.FindGameObjectWithTag("WorldTiles");
+
+            foreach (Transform child in worldTilesParent.transform)
+            {
+                Tile tile = child.GetComponent<Tile>();
+
+                if (tile != null)
+                {
+                    Vector3 position = tile.transform.position;
+                    _tiles.Add(GetCoordinatesFromPosition(position), tile);
+                    _defenderTiles.Add(GetCoordinatesFromPosition(position), tile);
+                }
+            }
+        }
+
+        public void UpdateTiles()
+        {
+            GetTiles();
+        }
+
+        public Tile GetTile(Vector2Int tileCoordinates)
+        {
+            return _tiles[tileCoordinates];
         }
         
         private void CreateGrid()
@@ -96,7 +131,7 @@ namespace Code.Scripts.Pathfinding
                 {
                     Vector2Int coordinates = new Vector2Int(x, y);
 
-                    if (_tiles.ContainsKey(coordinates) && _tiles[coordinates].isWalkable)
+                    if (_tiles.ContainsKey(coordinates) && _tiles[coordinates].isWalkable) // todo: maybe _attackerTiles.ContainsKey(coordinates) but should not be neccessary
                     {
                         _grid.Add(coordinates, new Node(coordinates, true));
                     }

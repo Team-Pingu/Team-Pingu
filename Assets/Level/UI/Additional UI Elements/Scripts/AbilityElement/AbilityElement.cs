@@ -2,6 +2,8 @@ using Code.Scripts;
 using Game.CustomUI;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
+using Unity.VisualScripting.FullSerializer;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -46,6 +48,8 @@ namespace Game.CustomUI
         private Label _costLabel;
         private VisualElement _mainContainer;
         private PopupPanelCustom _popupPanel;
+        private VisualElement _backgroundContainer;
+        private GameResource _spawnResource = null;
 
         private Bank _bank;
 
@@ -61,17 +65,20 @@ namespace Game.CustomUI
             _costLabel.text = "300";
         }
 
-        public AbilityElement(string name, string description, int cost)
+        public AbilityElement(string name, string description, int cost, GameResource spawnResource = null)
         {
-            Init();
-
             Name = name;
             Description = description;
             Cost = cost;
+            _spawnResource = spawnResource;
+
+            Init();
 
             //_nameLabel.text = name;
             //_descriptionLabel.text = description;
             _costLabel.text = $"{cost}";
+
+            _popupPanel = new PopupPanelCustom(name, description, _mainContainer, "This is an instant Action");
         }
 
         private void Init()
@@ -87,35 +94,39 @@ namespace Game.CustomUI
             _costLabel = this.Q<Label>("ability-element__cost");
             _mainContainer = this.Q<VisualElement>("ability-element-container");
             var _content = this.Q<VisualElement>("ability-element");
+            _backgroundContainer = this.Q<VisualElement>("ability-element__bg");
 
-            _popupPanel = new PopupPanelCustom("something", "something", _mainContainer, PopupPositionAnchor.TopLeft);
-
-            //_content.RegisterCallback<MouseOverEvent>(OnMouseOver);
-            //_content.RegisterCallback<MouseOutEvent>(OnMouseOut);
+            _mainContainer.RegisterCallback<MouseEnterEvent>(OnMouseEnter);
+            _mainContainer.RegisterCallback<MouseLeaveEvent>(OnMouseExit);
             _mainContainer.RegisterCallback<ClickEvent>(MouseClick);
 
-            _bank = GameObject.Find("Player").GetComponent<Bank>();
+            //_bank = GameObject.Find("Player").GetComponent<Bank>();
+            _bank = GameObject.FindFirstObjectByType<Bank>();
             _bank.OnBalanceChanged += currentBalance => IsAffordable(currentBalance);
+            IsAffordable(_bank.CurrentBalance);
         }
 
         #region Events
         private void MouseClick(ClickEvent e)
         {
-            Debug.Log("ClickEvent");
             if (IsAffordable(_bank.CurrentBalance))
             {
-                Buy();
+                //Buy();
+                Spawn();
             }
         }
-        private void OnMouseOver(MouseOverEvent e)
+
+        private void OnMouseEnter(MouseEnterEvent e)
         {
-            Debug.Log("MouseOver");
-            _popupPanel?.Show();
+            Debug.Log("ENTER");
+            _popupPanel.SetScreenPos(this);
+            _popupPanel.Show();
         }
-        private void OnMouseOut(MouseOutEvent e)
+
+        private void OnMouseExit(MouseLeaveEvent e)
         {
-            Debug.Log("MouseOut");
-            _popupPanel?.Hide();
+            Debug.Log("EXIT");
+            _popupPanel.Hide();
         }
         #endregion
 
@@ -134,6 +145,29 @@ namespace Game.CustomUI
         private void Sell(int amount = 1)
         {
             _bank?.Deposit(Cost * amount);
+        }
+
+        public void SetBackgroundImage(string path)
+        {
+            var ressourceObject = new GameResource(path, $"ability_ui_{Name}", GameResourceType.UI);
+            Texture2D texture = ressourceObject.LoadRessource<Texture2D>();
+            _backgroundContainer.style.backgroundImage = new StyleBackground(texture);
+        }
+
+        private void Spawn()
+        {
+            GameObject go = _spawnResource?.LoadRessource<GameObject>();
+            if (go != null)
+            {
+                var spawnedGo = GameObject.Instantiate(go);
+                IAbility abilityComponent = spawnedGo.GetComponent(typeof(IAbility)) as IAbility;
+                if (abilityComponent != null)
+                {
+                    abilityComponent.OnAbilityApplied += () => {
+                        Buy();
+                    };
+                }
+            }
         }
     }
 }

@@ -1,11 +1,12 @@
-using Code.Scripts.Player;
+using Code.Scripts.Pathfinding;
+using Code.Scripts.Player.Controller;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
-using static UnityEditor.Experimental.GraphView.GraphView;
+// using static UnityEditor.Experimental.GraphView.GraphView;
 
 namespace Game.CustomUI
 {
@@ -45,6 +46,7 @@ namespace Game.CustomUI
         public int SelectedUnits = 0;
 
         private Player _player;
+        private TileHighlightManager _tileHighlightManager;
 
         public override VisualElement contentContainer => _mainContainer;
 
@@ -90,7 +92,8 @@ namespace Game.CustomUI
             _spawnButton.RegisterCallback<ClickEvent>(OnSpawnButtonClicked);
             _abortButton.RegisterCallback<ClickEvent>(OnAbortButtonClicked);
 
-            _player = GameObject.Find("Player").GetComponent<Player>();
+            _player = GameObject.FindFirstObjectByType<Player>();
+            _tileHighlightManager = GameObject.FindFirstObjectByType<TileHighlightManager>();
         }
 
         #region Events
@@ -102,7 +105,7 @@ namespace Game.CustomUI
         }
         private void OnAbortButtonClicked(ClickEvent e)
         {
-            DeselectAllUnits();
+            DeselectAllUnits(true);
         }
         private void OnMouseOver(MouseOverEvent e)
         {
@@ -186,15 +189,12 @@ namespace Game.CustomUI
 
         public void SpawnSelectedUnits()
         {
-            // TODO: spawn selected units on level grid
             var units = GetSelectedUnitCardGameResources();
-            if (_player.Role == PlayerRole.Defender)
-            {
-                _player.PlayerController.PlaceUnits(units, new Vector3(-25, 0, 25));
-            } else
-            {
-                _player.PlayerController.PlaceUnits(units, new Vector3(-15, 0, 5));
-            }
+            _player.SetActiveEntities(units);
+
+            MarkTilesType? markTilesType = units.Keys.FirstOrDefault()?.ResourceType == GameResourceType.Barricade ? MarkTilesType.AllPathTilesExceptStartTiles : null;
+
+            _tileHighlightManager.MarkTiles(markTilesType);
         }
 
         public void AddUnitCard(UnitCard uc, bool inflateAndApplyFix = true)
@@ -252,11 +252,12 @@ namespace Game.CustomUI
             }
         }
 
-        public void DeselectAllUnits()
+        public void DeselectAllUnits(bool sell = false)
         {
             SetSelectedUnits();
             foreach (UnitCard uc in Cards)
             {
+                if (sell) uc.Sell(uc.SelectedUnitsAmount);
                 uc.ResetSelection();
             }
         }

@@ -265,6 +265,10 @@ GameObject:
   m_Component:
   - component: {fileID: 3451203933149199482}
   - component: {fileID: 7980733730422449389}
+  - component: {fileID: -3587203364945680730}
+  - component: {fileID: 8788170462871560072}
+  - component: {fileID: -2692900710408069515}
+  - component: {fileID: 5002711535646023640}
   m_Layer: 0
   m_Name: AutoMinion
   m_TagString: Untagged
@@ -304,6 +308,81 @@ CapsuleCollider:
   m_Height: 3.88
   m_Direction: 1
   m_Center: {x: 0, y: 1.96, z: 0}
+--- !u!114 &-3587203364945680730
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7521688284601391487}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 951099334
+  AlwaysReplicateAsRoot: 0
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
+--- !u!114 &8788170462871560072
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7521688284601391487}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e96cb6065543e43c4a752faaa1468eb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SyncPositionX: 1
+  SyncPositionY: 1
+  SyncPositionZ: 1
+  SyncRotAngleX: 1
+  SyncRotAngleY: 1
+  SyncRotAngleZ: 1
+  SyncScaleX: 0
+  SyncScaleY: 0
+  SyncScaleZ: 0
+  PositionThreshold: 0.001
+  RotAngleThreshold: 0.01
+  ScaleThreshold: 0.01
+  InLocalSpace: 0
+  Interpolate: 1
+--- !u!114 &-2692900710408069515
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7521688284601391487}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 619d9d8a66544d298c265ef14e857557, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  IsInvincible: 0
+  Health: 30
+  AttackDamage: 5
+  AttackInterval: 2000
+  DeathParticleSystem: {fileID: 5642766282230003982, guid: 6797bea905fc07d439e25d7a8c7feb81,
+    type: 3}
+--- !u!114 &5002711535646023640
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7521688284601391487}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7edc4e58586476295faa367c8196bdf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  initialSpeed: 0.75
+  speed: 0.5
+  delay: 0
 --- !u!1 &7598061928044001187
 GameObject:
   m_ObjectHideFlags: 0
