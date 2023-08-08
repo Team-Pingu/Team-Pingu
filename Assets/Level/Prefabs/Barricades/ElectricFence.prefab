@@ -129,9 +129,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Health: 1
-  AttackDamage: 5
-  CurrencyReward: 20
-  AttackInterval: 1000
+  AttackDamage: 2
+  CurrencyReward: 1
+  AttackInterval: 500
   HitParticleSystem: {fileID: 8771972552311404799, guid: bbf9e36a48d6c5648a13889afab076fd,
     type: 3}
   speedDecrease: 0.5

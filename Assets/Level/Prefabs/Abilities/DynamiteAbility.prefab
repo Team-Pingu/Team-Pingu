@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Range: 25
-  Damage: 80
+  Damage: 40
   Duration: 3
   PreSelection: {fileID: 6943089123512221651}
   PreSelectionGround: {fileID: 6787920047663023337}

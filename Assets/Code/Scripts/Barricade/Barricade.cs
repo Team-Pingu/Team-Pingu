@@ -42,6 +42,11 @@ public class Barricade : MonoBehaviour
         _bank.Deposit((int)(CurrencyReward * _upgradeManager.MoneyBonusMultiplier));
     }
 
+    public int GetNumberOfKills()
+    {
+        return _killedTargets;
+    }
+
     public void FixedUpdate()
     {
         if (!CanAttack) return;

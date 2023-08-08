@@ -439,12 +439,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20e0106f243904548b036d28be735d42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Health: 50
-  AttackDamage: 5
+  Health: 1
+  AttackDamage: 12
   AttackRange: 40
   Weapon: {fileID: 0}
-  CurrencyReward: 200
-  AttackInterval: 600
+  CurrencyReward: 1
+  AttackInterval: 800
   HitParticleSystem: {fileID: 1141330259687333427, guid: 6718dc24203da53468af9ada8fef7d6d,
     type: 3}
 --- !u!114 &4700196189229347945

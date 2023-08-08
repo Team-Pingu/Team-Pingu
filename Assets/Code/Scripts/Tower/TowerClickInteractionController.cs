@@ -13,6 +13,7 @@ public class TowerClickInteractionController : MonoBehaviour
     public GameObject AttackRadiusCircle;
 
     private Tower _tower;
+    private Barricade _barricade;
     private TextMeshPro _numKillsTextMP;
     private float _rangeMultiplier = 0.2f;
     private bool _canOpenMenu = true;
@@ -20,6 +21,7 @@ public class TowerClickInteractionController : MonoBehaviour
     private void Awake()
     {
         _tower = GetComponent<Tower>();
+        _barricade = GetComponent<Barricade>();
         _numKillsTextMP = NumKillsText?.GetComponent<TextMeshPro>();
         Menu.SetActive(IsMenuOpen);
     }
@@ -82,7 +84,13 @@ public class TowerClickInteractionController : MonoBehaviour
 
     private void UpdateElements()
     {
-        _numKillsTextMP.text = $"{_tower.GetNumberOfKills()}";
+        if (_tower != null)
+        {
+            _numKillsTextMP.text = $"{_tower.GetNumberOfKills()}";
+        } else if (_barricade != null)
+        {
+            _numKillsTextMP.text = $"{_barricade.GetNumberOfKills()}";
+        }
         if (AttackRadiusCircle != null) AttackRadiusCircle.transform.localScale = new Vector3(_tower.AttackRange * _rangeMultiplier, 1, _tower.AttackRange * _rangeMultiplier);
     }
 }
