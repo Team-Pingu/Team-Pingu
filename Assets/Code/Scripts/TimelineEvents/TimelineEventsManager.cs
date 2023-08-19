@@ -6,7 +6,6 @@ using System.Linq;
 using UnityEngine;
 using Unity.Netcode;
 using Code.Scripts.Pathfinding;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 namespace Code.Scripts.TimelineEvents
 {
